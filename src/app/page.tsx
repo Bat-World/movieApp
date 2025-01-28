@@ -1,12 +1,10 @@
-
-
 import { Button } from "@/components/ui/button";
 import RightArrow from "./icons/RightArrow";
 
 export default function Home() {
   return (
-    <div className="w-screen h-screen bg-black flex  justify-center ">
-      <div className="w-[375px] h-screen bg-white">
+    <div className="w-screen h-auto bg-black flex  justify-center ">
+      <div className="w-[375px] h-auto bg-white">
         <div className="ImageContainer w-100% h-[246px] flex justify-center items-center bg-green">
           here goes image
         </div>
@@ -48,6 +46,35 @@ export default function Home() {
           </div>
           <div className="MovieImgs w-100%"></div>
         </div>
+        <div className="MovieList w-100% h-auto px-[20px] flex flex-col mt-[32px]">
+          <div className="w-100% h-[36px] flex flex-row justify-between">
+            <div className="w-auto h-100% flex justify-center items-center">
+              <p className="text-[24px] font-semibold text-[#09090B]">
+                Top Rated
+              </p>
+            </div>
+            <div className="w-[120px] h-100% flex flex-row justify-center items-center gap-[8px]">
+              <p className="text-[14px] font-medium text-[#09090B]">See more</p>
+              <RightArrow />
+            </div>
+          </div>
+          <div className="MovieImgs w-100%"></div>
+        </div>
+        <div className="MovieList w-100% h-auto px-[20px] flex flex-col mt-[32px]">
+          <div className="w-100% h-[36px] flex flex-row justify-between">
+            <div className="w-auto h-100% flex justify-center items-center">
+              <p className="text-[24px] font-semibold text-[#09090B]">
+                Popular
+              </p>
+            </div>
+            <div className="w-[120px] h-100% flex flex-row justify-center items-center gap-[8px]">
+              <p className="text-[14px] font-medium text-[#09090B]">See more</p>
+              <RightArrow />
+            </div>
+          </div>
+          <div className="MovieImgs w-100%"></div>
+        </div>
+        
       </div>
     </div>
   );
