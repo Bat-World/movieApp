@@ -42,7 +42,7 @@ export const Header = () => {
         <div className="flex flex-row items-center w-[84px] h-[36px] justify-between">
           {!showSearch && (
             <button
-              className="flex justify-center items-center w-[36px] h-[36px] rounded-md  border-solid border lg:hidden"
+              className="flex justify-center items-center w-[36px] h-[36px] rounded-md border-[#E4E4E7] border-solid border lg:hidden"
               onClick={() => setShowSearch(true)}
             >
               <SearchIcon />

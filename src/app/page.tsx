@@ -4,6 +4,7 @@ import RightArrow from "./icons/RightArrow";
 // import { ThemeProvider } from "@/components/theme-provider";
 import { ImageShiftPart } from "../components/CarouselPart";
 
+
 export default function Home() {
   return (
     <>
