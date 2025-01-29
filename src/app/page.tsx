@@ -3,8 +3,8 @@ import RightArrow from "./icons/RightArrow";
 
 export default function Home() {
   return (
-    <div className="w-screen h-auto bg-black flex  justify-center ">
-      <div className="w-[375px] h-auto bg-white">
+    <div className="w-screen h-auto bg-white flex  justify-center ">
+      <div className="w-100% h-auto bg-white lg:w-90% lg:px-[40px] xl:max-w-[1280px]">
         <div className="ImageContainer w-100% h-[246px] flex justify-center items-center bg-green">
           here goes image
         </div>
@@ -23,8 +23,8 @@ export default function Home() {
             <div className="flex flex-row"></div>
           </div>
           <div className="w-100% h-auto">
-            Elphaba, a misunderstood young woman because of her green skin, and
-            Galinda, a popular girl, become friends at Shiz University in the
+            Elp, a misunderstood young woman because of her green skin, and
+            Gal, a popular girl, become friends at NewYork University in the
             Land of Oz. After an encounter with the Wonderful Wizard of Oz,
             their friendship reaches a crossroads.
           </div>
