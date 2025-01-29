@@ -1,12 +1,47 @@
+"use client";
+
 import React from "react";
+import { useState } from "react";
 // import { Button } from "@/components/ui/button";
 import RightArrow from "./icons/RightArrow";
 // import { ThemeProvider } from "@/components/theme-provider";
 import { ImageShiftPart } from "../components/CarouselPart";
+import axios from "axios";
+import { useEffect } from "react";
+import { headers } from "next/headers";
 
+const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
+const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 export default function Home() {
-  return (
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [popularMovieData, setPopularMovieData] = useState([]);
+
+const getMovieData = async () => {
+  try {
+console.log("this is running");
+const response = await axios.get(
+  `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
+  { 
+    headers: {
+      Authorization: `Bearer ${TMDB_API_TOKEN}`,
+    },
+  }
+);
+console.log(response.data.results); 
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+  
+  useEffect(() => { 
+    getMovieData();
+  }, []);
+
     <>
       <ImageShiftPart />
       <div className="w-screen h-auto  flex justify-center ">
@@ -62,5 +97,5 @@ export default function Home() {
         </div>
       </div>
     </>
-  );
+  
 }
