@@ -8,7 +8,7 @@ import RightArrow from "./icons/RightArrow";
 import { ImageShiftPart } from "../components/CarouselPart";
 import axios from "axios";
 import { useEffect } from "react";
-import { headers } from "next/headers";
+
 
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
@@ -22,6 +22,7 @@ export default function Home() {
 
 const getMovieData = async () => {
   try {
+    setIsLoading(true);
 console.log("this is running");
 const response = await axios.get(
   `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
@@ -31,17 +32,30 @@ const response = await axios.get(
     },
   }
 );
-console.log(response.data.results); 
+setPopularMovieData(response.data.results);
+setIsLoading(false);
   } catch (err) {
+    setIsLoading(false);
+    if(axios.isAxiosError(err)) {
+      setErrorMessage(err.response?.data.statusmessage_message);
+    }
     console.log(err);
+
   }
 };
+console.log("This is the error",errorMessage);
+console.log(isLoading);
+
+console.log("This is the data",popularMovieData);
+
 
   
   useEffect(() => { 
     getMovieData();
   }, []);
 
+
+  return (
     <>
       <ImageShiftPart />
       <div className="w-screen h-auto  flex justify-center ">
@@ -58,9 +72,23 @@ console.log(response.data.results);
                   See more
                 </p>
                 <RightArrow />
-              </div>
+              </div> 
             </div>
-            <div className="MovieImgs w-100%"></div>
+            <div className="MovieImgs w-100% h-auto mt-[20px]">
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4  xl:grid-cols-5 gap-4 mt-6 lg:gap-[30px] xl:gap-[30px]">
+                <div className="w-[175px] h-[233px] bg-[#E4E4E7] rounded-[8px] lg:w-[230px] lg:h-[440px]"></div>
+                <div className="w-[175px] h-[233px] bg-[#E4E4E7] rounded-[8px] lg:w-[230px] lg:h-[440px]"></div>
+                <div className="w-[175px] h-[233px] bg-[#E4E4E7] rounded-[8px] lg:w-[230px] lg:h-[440px]"></div>
+                <div className="w-[175px] h-[233px] bg-[#E4E4E7] rounded-[8px] lg:w-[230px] lg:h-[440px]"></div>
+                <div className="w-[175px] h-[233px] bg-[#E4E4E7] rounded-[8px] lg:w-[230px] lg:h-[440px]"></div>
+                <div className="w-[175px] h-[233px] bg-[#E4E4E7] rounded-[8px] lg:w-[230px] lg:h-[440px]"></div>
+                <div className="w-[175px] h-[233px] bg-[#E4E4E7] rounded-[8px] lg:w-[230px] lg:h-[440px]"></div>
+                <div className="w-[175px] h-[233px] bg-[#E4E4E7] rounded-[8px] lg:w-[230px] lg:h-[440px]"></div>
+                <div className="w-[175px] h-[233px] bg-[#E4E4E7] rounded-[8px] lg:w-[230px] lg:h-[440px]"></div>
+                <div className="w-[175px] h-[233px] bg-[#E4E4E7] rounded-[8px] lg:w-[230px] lg:h-[440px]"></div>
+              </div>
+             
+            </div>
           </div>
           <div className="MovieList w-100% h-auto px-[20px] flex flex-col mt-[32px]">
             <div className="w-100% h-[36px] flex flex-row justify-between">
@@ -97,5 +125,5 @@ console.log(response.data.results);
         </div>
       </div>
     </>
-  
+  );
 }
