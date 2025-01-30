@@ -15,7 +15,7 @@ import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
 
 export const Header = () => {
-  const [showSearch, setShowSearch] = useState(false);
+  const [showSearch, setShowSearch] = useState<boolean>(false);
   const { setTheme, theme } = useTheme();
 
   return (

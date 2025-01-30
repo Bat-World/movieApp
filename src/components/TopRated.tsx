@@ -8,23 +8,23 @@ const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
 const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
-const UpcomingMovies = () => {
-  const [upcomingMovieData, setUpcomingMovieData] = useState<Movie[]>([]);
+const TopRatedMovies = () => {
+  const [topRatedMovieData, setTopRatedMovieMovieData] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const getUpcomingMovies = async () => {
+  const getTopRatedMovies = async () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/upcoming?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
+        `${TMDB_BASE_URL}/movie/top_rated?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
         {
           headers: {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
           },
         }
       );
-      setUpcomingMovieData(response.data.results.slice(0, 10)); // Get the first 10 upcoming movies
+      setTopRatedMovieMovieData(response.data.results.slice(0, 10)); // Get the first 10 upcoming movies
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
@@ -34,14 +34,14 @@ const UpcomingMovies = () => {
   };
 
   useEffect(() => {
-    getUpcomingMovies();
+    getTopRatedMovies();
   }, []);
 
   return (
     <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[32px]">
       <div className="w-full h-[36px] flex flex-row justify-between">
         <div className="w-[114px] h-full flex justify-center items-center">
-          <p className="text-[24px] font-semibold">Upcoming</p>
+          <p className="text-[24px]  w-auto font-semibold">Top Rated</p>
         </div>
         <div className="w-[120px] h-full flex flex-row justify-center items-center gap-[8px]">
           <p className="text-[14px] font-medium text-[#09090B]">See more</p>
@@ -55,7 +55,7 @@ const UpcomingMovies = () => {
           ) : errorMessage ? (
             <p>{errorMessage}</p>
           ) : (
-            upcomingMovieData.map((movie) => (
+            topRatedMovieData.map((movie) => (
               <div
                 key={movie.id}
                 className="w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]"
@@ -86,4 +86,4 @@ const UpcomingMovies = () => {
   );
 };
 
-export default UpcomingMovies;
+export default TopRatedMovies;

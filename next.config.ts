@@ -8,9 +8,10 @@ const nextConfig: NextConfig = {
   },
   images: {
     domains: [
-      "images.unsplash.com", 
-      "via.placeholder.com", 
+      "images.unsplash.com",
+      "via.placeholder.com",
       "picsum.photos",
+      "image.tmdb.org",
     ],
   },
 };
