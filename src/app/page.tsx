@@ -49,6 +49,10 @@ export default function Home() {
     getMovieData();
   }, []);
 
+  const firstMovie = popularMovieData?.[0];
+
+  console.log(firstMovie);
+
   return (
     <>
       <ImageShiftPart />

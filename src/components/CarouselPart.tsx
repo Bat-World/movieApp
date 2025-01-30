@@ -37,19 +37,25 @@ export const ImageShiftPart = () => {
       console.log(err);
     }
   };
-  console.log("This is the error", errorMessage);
-  console.log(isLoading);
-  console.log("This is the data", popularMovieData);
+
+
+
+
+  // console.log("This is the error", errorMessage);
+  // console.log(isLoading);
+  // console.log("This is the data", popularMovieData);
 
 
   useEffect(() => {
     getMovieData();
   }, []);
 
+  const firstMovie = popularMovieData?.[0];
+  
+
   return (
     <div className="w-screen h-auto flex flex-col lg:relative">
-      <div className="ImageContainer w-full h-[246px] flex justify-center items-center lg:h-[600px]">
-
+      <div className="ImageContainer w-full h-[246px] flex justify-center items-center lg:h-[600px] bg-cover bg-center" style={{backgroundImage: `url(https://image.tmdb.org/t/p/w780/${firstMovie?.backdrop_path})`}}>
       </div>
       <div className="AboutMovie w-full h-auto px-[20px] py-[20px] flex flex-col gap-[16px] justify-content lg:absolute lg:top-[40%] lg:left-[10%] lg:w-[302px] lg:h-[246px] lg:rounded-[8px] lg:bg-transparent">
         <div className="w-full h-auto">
@@ -59,7 +65,8 @@ export const ImageShiftPart = () => {
                 <p className="text-[14px] font-normal">Now playing:</p>
               </div>
               <div className="w-full h-[32px]">
-                <p className="text-[24px] font-semibold">Name</p>
+                <p className="text-[24px] font-semibold">{firstMovie.original_title
+                }</p>
               </div>
             </div>
             <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
@@ -71,10 +78,7 @@ export const ImageShiftPart = () => {
           <div className="flex flex-row"></div>
         </div>
         <div className="w-full h-auto">
-          Elp, a misunderstood young woman because of her green skin, and Gal,
-          a popular girl, become friends at NewYork University in the Land of
-          Oz. After an encounter with the Wonderful Wizard of Oz, their
-          friendship reaches a crossroads.
+          {firstMovie.overview}
         </div>
         <div className="w-full h-[40px]">
           <Button variant="outline">Play Trailer</Button>
