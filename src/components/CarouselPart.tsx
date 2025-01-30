@@ -1,14 +1,11 @@
-
 import { Button } from "./ui/button";
 import Starx from "@/app/icons/Star";
 import { useState, useEffect } from "react";
-import axios
- from "axios";
+import axios from "axios";
 
-
- const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
- const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
- const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
+const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
+const TMDB_API_KEY = process.env.TMDB_API_KEY;
 
 export const ImageShiftPart = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -38,25 +35,27 @@ export const ImageShiftPart = () => {
     }
   };
 
-
-
-
-  // console.log("This is the error", errorMessage);
-  // console.log(isLoading);
-  // console.log("This is the data", popularMovieData);
-
+  console.log("This is the error", errorMessage);
+  console.log(isLoading);
+  console.log("This is the data", popularMovieData);
 
   useEffect(() => {
     getMovieData();
   }, []);
 
   const firstMovie = popularMovieData?.[0];
-  
 
   return (
-    <div className="w-screen h-auto flex flex-col lg:relative">
-      <div className="ImageContainer w-full h-[246px] flex justify-center items-center lg:h-[600px] bg-cover bg-center" style={{backgroundImage: `url(https://image.tmdb.org/t/p/w780/${firstMovie?.backdrop_path})`}}>
-      </div>
+    <div className="w-screen h-auto flex flex-col lg:relative mt-[84px]">
+      <div
+  className="ImageContainer w-full h-[246px] flex justify-center items-center lg:h-[600px] bg-cover bg-center"
+  style={{
+    backgroundImage: `url(https://image.tmdb.org/t/p/original/${firstMovie?.backdrop_path})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center',
+  }}
+></div>
+
       <div className="AboutMovie w-full h-auto px-[20px] py-[20px] flex flex-col gap-[16px] justify-content lg:absolute lg:top-[40%] lg:left-[10%] lg:w-[302px] lg:h-[246px] lg:rounded-[8px] lg:bg-transparent">
         <div className="w-full h-auto">
           <div className="flex flex-row w-auto h-auto justify-between lg:flex-col lg:gap-[8px]">
@@ -65,21 +64,21 @@ export const ImageShiftPart = () => {
                 <p className="text-[14px] font-normal">Now playing:</p>
               </div>
               <div className="w-full h-[32px]">
-                <p className="text-[24px] font-semibold">{firstMovie.original_title
-                }</p>
+                <p className="text-[24px] font-semibold">
+                  {firstMovie?.original_title}
+                </p>
               </div>
             </div>
             <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
               <Starx />
-              <p className="text-[16px] font-semibold">6.9</p>
+              <p className="text-[16px] font-semibold">{firstMovie?.vote_average
+              }</p>
               <p>/10</p>
             </div>
           </div>
           <div className="flex flex-row"></div>
         </div>
-        <div className="w-full h-auto">
-          {firstMovie.overview}
-        </div>
+        <div className="w-full h-auto"> <p className="text-[14px]">{firstMovie?.overview}</p></div>
         <div className="w-full h-[40px]">
           <Button variant="outline">Play Trailer</Button>
         </div>
@@ -87,4 +86,3 @@ export const ImageShiftPart = () => {
     </div>
   );
 };
-
