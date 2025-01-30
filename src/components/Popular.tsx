@@ -1,6 +1,6 @@
 import MovieList from "./MovieList";
 const Popular = () => {
-  return <MovieList title="Top Rated" endpoint="movie/top_rated" />;
+  return <MovieList title="Popular" endpoint="movie/popular" />;
 };
 
 export default Popular;
