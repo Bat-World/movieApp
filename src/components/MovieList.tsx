@@ -3,6 +3,7 @@ import axios from "axios";
 import { Movie } from "@/app/types/types";
 import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
+import { useRouter } from "next/navigation";
 
 interface MovieListProps {
   title: string;
@@ -22,7 +23,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${TMDB_BASE_URL}/${endpoint}?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
+        `${TMDB_BASE_URL}/movie/${endpoint}?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
         {
           headers: {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
@@ -42,6 +43,10 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
     fetchMovies();
   }, [endpoint]);
 
+  const { push } = useRouter();
+
+  console.log(endpoint);
+
   return (
     <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[32px]">
       <div className="w-full h-[36px] flex flex-row justify-between">
@@ -49,7 +54,12 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
           <p className="text-[24px] font-semibold">{title}</p>
         </div>
         <div className="w-[120px] h-full flex flex-row justify-center items-center gap-[8px]">
-          <p className="text-[14px] font-medium text-[#09090B]">See more</p>
+          <button
+            className="w-auto h-auto text-[14px] font-medium bg-transparent"
+            onClick={() => push(`/category/${endpoint}`)}
+          >
+            See more
+          </button>
         </div>
       </div>
 
@@ -64,6 +74,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
               <div
                 key={movie.id}
                 className="w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]"
+                onClick={() => push(`/detail/${movie.id}`)}
               >
                 <Image
                   src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
@@ -72,13 +83,15 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
                   height={234}
                   layout="intrinsic"
                   objectFit="cover"
-                className="rounded-t-[8px] rounded-b-[0px] lg:w-[230px] lg:h-[340px] hover:opacity-60"
+                  className="rounded-t-[8px] rounded-b-[0px] lg:w-[230px] lg:h-[340px] hover:opacity-60"
                 />
                 <div className="flex flex-col w-auto h-auto items-start mt-2 px-2">
                   <p className="text-[16px] font-semibold">{movie.title}</p>
                   <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
                     <StarSmall />
-                    <p className="text-[16px] font-semibold">{movie.vote_average}</p>
+                    <p className="text-[16px] font-semibold">
+                      {movie.vote_average}
+                    </p>
                     <p>/10</p>
                   </div>
                 </div>
