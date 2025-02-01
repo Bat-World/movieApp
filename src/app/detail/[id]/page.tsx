@@ -4,6 +4,7 @@ import { useParams } from "next/navigation";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
@@ -59,7 +60,7 @@ const Page = () => {
   const fetchVideos = async () => {
     try {
       const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/${param}/videos?language=en-US`,
+        `${TMDB_BASE_URL}/movie/${params.id}/videos?language=en-US`,
         {
           headers: {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
@@ -78,15 +79,11 @@ const Page = () => {
     fetchVideos();
   }, [params.id]);
 
-  if (isLoading) {
-    return <div className="text-center mt-10">Loading...</div>;
-  }
-
   if (errorMessage) {
     return <div className="text-center mt-10 text-red-500">{errorMessage}</div>;
   }
 
-  if (!movieData) {
+  if (!movieData && !isLoading) {
     return <div className="text-center mt-10">No movie data found.</div>;
   }
 
@@ -106,102 +103,165 @@ const Page = () => {
     <div className="max-w-2xl mx-auto px-4 mt-[80px] md:max-w-4xl lg:max-w-6xl">
       {/* Movie Title & Details */}
       <div className="mt-6">
-        <h1 className="text-2xl font-bold">{movieData.title}</h1>
+        {isLoading ? (
+          <Skeleton className="h-8 w-3/4 mb-2" />
+        ) : (
+          <h1 className="text-2xl font-bold">{movieData.title}</h1>
+        )}
         <div className="flex items-center space-x-4 text-gray-500 text-sm mt-1">
-          <span>{movieData.release_date}</span>
-          <span>• {movieData.adult ? "R" : "PG"}</span>
-          <span>• {movieData.runtime}m</span>
-          <div className="flex items-center text-yellow-500 font-semibold">
-            ⭐ <span className="ml-1">{movieData.vote_average.toFixed(1)}/10</span>
-            <span className="text-gray-400 ml-2 text-xs">
-              {movieData.vote_count}
-            </span>
-          </div>
+          {isLoading ? (
+            <>
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-10" />
+              <Skeleton className="h-4 w-10" />
+              <Skeleton className="h-4 w-24" />
+            </>
+          ) : (
+            <>
+              <span>{movieData.release_date}</span>
+              <span>• {movieData.adult ? "R" : "PG"}</span>
+              <span>• {movieData.runtime}m</span>
+              <div className="flex items-center text-yellow-500 font-semibold">
+                ⭐ <span className="ml-1">{movieData.vote_average.toFixed(1)}/10</span>
+                <span className="text-gray-400 ml-2 text-xs">
+                  {movieData.vote_count}
+                </span>
+              </div>
+            </>
+          )}
         </div>
       </div>
 
       {/* Movie Thumbnail & Trailer */}
       <div className="relative mt-4">
-        <Image
-          src={`https://image.tmdb.org/t/p/w1280${movieData.backdrop_path}`}
-          alt={movieData.title}
-          width={800}
-          height={450}
-          className="w-full rounded-lg"
-        />
-        {trailer && (
-          <a
-            href={`https://www.youtube.com/watch?v=${trailer.key}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="absolute bottom-4 left-4 flex items-center bg-black/70 text-white px-4 py-2 rounded-lg text-sm"
-          >
-            ▶ Play trailer <span className="ml-2">2:35</span>
-          </a>
+        {isLoading ? (
+          <Skeleton className="w-full h-64 rounded-lg" />
+        ) : (
+          <>
+            <Image
+              src={`https://image.tmdb.org/t/p/w1280${movieData.backdrop_path}`}
+              alt={movieData.title}
+              width={800}
+              height={450}
+              className="w-full rounded-lg"
+            />
+            {trailer && (
+              <a
+                href={`https://www.youtube.com/watch?v=${trailer.key}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute bottom-4 left-4 flex items-center bg-black/70 text-white px-4 py-2 rounded-lg text-sm"
+              >
+                ▶ Play trailer <span className="ml-2">2:35</span>
+              </a>
+            )}
+          </>
         )}
       </div>
 
       {/* Genres */}
       <div className="mt-4 flex flex-wrap gap-2">
-        {movieData.genres.map((genre: any) => (
-          <span
-            key={genre.id}
-            className="bg-gray-200 text-sm px-3 py-1 rounded-full"
-          >
-            {genre.name}
-          </span>
-        ))}
+        {isLoading
+          ? Array.from({ length: 3 }).map((_, index) => (
+              <Skeleton key={index} className="h-6 w-20 rounded-full" />
+            ))
+          : movieData.genres.map((genre: any) => (
+              <span
+                key={genre.id}
+                className="bg-gray-200 text-sm px-3 py-1 rounded-full"
+              >
+                {genre.name}
+              </span>
+            ))}
       </div>
 
       {/* Movie Description */}
-      <p className="text-gray-700 mt-4 text-sm leading-relaxed">
-        {movieData.overview}
-      </p>
+      {isLoading ? (
+        <div className="mt-4 space-y-2">
+          <Skeleton className="h-4 w-full" />
+          <Skeleton className="h-4 w-5/6" />
+          <Skeleton className="h-4 w-4/6" />
+        </div>
+      ) : (
+        <p className="text-gray-700 mt-4 text-sm leading-relaxed">
+          {movieData.overview}
+        </p>
+      )}
 
       {/* Director, Writers, Stars */}
       <div className="mt-6 space-y-4">
-        {director && (
-          <div>
-            <h3 className="font-semibold">Director</h3>
-            <p className="text-gray-600 text-sm">{director.name}</p>
-          </div>
-        )}
+        {isLoading ? (
+          <>
+            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-4 w-48" />
+            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-4 w-48" />
+            <Skeleton className="h-6 w-24" />
+            <Skeleton className="h-4 w-48" />
+          </>
+        ) : (
+          <>
+            {director && (
+              <div>
+                <h3 className="font-semibold">Director</h3>
+                <p className="text-gray-600 text-sm">{director.name}</p>
+              </div>
+            )}
 
-        {writers && writers.length > 0 && (
-          <div>
-            <h3 className="font-semibold">Writers</h3>
-            <p className="text-gray-600 text-sm">
-              {writers.map((writer: any) => writer.name).join(" · ")}
-            </p>
-          </div>
-        )}
+            {writers && writers.length > 0 && (
+              <div>
+                <h3 className="font-semibold">Writers</h3>
+                <p className="text-gray-600 text-sm">
+                  {writers.map((writer: any) => writer.name).join(" · ")}
+                </p>
+              </div>
+            )}
 
-        {topCast && topCast.length > 0 && (
-          <div>
-            <h3 className="font-semibold">Stars</h3>
-            <p className="text-gray-600 text-sm">
-              {topCast.map((cast: any) => cast.name).join(" · ")}
-            </p>
-          </div>
+            {topCast && topCast.length > 0 && (
+              <div>
+                <h3 className="font-semibold">Stars</h3>
+                <p className="text-gray-600 text-sm">
+                  {topCast.map((cast: any) => cast.name).join(" · ")}
+                </p>
+              </div>
+            )}
+          </>
         )}
       </div>
 
       {/* More Like This Section */}
       <div className="mt-10">
         <div className="flex justify-between items-center">
-          <h2 className="text-lg font-semibold">More like this</h2>
-          <a href="#" className="text-blue-500 text-sm">
-            See more →
-          </a>
+          {isLoading ? (
+            <Skeleton className="h-6 w-32" />
+          ) : (
+            <h2 className="text-lg font-semibold">More like this</h2>
+          )}
+          {isLoading ? (
+            <Skeleton className="h-4 w-20" />
+          ) : (
+            <a href="#" className="text-blue-500 text-sm">
+              See more →
+            </a>
+          )}
         </div>
 
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 mt-4">
-          <div className="p-3">
-            <div className="flex items-center text-yellow-500 text-sm font-semibold">
-              ⭐ <span className="ml-1">rating</span>
-            </div>
-            <p className="text-sm mt-1">title</p>
-          </div>
+          {isLoading
+            ? Array.from({ length: 4 }).map((_, index) => (
+                <div key={index} className="p-3">
+                  <Skeleton className="h-4 w-16" />
+                  <Skeleton className="h-4 w-24 mt-2" />
+                </div>
+              ))
+            : Array.from({ length: 4 }).map((_, index) => (
+                <div key={index} className="p-3">
+                  <div className="flex items-center text-yellow-500 text-sm font-semibold">
+                    ⭐ <span className="ml-1">rating</span>
+                  </div>
+                  <p className="text-sm mt-1">title</p>
+                </div>
+              ))}
         </div>
       </div>
     </div>
