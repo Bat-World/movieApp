@@ -4,6 +4,7 @@ import { Movie } from "@/app/types/types";
 import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
 import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton from shadcn
 
 interface MovieListProps {
   title: string;
@@ -51,15 +52,15 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
       .map((_, index) => (
         <div
           key={index}
-          className="w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px] animate-pulse"
+          className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]"
         >
-          <div className="w-full h-[234px] bg-gray-300 rounded-t-[8px] lg:h-[340px]"></div>
+          <Skeleton className="w-full h-[234px] rounded-t-[8px] lg:h-[340px]" />
           <div className="flex flex-col w-auto h-auto items-start mt-2 px-2">
-            <div className="w-3/4 h-4 bg-gray-300 rounded"></div>
+            <Skeleton className="w-3/4 h-4 rounded" />
             <div className="flex flex-row w-auto h-auto items-center gap-[8px] mt-2">
-              <div className="w-4 h-4 bg-gray-300 rounded"></div>
-              <div className="w-8 h-4 bg-gray-300 rounded"></div>
-              <div className="w-4 h-4 bg-gray-300 rounded"></div>
+              <Skeleton className="w-4 h-4 rounded" />
+              <Skeleton className="w-8 h-4 rounded" />
+              <Skeleton className="w-4 h-4 rounded" />
             </div>
           </div>
         </div>
