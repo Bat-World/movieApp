@@ -45,7 +45,26 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
 
   const { push } = useRouter();
 
-  console.log(endpoint);
+  const renderSkeleton = () => {
+    return Array(10)
+      .fill(0)
+      .map((_, index) => (
+        <div
+          key={index}
+          className="w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px] animate-pulse"
+        >
+          <div className="w-full h-[234px] bg-gray-300 rounded-t-[8px] lg:h-[340px]"></div>
+          <div className="flex flex-col w-auto h-auto items-start mt-2 px-2">
+            <div className="w-3/4 h-4 bg-gray-300 rounded"></div>
+            <div className="flex flex-row w-auto h-auto items-center gap-[8px] mt-2">
+              <div className="w-4 h-4 bg-gray-300 rounded"></div>
+              <div className="w-8 h-4 bg-gray-300 rounded"></div>
+              <div className="w-4 h-4 bg-gray-300 rounded"></div>
+            </div>
+          </div>
+        </div>
+      ));
+  };
 
   return (
     <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[32px]">
@@ -66,7 +85,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
       <div className="MovieImgs w-full h-auto mt-[20px]">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mt-6 2xl:gap-[30px]">
           {isLoading ? (
-            <p>Loading...</p>
+            renderSkeleton()
           ) : errorMessage ? (
             <p>{errorMessage}</p>
           ) : (
