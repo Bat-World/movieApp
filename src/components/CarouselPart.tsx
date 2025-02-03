@@ -16,7 +16,6 @@ export const ImageShiftPart = () => {
   const getMovieData = async () => {
     try {
       setIsLoading(true);
-      console.log("this is running");
       const response = await axios.get(
         `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
         {
@@ -36,9 +35,6 @@ export const ImageShiftPart = () => {
     }
   };
 
-  console.log("This is the error", errorMessage);
-  console.log(isLoading);
-  console.log("This is the data", popularMovieData);
 
   useEffect(() => {
     getMovieData();
@@ -47,7 +43,7 @@ export const ImageShiftPart = () => {
   const firstMovie = popularMovieData?.[0];
 
   return (
-    <div className="w-screen h-auto flex flex-col lg:relative mt-[84px] z-[]">
+    <div className="w-screen h-auto flex flex-col lg:relative mt-[84px] z-[-1]">
       <div
         className="ImageContainer w-full h-[246px] flex justify-center items-center lg:h-[600px] bg-cover bg-center"
         style={{

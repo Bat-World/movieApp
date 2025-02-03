@@ -31,7 +31,7 @@ export const Header = () => {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const { setTheme, theme } = useTheme();
   const [moviesSearch, setMoviesSearch] = useState("");
-  const [genreData, setGenreData] = useState([]);
+  const [genreData, setGenreData] = useState<any[]>([]); // Ensure it always starts as an empty array
   const [searchMoviesData, setSearchMoviesData] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -64,65 +64,65 @@ export const Header = () => {
     }
   };
 
+  const fetchGenreData = async () => {
+    try {
+      setIsLoading(true);
+      setErrorMessage("");
 
-  //   const fetchGenreData = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     setErrorMessage("");
+      const response = await axios.get(
+        `${TMDB_BASE_URL}/genre/movie/list?&api_key=${TMDB_API_KEY}&language=en`,
+        {
+          headers: {
+            Authorization: `Bearer ${TMDB_API_TOKEN}`,
+          },
+        }
+      );
 
-  //     const response = await axios.get(
-  //       `${TMDB_BASE_URL}/genre/movie/list?&api_key=${TMDB_API_KEY}&language=en`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${TMDB_API_TOKEN}`,
-  //         },
-  //       }
-  //     );
+      setGenreData(response.data.results);
+      console.log("Genreeeeee", genreData);
+    } catch (err) {
+      setErrorMessage("Failed to load movies.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-  //     setGenreData(response.data.results);    
-  //     console.log("genreee", genreData);
-        
-  //   } catch (err) {
-  //     setErrorMessage("Failed to load movies.");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+  const fetchSelectMovies = async () => {
+    try {
+      setIsLoading(true);
+      setErrorMessage("");
 
+      const response = await axios.get(
+        `${TMDB_BASE_URL}  /discover/movie?language=en&with_genres=${genreIds}&page=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${TMDB_API_TOKEN}`,
+          },
+        }
+      );
 
-  // const fetchSelectMovies = async () => {
-  //   try {
-  //     setIsLoading(true);
-  //     setErrorMessage("");
-
-  //     const response = await axios.get(
-  //       `${TMDB_BASE_URL}  /discover/movie?language=en&with_genres=${genreIds}&page=1`,
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${TMDB_API_TOKEN}`,
-  //         },
-  //       }
-  //     );
-
-  //     setSelectedMoviesData(response.data.results);
-  //   } catch (err) {
-  //     setErrorMessage("Failed to load movies.");
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
+      setSelectedMoviesData(response.data.results);
+    } catch (err) {
+      setErrorMessage("Failed to load movies.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (moviesSearch) {
       setShowSearchValue(true);
       fetchSearchMovies();
-      // fetchGenreData();
-      // fetchSelectMovies();
     } else {
       setShowSearchValue(false);
     }
   }, [moviesSearch]);
-  
+
+  useEffect(() => {
+    fetchGenreData();
+    fetchSelectMovies();
+  }, []);
+
   const { push } = useRouter();
 
   const handleMovieClick = (movieId: number) => {
@@ -143,25 +143,11 @@ export const Header = () => {
               <SelectValue placeholder="Genre" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="dark">Action</SelectItem>
-              <SelectItem value="dark">Adventure</SelectItem>
-              <SelectItem value="dark">Comedy</SelectItem>
-              <SelectItem value="dark">Crime</SelectItem>
-              <SelectItem value="dark">Documentary</SelectItem>
-              <SelectItem value="dark">Documentary</SelectItem>
-              <SelectItem value="dark">Documentary</SelectItem>
-              <SelectItem value="dark">Drama</SelectItem>
-              <SelectItem value="dark">Family</SelectItem>
-              <SelectItem value="dark">Fantasy</SelectItem>
-              <SelectItem value="dark">History</SelectItem>
-              <SelectItem value="dark">Horror</SelectItem>
-              <SelectItem value="dark">Music</SelectItem>
-              <SelectItem value="dark">Mystery</SelectItem>
-              <SelectItem value="dark">Romance</SelectItem>
-              <SelectItem value="dark">Science Fiction</SelectItem>
-              <SelectItem value="dark">Thriller</SelectItem>
-              <SelectItem value="dark">War</SelectItem>
-              <SelectItem value="dark">Eastern</SelectItem>
+              {genreData?.map((genre) => (
+                <SelectItem key={genre.id} value={genre.name}>
+                  {genre.name}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
 
@@ -218,7 +204,7 @@ export const Header = () => {
             <p className="text-red-500">{errorMessage}</p>
           ) : searchMoviesData.length > 0 ? (
             <ul>
-              {searchMoviesData.map((movie) => ( 
+              {searchMoviesData.map((movie) => (
                 <li
                   key={movie.id}
                   className="p-2 border-b flex items-center cursor-pointer"

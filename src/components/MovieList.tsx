@@ -45,7 +45,6 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
 
   const { push } = useRouter();
 
-  console.log(endpoint);
 
   return (
     <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[32px]">
