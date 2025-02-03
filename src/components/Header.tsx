@@ -31,6 +31,7 @@ export const Header = () => {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const { setTheme, theme } = useTheme();
   const [moviesSearch, setMoviesSearch] = useState("");
+  const [genreData, setGenreData] = useState([]);
   const [searchMoviesData, setSearchMoviesData] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
@@ -64,6 +65,30 @@ export const Header = () => {
   };
 
 
+  //   const fetchGenreData = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     setErrorMessage("");
+
+  //     const response = await axios.get(
+  //       `${TMDB_BASE_URL}/genre/movie/list?&api_key=${TMDB_API_KEY}&language=en`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${TMDB_API_TOKEN}`,
+  //         },
+  //       }
+  //     );
+
+  //     setGenreData(response.data.results);    
+  //     console.log("genreee", genreData);
+        
+  //   } catch (err) {
+  //     setErrorMessage("Failed to load movies.");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
 
   // const fetchSelectMovies = async () => {
   //   try {
@@ -91,6 +116,7 @@ export const Header = () => {
     if (moviesSearch) {
       setShowSearchValue(true);
       fetchSearchMovies();
+      // fetchGenreData();
       // fetchSelectMovies();
     } else {
       setShowSearchValue(false);

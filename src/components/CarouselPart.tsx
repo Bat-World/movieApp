@@ -47,7 +47,7 @@ export const ImageShiftPart = () => {
   const firstMovie = popularMovieData?.[0];
 
   return (
-    <div className="w-screen h-auto flex flex-col lg:relative mt-[84px] z-[-1]">
+    <div className="w-screen h-auto flex flex-col lg:relative mt-[84px] z-[]">
       <div
         className="ImageContainer w-full h-[246px] flex justify-center items-center lg:h-[600px] bg-cover bg-center"
         style={{
