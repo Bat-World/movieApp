@@ -10,9 +10,9 @@ interface MovieListProps {
   endpoint: string;
 }
 
-const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
-const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
-const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
+const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
+const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 const MovieList = ({ title, endpoint }: MovieListProps) => {
   const [movieData, setMovieData] = useState<Movie[]>([]);

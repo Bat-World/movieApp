@@ -199,17 +199,18 @@ const Page = () => {
             >
               ×
             </button>
-            <div className="aspect-w-16 aspect-h-9">
-              <iframe
-                width="100%"
-                height="100%"
-                src={`https://www.youtube.com/embed/${trailerKey}`}
-                title="Trailer"
-                frameBorder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
+            <div className="aspect-w-16 aspect-h-9" style={{ height: '400px', margin: 0, padding: 0 }}>
+  <iframe
+    width="100%"
+    height="100%"
+    src={`https://www.youtube.com/embed/${trailerKey}`}
+    title="Trailer"
+    style={{ border: 'none' }}
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowFullScreen
+    className="border-none"
+  ></iframe>
+</div>
           </div>
         </div>
       )}
