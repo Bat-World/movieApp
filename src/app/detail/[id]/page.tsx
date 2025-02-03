@@ -14,6 +14,7 @@ const Page = () => {
   const [videoData, setVideoData] = useState<any>(null);
   const [movieData, setMovieData] = useState<any>(null);
   const [creditData, setCreditData] = useState<any>(null);
+  const [similarMovieData, setSimilarMovieData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const params = useParams();
@@ -60,7 +61,7 @@ const Page = () => {
   const fetchVideos = async () => {
     try {
       const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/${params.id}/videos?language=en-US`,
+        `${TMDB_BASE_URL}/movie/${params.id}/videos?api_key=${TMDB_API_KEY}&language=en-US`,
         {
           headers: {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
@@ -73,10 +74,28 @@ const Page = () => {
     }
   };
 
+  // Fetch data of similar movies
+  const fetchSimilarMoviesData = async () => {
+    try {
+      const response = await axios.get(
+        `${TMDB_BASE_URL}/movie/${params.id}/similar?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${TMDB_API_TOKEN}`,
+          },
+        }
+      );
+      setSimilarMovieData(response.data.results);
+    } catch (err) {
+      console.log("Failed to load videos:", err);
+    }
+  };
+
   useEffect(() => {
     fetchMovie();
     fetchCredits();
     fetchVideos();
+    fetchSimilarMoviesData();
   }, [params.id]);
 
   if (errorMessage) {

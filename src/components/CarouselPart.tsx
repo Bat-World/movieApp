@@ -47,15 +47,15 @@ export const ImageShiftPart = () => {
   const firstMovie = popularMovieData?.[0];
 
   return (
-    <div className="w-screen h-auto flex flex-col lg:relative mt-[84px]">
+    <div className="w-screen h-auto flex flex-col lg:relative mt-[84px] z-[-1]">
       <div
-  className="ImageContainer w-full h-[246px] flex justify-center items-center lg:h-[600px] bg-cover bg-center"
-  style={{
-    backgroundImage: `url(https://image.tmdb.org/t/p/original/${firstMovie?.backdrop_path})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-  }}
-></div>
+        className="ImageContainer w-full h-[246px] flex justify-center items-center lg:h-[600px] bg-cover bg-center"
+        style={{
+          backgroundImage: `url(https://image.tmdb.org/t/p/original/${firstMovie?.backdrop_path})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+        }}
+      ></div>
 
       <div className="AboutMovie w-full h-auto px-[20px] py-[20px] flex flex-col gap-[16px] justify-content lg:absolute lg:top-[40%] lg:left-[10%] lg:w-[302px] lg:h-[246px] lg:rounded-[8px] lg:bg-transparent">
         <div className="w-full h-auto">
@@ -72,14 +72,18 @@ export const ImageShiftPart = () => {
             </div>
             <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
               <Starx />
-              <p className="text-[16px] font-semibold">{firstMovie?.vote_average
-              }</p>
+              <p className="text-[16px] font-semibold">
+                {firstMovie?.vote_average}
+              </p>
               <p>/10</p>
             </div>
           </div>
           <div className="flex flex-row"></div>
         </div>
-        <div className="w-full h-auto"> <p className="text-[14px]">{firstMovie?.overview}</p></div>
+        <div className="w-full h-auto">
+          {" "}
+          <p className="text-[14px]">{firstMovie?.overview}</p>
+        </div>
         <div className="w-full h-[40px]">
           <Button variant="outline">Play Trailer</Button>
         </div>
