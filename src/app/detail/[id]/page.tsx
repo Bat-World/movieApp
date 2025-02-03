@@ -17,6 +17,8 @@ const Page = () => {
   const [similarMovieData, setSimilarMovieData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
+  const [trailerKey, setTrailerKey] = useState("");
   const params = useParams();
 
   // Fetch movie details
@@ -40,23 +42,6 @@ const Page = () => {
     }
   };
 
-  // Fetch credits (cast and crew)
-  const fetchCredits = async () => {
-    try {
-      const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/${params.id}/credits?api_key=${TMDB_API_KEY}&language=en-US`,
-        {
-          headers: {
-            Authorization: `Bearer ${TMDB_API_TOKEN}`,
-          },
-        }
-      );
-      setCreditData(response.data);
-    } catch (err) {
-      console.log("Failed to load credits:", err);
-    }
-  };
-
   // Fetch videos (trailers)
   const fetchVideos = async () => {
     try {
@@ -74,8 +59,25 @@ const Page = () => {
     }
   };
 
-  // Fetch data of similar movies
-  const fetchSimilarMoviesData = async () => {
+  // Fetch credits (cast and crew)
+  const fetchCredits = async () => {
+    try {
+      const response = await axios.get(
+        `${TMDB_BASE_URL}/movie/${params.id}/credits?api_key=${TMDB_API_KEY}&language=en-US`,
+        {
+          headers: {
+            Authorization: `Bearer ${TMDB_API_TOKEN}`,
+          },
+        }
+      );
+      setCreditData(response.data);
+    } catch (err) {
+      console.log("Failed to load credits:", err);
+    }
+  };
+
+   // Fetch similar movies
+   const fetchSimilarMoviesData = async () => {
     try {
       const response = await axios.get(
         `${TMDB_BASE_URL}/movie/${params.id}/similar?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
@@ -87,16 +89,25 @@ const Page = () => {
       );
       setSimilarMovieData(response.data.results);
     } catch (err) {
-      console.log("Failed to load videos:", err);
+      console.log("Failed to load similar movies:", err);
     }
   };
-
   useEffect(() => {
     fetchMovie();
     fetchCredits();
     fetchVideos();
     fetchSimilarMoviesData();
   }, [params.id]);
+
+  const openTrailerModal = (trailerKey: string) => {
+    setTrailerKey(trailerKey);
+    setIsTrailerModalOpen(true);
+  };
+
+  const closeTrailerModal = () => {
+    setIsTrailerModalOpen(false);
+    setTrailerKey("");
+  };
 
   if (errorMessage) {
     return <div className="text-center mt-10 text-red-500">{errorMessage}</div>;
@@ -106,8 +117,11 @@ const Page = () => {
     return <div className="text-center mt-10">No movie data found.</div>;
   }
 
-  // Extract director, writers, and top 3 cast members
-  const director = creditData?.crew.find(
+  // Find the first trailer
+  const trailer = videoData?.find((video: any) => video.type === "Trailer");
+
+   // Extract director, writers, and top 3 cast members
+   const director = creditData?.crew.find(
     (member: any) => member.job === "Director"
   );
   const writers = creditData?.crew
@@ -115,8 +129,7 @@ const Page = () => {
     .slice(0, 3); // Limit to 3 writers
   const topCast = creditData?.cast.slice(0, 3); // Limit to 3 cast members
 
-  // Find the first trailer
-  const trailer = videoData?.find((video: any) => video.type === "Trailer");
+ 
 
   return (
     <div className="max-w-2xl mx-auto px-4 mt-[80px] md:max-w-4xl lg:max-w-6xl">
@@ -165,41 +178,46 @@ const Page = () => {
               className="w-full rounded-lg"
             />
             {trailer && (
-              <a
-                href={`https://www.youtube.com/watch?v=${trailer.key}`}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                onClick={() => openTrailerModal(trailer.key)}
                 className="absolute bottom-4 left-4 flex items-center bg-black/70 text-white px-4 py-2 rounded-lg text-sm"
               >
-                ▶ Play trailer <span className="ml-2">2:35</span>
-              </a>
+                ▶ Play trailer
+              </button>
             )}
           </>
         )}
       </div>
 
-      {/* Genres */}
-      <div className="mt-4 flex flex-wrap gap-2">
-        {isLoading
-          ? Array.from({ length: 3 }).map((_, index) => (
-              <Skeleton key={index} className="h-6 w-20 rounded-full" />
-            ))
-          : movieData.genres.map((genre: any) => (
-              <span
-                key={genre.id}
-                className="bg-gray-200 text-sm px-3 py-1 rounded-full"
-              >
-                {genre.name}
-              </span>
-            ))}
-      </div>
+      {/* Trailer Modal */}
+      {isTrailerModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+          <div className="relative w-full max-w-4xl bg-white p-4 rounded-lg">
+            <button
+              onClick={closeTrailerModal}
+              className="absolute top-4 right-4 text-white text-2xl"
+            >
+              ×
+            </button>
+            <div className="aspect-w-16 aspect-h-9">
+              <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${trailerKey}`}
+                title="Trailer"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* Movie Description */}
-      {isLoading ? (
+     {/* Movie Description */}
+     {isLoading ? (
         <div className="mt-4 space-y-2">
           <Skeleton className="h-4 w-full" />
-          <Skeleton className="h-4 w-5/6" />
-          <Skeleton className="h-4 w-4/6" />
         </div>
       ) : (
         <p className="text-gray-700 mt-4 text-sm leading-relaxed">
@@ -247,42 +265,7 @@ const Page = () => {
           </>
         )}
       </div>
-
-      {/* More Like This Section */}
-      <div className="mt-10">
-        <div className="flex justify-between items-center">
-          {isLoading ? (
-            <Skeleton className="h-6 w-32" />
-          ) : (
-            <h2 className="text-lg font-semibold">More like this</h2>
-          )}
-          {isLoading ? (
-            <Skeleton className="h-4 w-20" />
-          ) : (
-            <a href="#" className="text-blue-500 text-sm">
-              See more →
-            </a>
-          )}
-        </div>
-
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4 mt-4">
-          {isLoading
-            ? Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="p-3">
-                  <Skeleton className="h-4 w-16" />
-                  <Skeleton className="h-4 w-24 mt-2" />
-                </div>
-              ))
-            : Array.from({ length: 4 }).map((_, index) => (
-                <div key={index} className="p-3">
-                  <div className="flex items-center text-yellow-500 text-sm font-semibold">
-                    ⭐ <span className="ml-1">rating</span>
-                  </div>
-                  <p className="text-sm mt-1">title</p>
-                </div>
-              ))}
-        </div>
-      </div>
+      {/* ... */}
     </div>
   );
 };

@@ -35,6 +35,7 @@ export const Header = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showSearchValue, setShowSearchValue] = useState<boolean>(false);
+  // const [selectedMoviesData, setSelectedMoviesData] = useState([]);
 
   const handleChange = (event) => {
     setMoviesSearch(event.target.value);
@@ -62,10 +63,35 @@ export const Header = () => {
     }
   };
 
+
+
+  // const fetchSelectMovies = async () => {
+  //   try {
+  //     setIsLoading(true);
+  //     setErrorMessage("");
+
+  //     const response = await axios.get(
+  //       `${TMDB_BASE_URL}  /discover/movie?language=en&with_genres=${genreIds}&page=1`,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${TMDB_API_TOKEN}`,
+  //         },
+  //       }
+  //     );
+
+  //     setSelectedMoviesData(response.data.results);
+  //   } catch (err) {
+  //     setErrorMessage("Failed to load movies.");
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+
   useEffect(() => {
     if (moviesSearch) {
       setShowSearchValue(true);
       fetchSearchMovies();
+      // fetchSelectMovies();
     } else {
       setShowSearchValue(false);
     }
@@ -88,12 +114,28 @@ export const Header = () => {
         <div className="hidden lg:flex w-auto h-[36px] flex-row items-center gap-[8px]">
           <Select>
             <SelectTrigger className="w-[90px] h-[36px] flex-row-reverse focus:outline-none focus:ring-0">
-              <SelectValue placeholder="Theme" />
+              <SelectValue placeholder="Genre" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
-              <SelectItem value="system">System</SelectItem>
+              <SelectItem value="dark">Action</SelectItem>
+              <SelectItem value="dark">Adventure</SelectItem>
+              <SelectItem value="dark">Comedy</SelectItem>
+              <SelectItem value="dark">Crime</SelectItem>
+              <SelectItem value="dark">Documentary</SelectItem>
+              <SelectItem value="dark">Documentary</SelectItem>
+              <SelectItem value="dark">Documentary</SelectItem>
+              <SelectItem value="dark">Drama</SelectItem>
+              <SelectItem value="dark">Family</SelectItem>
+              <SelectItem value="dark">Fantasy</SelectItem>
+              <SelectItem value="dark">History</SelectItem>
+              <SelectItem value="dark">Horror</SelectItem>
+              <SelectItem value="dark">Music</SelectItem>
+              <SelectItem value="dark">Mystery</SelectItem>
+              <SelectItem value="dark">Romance</SelectItem>
+              <SelectItem value="dark">Science Fiction</SelectItem>
+              <SelectItem value="dark">Thriller</SelectItem>
+              <SelectItem value="dark">War</SelectItem>
+              <SelectItem value="dark">Eastern</SelectItem>
             </SelectContent>
           </Select>
 
@@ -143,14 +185,14 @@ export const Header = () => {
 
       {/* Search Results */}
       {showSearchValue && (
-        <div className="absolute top-16 w-[400px] bg-white shadow-lg p-4 z-50">
+        <div className="absolute top-16 w-[400px] bg-black   shadow-lg p-4 z-50">
           {isLoading ? (
             <p>Loading...</p>
           ) : errorMessage ? (
             <p className="text-red-500">{errorMessage}</p>
           ) : searchMoviesData.length > 0 ? (
             <ul>
-              {searchMoviesData.map((movie) => (
+              {searchMoviesData.map((movie) => ( 
                 <li
                   key={movie.id}
                   className="p-2 border-b flex items-center cursor-pointer"

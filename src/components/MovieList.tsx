@@ -4,7 +4,6 @@ import { Movie } from "@/app/types/types";
 import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
 import { useRouter } from "next/navigation";
-import { Skeleton } from "@/components/ui/skeleton"; // Import Skeleton from shadcn
 
 interface MovieListProps {
   title: string;
@@ -46,26 +45,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
 
   const { push } = useRouter();
 
-  const renderSkeleton = () => {
-    return Array(10)
-      .fill(0)
-      .map((_, index) => (
-        <div
-          key={index}
-          className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]"
-        >
-          <Skeleton className="w-full h-[234px] rounded-t-[8px] lg:h-[340px]" />
-          <div className="flex flex-col w-auto h-auto items-start mt-2 px-2">
-            <Skeleton className="w-3/4 h-4 rounded" />
-            <div className="flex flex-row w-auto h-auto items-center gap-[8px] mt-2">
-              <Skeleton className="w-4 h-4 rounded" />
-              <Skeleton className="w-8 h-4 rounded" />
-              <Skeleton className="w-4 h-4 rounded" />
-            </div>
-          </div>
-        </div>
-      ));
-  };
+  console.log(endpoint);
 
   return (
     <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[32px]">
@@ -86,7 +66,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
       <div className="MovieImgs w-full h-auto mt-[20px]">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mt-6 2xl:gap-[30px]">
           {isLoading ? (
-            renderSkeleton()
+            <p>Loading...</p>
           ) : errorMessage ? (
             <p>{errorMessage}</p>
           ) : (
