@@ -25,7 +25,6 @@ const Page = () => {
   const [trailerKey, setTrailerKey] = useState("");
   const params = useParams();
   const router = useRouter();
-  
 
   // Fetch movie details
   const fetchMovie = async () => {
@@ -39,7 +38,6 @@ const Page = () => {
           },
         }
       );
-
       setMovieData(response.data);
       setIsLoading(false);
     } catch (err) {
@@ -108,6 +106,7 @@ const Page = () => {
 
   useEffect(() => {
     fetchSimilarMoviesData();
+    fetchMovie();
   }, []);
 
   const openTrailerModal = (trailerKey: string) => {
@@ -147,7 +146,7 @@ const Page = () => {
         {isLoading ? (
           <Skeleton className="h-8 w-3/4 mb-2" />
         ) : (
-          <h1 className="text-2xl font-bold">{movieData.title}</h1>
+          <h1 className="text-[24px] lg:text-[36px] font-bold">{movieData.title}</h1>
         )}
         <div className="flex items-center space-x-4 text-gray-500 text-sm mt-1">
           {isLoading ? (
@@ -177,37 +176,55 @@ const Page = () => {
       </div>
 
       {/* Movie Thumbnail & Trailer */}
-      <div className="relative mt-4">
-        {isLoading ? (
-          <Skeleton className="w-full h-64 rounded-lg" />
-        ) : (
-          <>
-            <Image
-              src={`https://image.tmdb.org/t/p/w1280${movieData.backdrop_path}`}
-              alt={movieData.title}
-              width={800}
-              height={450}
-              className="w-full rounded-lg"
-            />
-            {trailer && (
-              <button
-                onClick={() => openTrailerModal(trailer.key)}
-                className="absolute bottom-4 left-4 flex items-center bg-black/70 text-white px-4 py-2 rounded-lg text-sm"
-              >
-                ▶ Play trailer
-              </button>
-            )}
-          </>
-        )}
-        <Button
-          onClick={() => router.push(`/watch/movie/${params.id}`)}
-          variant="outline"
-          className="pt-5 pb-5 pl-8 pr-8 text-base font-bold text-[#1A1D29] flex items-center"
-        >
-          <Play className="fill-[#1A1D29]" />
-          PLAY
-        </Button>
+      <div className="relative mt-4 flex flex-row justify-between">
+  {isLoading ? (
+    <Skeleton className="w-full h-64 rounded-lg" />
+  ) : (
+    <>
+      {/* Poster Image (Hidden on Small Screens) */}
+      <Image
+        src={`https://image.tmdb.org/t/p/w1280${movieData.poster_path}`}
+        alt={movieData.title}
+        width={800}
+        height={450}
+        objectFit="cover"
+        className="hidden sm:hidden lg:block w-[222px] h-[428px] rounded-lg"
+      />
+
+      {/* Backdrop Image */}
+      <div className="relative">
+        <Image
+          src={`https://image.tmdb.org/t/p/w1280${movieData.backdrop_path}`}
+          alt={movieData.title}
+          width={800}
+          height={450}
+          className="lg:w-[760px] lg:h-[428px] rounded-lg w-[375px] h-auto"
+        />
+
+        {/* Buttons Positioned Bottom-Left */}
+        <div className="absolute bottom-4 left-4 flex gap-2">
+          {trailer && (
+            <button
+              onClick={() => openTrailerModal(trailer.key)}
+              className="flex items-center bg-black/70 text-white px-4 py-2 rounded-lg text-sm"
+            >
+              ▶ Play trailer
+            </button>
+          )}
+          <Button
+            onClick={() => router.push(`/watch/movie/${params.id}`)}
+            variant="outline"
+            className="text-base font-bold text-[#1A1D29] flex items-center bg-white/80 px-4 py-2 rounded-lg"
+          >
+            <Play className="fill-[#1A1D29]" />
+            PLAY
+          </Button>
+        </div>
       </div>
+    </>
+  )}
+</div>
+
 
       {/* Trailer Modal */}
       {isTrailerModalOpen && (

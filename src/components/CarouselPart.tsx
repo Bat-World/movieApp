@@ -14,6 +14,7 @@ import { Card } from "./ui/card";
 import { CardContent } from "./ui/card";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
+import { log } from "console";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -36,6 +37,9 @@ export const ImageShiftPart = () => {
           },
         }
       );
+
+      console.log("is there any overview?",response.data.results);
+      
       setPopularMovieData(response.data.results);
       setIsLoading(false);
     } catch (err) {
@@ -81,7 +85,7 @@ export const ImageShiftPart = () => {
         <CarouselNext />
       </Carousel>
 
-      <div className="AboutMovie w-full h-auto px-[20px] py-[20px] flex flex-col gap-[16px] justify-content lg:absolute lg:top-[20%] lg:left-[10%] lg:w-[302px] lg:h-[246px] lg:rounded-[8px] lg:bg-transparent">
+      <div className="AboutMovie w-full h-auto px-[20px] py-[20px] flex flex-col gap-[16px] justify-content lg:absolute lg:top-[20%] lg:left-[10%] lg:w-[302px] lg:h-[246px] lg:rounded-[8px] lg:bg-transparent z-[]">
         <div className="w-full h-auto">
           <div className="flex flex-row w-auto h-auto justify-between lg:flex-col lg:gap-[8px]">
             <div>

@@ -5,6 +5,8 @@ import MailIcon from "@/app/icons/mailIcon";
 import PhoneIcon from "@/app/icons/phoneIcon";
 import { FacebookIcon } from "lucide-react";
 import { InstagramIcon } from "lucide-react";
+import { TwitterIcon } from "lucide-react";
+import { YoutubeIcon } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -61,10 +63,10 @@ export const Footer = () => {
               <InstagramIcon/>
               </p>
               <p className="text-[14px] font-semibold text-[#FAFAFA]">
-               d
+               <YoutubeIcon/>
               </p>
               <p className="text-[14px] font-semibold text-[#FAFAFA]">
-                Twitter
+               <TwitterIcon/>
               </p>
             </div>
           </div>
