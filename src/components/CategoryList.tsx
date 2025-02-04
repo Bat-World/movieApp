@@ -30,7 +30,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
           },
         }
       );
-      setMovieData(response.data.results); // Get the first 10 movies
+      setMovieData(response.data.results);
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
@@ -48,21 +48,12 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
   console.log(endpoint);
 
   return (
-    <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[32px]">
-      <div className="w-full h-[36px] flex flex-row justify-between">
+    <div className="MovieList w-full h-auto px-[20px] flex flex-col ">
+      <div className="w-full h-[36px] flex flex-row justify-between mt-[92px]">
         <div className="w-[114px] h-full flex justify-center items-center">
-          <p className="text-[24px] font-semibold">{title}</p>
-        </div>
-        <div className="w-[120px] h-full flex flex-row justify-center items-center gap-[8px]">
-          <button
-            className="w-auto h-auto text-[14px] font-medium bg-transparent"
-            onClick={() => push(`/category/${endpoint}`)}
-          >
-            See more
-          </button>
+          <p className="text-[30px] font-semibold">{title}</p>
         </div>
       </div>
-
       <div className="MovieImgs w-full h-auto mt-[20px]">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mt-6 2xl:gap-[30px]">
           {isLoading ? (
@@ -73,7 +64,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
             movieData.map((movie) => (
               <div
                 key={movie.id}
-                className="w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]"
+                className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]"
                 onClick={() => push(`/detail/${movie.id}`)}
               >
                 <Image
@@ -85,15 +76,15 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
                   objectFit="cover"
                   className="rounded-t-[8px] rounded-b-[0px] lg:w-[230px] lg:h-[340px] hover:opacity-60"
                 />
-                <div className="flex flex-col w-auto h-auto items-start mt-2 px-2">
-                  <p className="text-[16px] font-semibold">{movie.title}</p>
+                <div className=" flex flex-col w-auto h-auto items-start mt-2 px-2">
                   <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
                     <StarSmall />
                     <p className="text-[16px] font-semibold">
-                      {movie.vote_average}
+                      {movie.vote_average.toFixed(1)}
                     </p>
                     <p>/10</p>
                   </div>
+                  <p className="text-[18px] font-semibold">{movie.title}</p>
                 </div>
               </div>
             ))

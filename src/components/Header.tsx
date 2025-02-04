@@ -75,7 +75,7 @@ export const Header = () => {
         }
       );
 
-      console.log("this is the list of genres",response);
+
 
       setGenreList(response.data.genres);
     } catch (err: unknown) {
@@ -111,11 +111,11 @@ export const Header = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-[59px] flex justify-center">
+    <div className="fixed top-0 left-0 w-screen h-[59px] flex justify-center bg-[var(--header-bg)]" >
       <div className="header flex justify-center items-center h-[59px] w-full px-[20px] justify-between lg:w-90% lg:px-[40px] xl:max-w-[1280px]">
-        <div className="flex flex-row items-center w-[92px] h-[20px] gap-[8px]">
+        <div className="flex flex-row items-center  h-[20px] gap-[8px]">
           <NavBarIcon />
-          <p className="text-16px font-bold text-[#4338CA] w-[64px]">Movie Z</p>
+          <p className="text-[20px] font-bold text-[#4338CA] w-[64px]">MovieZ</p>
         </div>
         <div className="hidden lg:flex w-auto h-[36px] flex-row items-center gap-[8px]">
           <Select onValueChange={handleGenreClick}>
@@ -178,7 +178,7 @@ export const Header = () => {
 
       {/* Search Results */}
       {showSearchValue && (
-        <div className="absolute top-16 w-[400px] bg-black   shadow-lg p-4 z-50">
+        <div className="bg-[var(--search-bg)] absolute top-16 lg:w-[577px] lg:h-[720px]  border rounded-xl shadow-lg p-4 z-50">
           {isLoading ? (
             <p>Loading...</p>
           ) : errorMessage ? (
@@ -188,15 +188,15 @@ export const Header = () => {
               {searchMoviesData.map((movie) => (
                 <li
                   key={movie.id}
-                  className="p-2 border-b flex items-center cursor-pointer"
+                  className="p-2 border-b flex items-center cursor-pointer lg:w-[551px] lg:h-[116px]"
                   onClick={() => handleMovieClick(movie.id)} // Hide results after click
                 >
                   <Image
                     src={`https://image.tmdb.org/t/p/w200${movie.backdrop_path}`}
                     alt={movie.title}
-                    width={48}
-                    height={48}
-                    className="mr-2"
+                    width={100}
+                    height={500}
+                    className="mr-2 rounded-[10px]"
                   />
                   <p>{movie.title}</p>
                 </li>

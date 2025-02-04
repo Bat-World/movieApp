@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
+import StarSmall from "@/app/icons/StarSmall";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -72,7 +73,7 @@ const Page = () => {
     <div className="w-full h-full mt-[100px]">
       <h1 className="text-2xl font-bold text-center">{genreName} Movies</h1>
 
-      <div className="w-full h-auto flex flex-wrap gap-4 justify-center mt-4">
+      <div className=" w-full h-auto flex flex-wrap gap-4 justify-center mt-4">
         {isLoading ? (
           <p>Loading...</p>
         ) : errorMessage ? (
@@ -81,7 +82,7 @@ const Page = () => {
           genreData.map((movie) => (
             <div
               key={movie.id}
-              className="w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px] cursor-pointer"
+              className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px] cursor-pointer"
               onClick={() => router.push(`/detail/${movie.id}`)}
             >
               {movie.poster_path ? (
@@ -97,11 +98,16 @@ const Page = () => {
                   <p className="text-center text-gray-600">No Image</p>
                 </div>
               )}
-              <div className="p-2">
-                <p className="font-semibold text-sm">{movie.title}</p>
-                <p className="text-xs text-gray-600">{movie.release_date}</p>
-                <p className="text-xs text-yellow-500">⭐ {movie.vote_average.toFixed(1)}</p>
-              </div>
+              <div className=" flex flex-col w-auto h-auto items-start mt-2 px-2">
+                  <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
+                    <StarSmall />
+                    <p className="text-[16px] font-semibold">
+                      {movie.vote_average.toFixed(1)}
+                    </p>
+                    <p>/10</p>
+                  </div>
+                  <p className="text-[18px] font-semibold">{movie.title}</p>
+                </div>
             </div>
           ))
         ) : (

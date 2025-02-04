@@ -3,6 +3,7 @@ import Starx from "@/app/icons/Star";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Movie } from "@/app/types/types";
+import PlayIcon from "@/app/icons/PlayIcon";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -76,12 +77,17 @@ export const ImageShiftPart = () => {
           </div>
           <div className="flex flex-row"></div>
         </div>
-        <div className="w-full h-auto">
+        <div className="w-[320px] h-auto lg:h-auto">
           {" "}
           <p className="text-[14px]">{firstMovie?.overview}</p>
         </div>
         <div className="w-full h-[40px]">
-          <Button variant="outline">Play Trailer</Button>
+        <button
+                className="flex flex-row items-center text-white px-4 py-2 rounded-lg text-sm bg-[var(--button-bg)] gap-[4px]"
+              >
+                <PlayIcon/>
+                <p className="text-[var(--text-color)] text-[14px] font-semibold">Play trailer</p> 
+              </button>
         </div>
       </div>
     </div>

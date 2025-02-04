@@ -4,6 +4,7 @@ import { Movie } from "@/app/types/types";
 import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
 import { useRouter } from "next/navigation";
+import RightArrow from "@/app/icons/RightArrow";
 
 interface MovieListProps {
   title: string;
@@ -45,7 +46,6 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
 
   const { push } = useRouter();
 
-
   return (
     <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[32px]">
       <div className="w-full h-[36px] flex flex-row justify-between">
@@ -54,10 +54,12 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
         </div>
         <div className="w-[120px] h-full flex flex-row justify-center items-center gap-[8px]">
           <button
-            className="w-auto h-auto text-[14px] font-medium bg-transparent"
+          className="w-auto h-auto text-[14px] bg-transparent font-bold flex flex-row items-center gap-[8px] hover:underline"
+
             onClick={() => push(`/category/${endpoint}`)}
           >
             See more
+            <RightArrow/>
           </button>
         </div>
       </div>
@@ -72,7 +74,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
             movieData.map((movie) => (
               <div
                 key={movie.id}
-                className="w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]"
+                className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]"
                 onClick={() => push(`/detail/${movie.id}`)}
               >
                 <Image
@@ -84,15 +86,15 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
                   objectFit="cover"
                   className="rounded-t-[8px] rounded-b-[0px] lg:w-[230px] lg:h-[340px] hover:opacity-60"
                 />
-                <div className="flex flex-col w-auto h-auto items-start mt-2 px-2">
-                  <p className="text-[16px] font-semibold">{movie.title}</p>
+                <div className=" flex flex-col w-auto h-auto items-start mt-2 px-2">
                   <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
                     <StarSmall />
                     <p className="text-[16px] font-semibold">
-                      {movie.vote_average}
+                      {movie.vote_average.toFixed(1)}
                     </p>
                     <p>/10</p>
                   </div>
+                  <p className="text-[18px] font-semibold">{movie.title}</p>
                 </div>
               </div>
             ))

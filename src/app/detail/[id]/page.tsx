@@ -5,6 +5,8 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
+import StarSmall from "@/app/icons/StarSmall";
+import { useRouter } from "next/navigation";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -26,13 +28,17 @@ const Page = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/${params.id}?api_key=${TMDB_API_KEY}&language=en-US`,
+        `${TMDB_BASE_URL}/movie/${params.id}?&language=en-US`,
         {
           headers: {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
           },
         }
       );
+
+
+
+
       setMovieData(response.data);
       setIsLoading(false);
     } catch (err) {
@@ -76,8 +82,8 @@ const Page = () => {
     }
   };
 
-   // Fetch similar movies
-   const fetchSimilarMoviesData = async () => {
+  // Fetch similar movies
+  const fetchSimilarMoviesData = async () => {
     try {
       const response = await axios.get(
         `${TMDB_BASE_URL}/movie/${params.id}/similar?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
@@ -87,7 +93,10 @@ const Page = () => {
           },
         }
       );
-      setSimilarMovieData(response.data.results);
+
+      console.log("similar movies data", response);
+
+      setSimilarMovieData(response.data.results.slice(0, 10));
     } catch (err) {
       console.log("Failed to load similar movies:", err);
     }
@@ -98,6 +107,10 @@ const Page = () => {
     fetchVideos();
     fetchSimilarMoviesData();
   }, [params.id]);
+
+  useEffect(() => {
+    fetchSimilarMoviesData();
+  }, []);
 
   const openTrailerModal = (trailerKey: string) => {
     setTrailerKey(trailerKey);
@@ -120,16 +133,14 @@ const Page = () => {
   // Find the first trailer
   const trailer = videoData?.find((video: any) => video.type === "Trailer");
 
-   // Extract director, writers, and top 3 cast members
-   const director = creditData?.crew.find(
+  // Extract director, writers, and top 3 cast members
+  const director = creditData?.crew.find(
     (member: any) => member.job === "Director"
   );
   const writers = creditData?.crew
     .filter((member: any) => member.job === "Writer")
     .slice(0, 3); // Limit to 3 writers
   const topCast = creditData?.cast.slice(0, 3); // Limit to 3 cast members
-
- 
 
   return (
     <div className="max-w-2xl mx-auto px-4 mt-[80px] md:max-w-4xl lg:max-w-6xl">
@@ -154,7 +165,10 @@ const Page = () => {
               <span>• {movieData.adult ? "R" : "PG"}</span>
               <span>• {movieData.runtime}m</span>
               <div className="flex items-center text-yellow-500 font-semibold">
-                ⭐ <span className="ml-1">{movieData.vote_average.toFixed(1)}/10</span>
+                ⭐{" "}
+                <span className="ml-1">
+                  {movieData.vote_average.toFixed(1)}/10
+                </span>
                 <span className="text-gray-400 ml-2 text-xs">
                   {movieData.vote_count}
                 </span>
@@ -199,24 +213,27 @@ const Page = () => {
             >
               ×
             </button>
-            <div className="aspect-w-16 aspect-h-9" style={{ height: '400px', margin: 0, padding: 0 }}>
-  <iframe
-    width="100%"
-    height="100%"
-    src={`https://www.youtube.com/embed/${trailerKey}`}
-    title="Trailer"
-    style={{ border: 'none' }}
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-    allowFullScreen
-    className="border-none"
-  ></iframe>
-</div>
+            <div
+              className="aspect-w-16 aspect-h-9"
+              style={{ height: "400px", margin: 0, padding: 0 }}
+            >
+              <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${trailerKey}`}
+                title="Trailer"
+                style={{ border: "none" }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="border-none"
+              ></iframe>
+            </div>
           </div>
         </div>
       )}
 
-     {/* Movie Description */}
-     {isLoading ? (
+      {/* Movie Description */}
+      {isLoading ? (
         <div className="mt-4 space-y-2">
           <Skeleton className="h-4 w-full" />
         </div>
@@ -266,7 +283,48 @@ const Page = () => {
           </>
         )}
       </div>
-      {/* ... */}
+      {/*similar movies data */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mt-6 2xl:gap-[30px]">
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : errorMessage ? (
+          <p>{errorMessage}</p>
+        ) : similarMovieData.length > 0 ? (
+          similarMovieData.map((movie) => (
+            <div
+              key={movie.id}
+              className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col  lg:w-[230px] lg:h-[440px] cursor-pointer"
+              onClick={() => router.push(`/detail/${movie.id}`)}
+            >
+              {movie.poster_path ? (
+                <Image
+                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  alt={movie.title}
+                  width={230}
+                  height={340}
+                  className="rounded-t-[8px] lg:w-[230px] lg:h-[340px] hover:opacity-60"
+                />
+              ) : (
+                <div className="w-[230px] h-[340px] flex items-center justify-center bg-gray-300">
+                  <p className="text-center text-gray-600">No Image</p>
+                </div>
+              )}
+              <div className=" flex flex-col w-auto h-auto items-start mt-2 px-2">
+                <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
+                  <StarSmall />
+                  <p className="text-[16px] font-semibold">
+                    {movie.vote_average.toFixed(1)}
+                  </p>
+                  <p>/10</p>
+                </div>
+                <p className="text-[18px] font-semibold">{movie.title}</p>
+              </div>
+            </div>
+          ))
+        ) : (
+          <p>No movies found for this genre.</p>
+        )}
+      </div>
     </div>
   );
 };

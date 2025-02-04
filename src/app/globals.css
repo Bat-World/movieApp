@@ -35,6 +35,12 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --test: black;
+    --search-bg: #FFFFFF;
+    --detail-bg: #eeeeee;
+    --header-bg: white;
+    --button-bg: rgb(245,245,245);
+    --text-color: black;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -61,6 +67,12 @@ body {
     --chart-3: 30 80% 55%;
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
+    --test: white;
+    --search-bg: #0A0A0A;
+    --detail-bg:  rgb(38,38,38);
+    --header-bg: black;
+    --button-bg: rgb(38,38,38);
+    --text-color: white;
   }
 }
 

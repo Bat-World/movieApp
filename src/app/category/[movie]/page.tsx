@@ -9,10 +9,14 @@ const Page = () => {
   const params = useParams();
 console.log(params);
 
+const movieParam = Array.isArray(params.movie) ? params.movie.join(", ") : params.movie || "";
+
+
+
 
   return (
     <div>
-      <CategoryList title={Array.isArray(params.movie) ? params.movie.join(", ") : params.movie || ""} endpoint={Array.isArray(params.movie) ? params.movie.join(", ") : params.movie || ""} />
+      <CategoryList title={movieParam} endpoint={movieParam} />
     </div>
   );
 };
