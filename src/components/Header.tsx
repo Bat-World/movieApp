@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { MoonIcon, SearchIcon, SunIcon } from "lucide-react";
 import NavBarIcon from "@/app/icons/headerIcon";
+import { Movie } from "@/app/types/types";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -11,17 +10,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useTheme } from "next-themes";
-import { Button } from "./ui/button";
 import axios from "axios";
+import { Clapperboard, MoonIcon, SearchIcon, SunIcon } from "lucide-react";
+import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-interface Movie {
-  id: number;
-  title: string;
-  backdrop_path: string | null;
-}
+import { useEffect, useState } from "react";
+import { Button } from "./ui/button";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -31,15 +26,17 @@ export const Header = () => {
   const [showSearch, setShowSearch] = useState<boolean>(false);
   const { setTheme, theme } = useTheme();
   const [moviesSearch, setMoviesSearch] = useState("");
-  const [genreData, setGenreData] = useState<any[]>([]); // Ensure it always starts as an empty array
+  const [genreList, setGenreList] = useState<{ id: string; name: string }[]>(
+    []
+  );
   const [searchMoviesData, setSearchMoviesData] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [showSearchValue, setShowSearchValue] = useState<boolean>(false);
-  // const [selectedMoviesData, setSelectedMoviesData] = useState([]);
+  const router = useRouter();
 
-  const handleChange = (event) => {
-    setMoviesSearch(event.target.value);
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setMoviesSearch(event?.target?.value);
   };
 
   const fetchSearchMovies = async () => {
@@ -64,13 +61,13 @@ export const Header = () => {
     }
   };
 
-  const fetchGenreData = async () => {
+  const fetchGenreListData = async () => {
     try {
       setIsLoading(true);
       setErrorMessage("");
 
       const response = await axios.get(
-        `${TMDB_BASE_URL}/genre/movie/list?&api_key=${TMDB_API_KEY}&language=en`,
+        `${TMDB_BASE_URL}/genre/movie/list?api_key=${TMDB_API_KEY}&language=en`,
         {
           headers: {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
@@ -78,32 +75,12 @@ export const Header = () => {
         }
       );
 
-      setGenreData(response.data.results);
-      console.log("Genreeeeee", genreData);
-    } catch (err) {
-      setErrorMessage("Failed to load movies.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      console.log("this is the list of genres",response);
 
-  const fetchSelectMovies = async () => {
-    try {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      const response = await axios.get(
-        `${TMDB_BASE_URL}  /discover/movie?language=en&with_genres=${genreIds}&page=1`,
-        {
-          headers: {
-            Authorization: `Bearer ${TMDB_API_TOKEN}`,
-          },
-        }
-      );
-
-      setSelectedMoviesData(response.data.results);
-    } catch (err) {
-      setErrorMessage("Failed to load movies.");
+      setGenreList(response.data.genres);
+    } catch (err: unknown) {
+      console.log(err);
+      setErrorMessage("Failed to load genres.");
     } finally {
       setIsLoading(false);
     }
@@ -119,8 +96,7 @@ export const Header = () => {
   }, [moviesSearch]);
 
   useEffect(() => {
-    fetchGenreData();
-    fetchSelectMovies();
+    fetchGenreListData();
   }, []);
 
   const { push } = useRouter();
@@ -128,6 +104,10 @@ export const Header = () => {
   const handleMovieClick = (movieId: number) => {
     push(`/detail/${movieId}`);
     setShowSearchValue(false);
+  };
+
+  const handleGenreClick = (value: string) => {
+    router.push(`/genre/${value}`);
   };
 
   return (
@@ -138,13 +118,14 @@ export const Header = () => {
           <p className="text-16px font-bold text-[#4338CA] w-[64px]">Movie Z</p>
         </div>
         <div className="hidden lg:flex w-auto h-[36px] flex-row items-center gap-[8px]">
-          <Select>
-            <SelectTrigger className="w-[90px] h-[36px] flex-row-reverse focus:outline-none focus:ring-0">
+          <Select onValueChange={handleGenreClick}>
+            <SelectTrigger className="hidden w-[180px] lg:flex">
+              <Clapperboard width={18} className="mr-2" />
               <SelectValue placeholder="Genre" />
             </SelectTrigger>
             <SelectContent>
-              {genreData?.map((genre) => (
-                <SelectItem key={genre.id} value={genre.name}>
+              {genreList.map((genre, i) => (
+                <SelectItem key={i} value={genre.id}>
                   {genre.name}
                 </SelectItem>
               ))}
