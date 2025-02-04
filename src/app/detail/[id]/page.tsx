@@ -36,9 +36,6 @@ const Page = () => {
         }
       );
 
-
-
-
       setMovieData(response.data);
       setIsLoading(false);
     } catch (err) {
