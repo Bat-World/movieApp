@@ -36,9 +36,6 @@ export const ImageShiftPart = () => {
           },
         }
       );
-
-      console.log("this is the data of carousel", response);
-
       setPopularMovieData(response.data.results);
       setIsLoading(false);
     } catch (err) {

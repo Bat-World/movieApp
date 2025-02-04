@@ -7,6 +7,8 @@ import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
 import StarSmall from "@/app/icons/StarSmall";
 import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Play } from "lucide-react";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -22,6 +24,8 @@ const Page = () => {
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
   const [trailerKey, setTrailerKey] = useState("");
   const params = useParams();
+  const router = useRouter();
+  
 
   // Fetch movie details
   const fetchMovie = async () => {
@@ -90,9 +94,6 @@ const Page = () => {
           },
         }
       );
-
-      console.log("similar movies data", response);
-
       setSimilarMovieData(response.data.results.slice(0, 10));
     } catch (err) {
       console.log("Failed to load similar movies:", err);
@@ -198,6 +199,14 @@ const Page = () => {
             )}
           </>
         )}
+        <Button
+          onClick={() => router.push(`/watch/movie/${params.id}`)}
+          variant="outline"
+          className="pt-5 pb-5 pl-8 pr-8 text-base font-bold text-[#1A1D29] flex items-center"
+        >
+          <Play className="fill-[#1A1D29]" />
+          PLAY
+        </Button>
       </div>
 
       {/* Trailer Modal */}
