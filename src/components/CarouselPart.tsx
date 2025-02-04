@@ -23,6 +23,7 @@ export const ImageShiftPart = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [popularMovieData, setPopularMovieData] = useState<Movie[]>([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const getMovieData = async () => {
     try {
@@ -53,9 +54,10 @@ export const ImageShiftPart = () => {
     getMovieData();
   }, []);
 
-  const firstMovie = popularMovieData?.[0];
+   // Get currently active movie details
+   const activeMovie = popularMovieData[activeIndex];
 
-  const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: true }));
+  const plugin = useRef(Autoplay({ delay: 2000, stopOnInteraction: false }));
 
   return (
     <div>
@@ -64,6 +66,7 @@ export const ImageShiftPart = () => {
         className="w-screen h-auto flex flex-col lg:relative mt-[84px] z-[-1]"
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
+        onSlideChange={(embla) => setActiveIndex(embla.selectedScrollSnap())}
       >
         <CarouselContent>
           {popularMovieData.map((movie) => (
@@ -90,23 +93,23 @@ export const ImageShiftPart = () => {
               </div>
               <div className="w-full h-[32px]">
                 <p className="text-[24px] font-semibold lg:text-white">
-                  {firstMovie?.original_title}
+                  {activeMovie?.original_title}
                 </p>
               </div>
             </div>
             <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
               <Starx />
               <p className="text-[16px] font-semibold lg:text-white">
-                {firstMovie?.vote_average.toFixed(1)}
+                {activeMovie?.vote_average}
               </p>
-              <p>/10</p>
+              <p className=" lg:text-white">/10</p>
             </div>
           </div>
           <div className="flex flex-row"></div>
         </div>
         <div className="w-[320px] h-auto lg:h-auto">
           {" "}
-          <p className="text-[14px] lg:text-white">{firstMovie?.overview}</p>
+          <p className="text-[14px] lg:text-white">{activeMovie?.overview}</p>
         </div>
         <div className="w-full h-[40px]">
           <button className="flex flex-row items-center text-white px-4 py-2 rounded-lg text-sm bg-[var(--button-bg)] gap-[4px]">

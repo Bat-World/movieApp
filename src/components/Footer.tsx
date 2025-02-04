@@ -3,6 +3,8 @@
 import FooterIcon from "@/app/icons/FooterIcon";
 import MailIcon from "@/app/icons/mailIcon";
 import PhoneIcon from "@/app/icons/phoneIcon";
+import { FacebookIcon } from "lucide-react";
+import { InstagramIcon } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -53,13 +55,13 @@ export const Footer = () => {
             <p className="text-[14px] font-normal text-[#FAFAFA]">Follow us</p>
             <div className="flex flex-col gap-[12px] mt-[12px] lg:flex-row">
               <p className="text-[14px] font-semibold text-[#FAFAFA]">
-                Facebook
+                <FacebookIcon/>
               </p>
               <p className="text-[14px] font-semibold text-[#FAFAFA]">
-                Instagram
+              <InstagramIcon/>
               </p>
               <p className="text-[14px] font-semibold text-[#FAFAFA]">
-                YouTube
+               d
               </p>
               <p className="text-[14px] font-semibold text-[#FAFAFA]">
                 Twitter
