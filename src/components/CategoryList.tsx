@@ -4,26 +4,34 @@ import { Movie } from "@/app/types/types";
 import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
 import { useRouter } from "next/navigation";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+} from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
 
 interface MovieListProps {
   title: string;
   endpoint: string;
 }
 
-const TMDB_BASE_URL = process.env.TMDB_BASE_URL;
-const TMDB_API_TOKEN = process.env.TMDB_API_TOKEN;
-const TMDB_API_KEY = process.env.TMDB_API_KEY;
+const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
+const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
+const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 const CategoryList = ({ title, endpoint }: MovieListProps) => {
   const [movieData, setMovieData] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [totalPages, setTotalPages] = useState(10); 
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchMovies = async () => {
+  const fetchMovies = async (page: number) => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/${endpoint}?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
+        `${TMDB_BASE_URL}/movie/${endpoint}?api_key=${TMDB_API_KEY}&language=en-US&page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
@@ -31,6 +39,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
         }
       );
       setMovieData(response.data.results);
+      setTotalPages(response.data.total_pages || 10); 
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
@@ -40,20 +49,62 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
   };
 
   useEffect(() => {
-    fetchMovies();
-  }, [endpoint]);
+    fetchMovies(currentPage);
+  }, [endpoint, currentPage]);
 
   const { push } = useRouter();
 
-  console.log(endpoint);
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  // Display page number above
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxPagesToShow = 3;
+
+    if (totalPages <= maxPagesToShow + 2) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1); 
+      if (currentPage > 2) {
+        pages.push("...");
+      }
+
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, currentPage + 1);
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      if (currentPage < totalPages - 1) {
+        pages.push("..."); 
+      }
+      pages.push(totalPages); 
+    }
+
+    return pages;
+  };
 
   return (
-    <div className="MovieList w-full h-auto px-[20px] flex flex-col ">
+    <div className="MovieList w-full h-auto px-[20px] flex flex-col">
       <div className="w-full h-[36px] flex flex-row justify-between mt-[92px]">
         <div className="w-[114px] h-full flex justify-center items-center">
           <p className="text-[30px] font-semibold">{title}</p>
         </div>
       </div>
+
       <div className="MovieImgs w-full h-auto mt-[20px]">
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mt-6 2xl:gap-[30px]">
           {isLoading ? (
@@ -64,7 +115,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
             movieData.map((movie) => (
               <div
                 key={movie.id}
-                className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]"
+                className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px] cursor-pointer"
                 onClick={() => push(`/detail/${movie.id}`)}
               >
                 <Image
@@ -74,14 +125,12 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
                   height={234}
                   layout="intrinsic"
                   objectFit="cover"
-                  className="rounded-t-[8px] rounded-b-[0px] lg:w-[230px] lg:h-[340px] hover:opacity-60"
+                  className="rounded-t-[8px] lg:w-[230px] lg:h-[340px] hover:opacity-60"
                 />
-                <div className=" flex flex-col w-auto h-auto items-start mt-2 px-2">
+                <div className="flex flex-col w-auto h-auto items-start mt-2 px-2">
                   <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
                     <StarSmall />
-                    <p className="text-[16px] font-semibold">
-                      {movie.vote_average.toFixed(1)}
-                    </p>
+                    <p className="text-[16px] font-semibold">{movie.vote_average.toFixed(1)}</p>
                     <p>/10</p>
                   </div>
                   <p className="text-[18px] font-semibold">{movie.title}</p>
@@ -90,6 +139,46 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
             ))
           )}
         </div>
+      </div>
+
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-6">
+        <Pagination>
+          <PaginationContent className="flex items-center space-x-2">
+            {/* Previous Button */}
+            <PaginationItem>
+              <Button variant="outline" onClick={handlePreviousPage} disabled={currentPage === 1}>
+                Previous
+              </Button>
+            </PaginationItem>
+
+            {/* Page Numbers */}
+            {renderPageNumbers().map((page, index) =>
+              page === "..." ? (
+                <PaginationItem key={index} className="text-gray-500 px-2">
+                  ...
+                </PaginationItem>
+              ) : (
+                <PaginationItem key={index}>
+                  <Button
+                    variant={page === currentPage ? "default" : "ghost"}
+                    onClick={() => setCurrentPage(page as number)}
+                    className={page === currentPage ? "bg-white text-black" : ""}
+                  >
+                    {page}
+                  </Button>
+                </PaginationItem>
+              )
+            )}
+
+            {/* Next Button */}
+            <PaginationItem>
+              <Button variant="outline" onClick={handleNextPage} disabled={currentPage === totalPages}>
+                Next
+              </Button>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );

@@ -9,22 +9,56 @@ import StarSmall from "@/app/icons/StarSmall";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
+import RightArrow from "@/app/icons/RightArrow";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 const Page = () => {
-  const [videoData, setVideoData] = useState<any>(null);
-  const [movieData, setMovieData] = useState<any>(null);
-  const [creditData, setCreditData] = useState<any>(null);
-  const [similarMovieData, setSimilarMovieData] = useState<any>(null);
+  interface Video {
+    id: string;
+    key: string;
+    name: string;
+    site: string;
+    type: string;
+  }
+
+  const [videoData, setVideoData] = useState<Video[] | null>(null);
+  interface Movie {
+    title: string;
+    release_date: string;
+    adult: boolean;
+    runtime: number;
+    vote_average: number;
+    vote_count: number;
+    poster_path: string;
+    backdrop_path: string;
+    overview: string;
+  }
+
+  const [movieData, setMovieData] = useState<Movie | null>(null);
+  interface Credit {
+    cast: { name: string }[];
+    crew: { name: string; job: string }[];
+  }
+
+  const [creditData, setCreditData] = useState<Credit | null>(null);
+  interface SimilarMovie {
+    id: number;
+    title: string;
+    poster_path: string;
+    vote_average: number;
+  }
+
+  const [similarMovieData, setSimilarMovieData] = useState<SimilarMovie[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
   const [trailerKey, setTrailerKey] = useState("");
   const params = useParams();
   const router = useRouter();
+  const { push } = useRouter();
 
   // Fetch movie details
   const fetchMovie = async () => {
@@ -85,7 +119,7 @@ const Page = () => {
   const fetchSimilarMoviesData = async () => {
     try {
       const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/${params.id}/similar?api_key=${TMDB_API_KEY}&language=en-US&page=1`,
+        `${TMDB_BASE_URL}/movie/${params.id}/similar?language=en-US&page=1`,
         {
           headers: {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
@@ -103,11 +137,7 @@ const Page = () => {
     fetchVideos();
     fetchSimilarMoviesData();
   }, [params.id]);
-
-  useEffect(() => {
-    fetchSimilarMoviesData();
-    fetchMovie();
-  }, []);
+  
 
   const openTrailerModal = (trailerKey: string) => {
     setTrailerKey(trailerKey);
@@ -127,17 +157,21 @@ const Page = () => {
     return <div className="text-center mt-10">No movie data found.</div>;
   }
 
-  // Find the first trailer
-  const trailer = videoData?.find((video: any) => video.type === "Trailer");
 
-  // Extract director, writers, and top 3 cast members
+  const trailer = videoData?.find((video: Video) => video.type === "Trailer");
+
+
   const director = creditData?.crew.find(
-    (member: any) => member.job === "Director"
+    (member: { name: string; job: string }) => member.job === "Director"
   );
   const writers = creditData?.crew
-    .filter((member: any) => member.job === "Writer")
-    .slice(0, 3); // Limit to 3 writers
-  const topCast = creditData?.cast.slice(0, 3); // Limit to 3 cast members
+    .filter((member: { name: string; job: string }) => member.job === "Writer")
+    .slice(0, 3); 
+  const topCast = creditData?.cast.slice(0, 3); 
+
+
+
+;
 
   return (
     <div className="max-w-2xl mx-auto px-4 mt-[80px] md:max-w-4xl lg:max-w-6xl">
@@ -146,7 +180,9 @@ const Page = () => {
         {isLoading ? (
           <Skeleton className="h-8 w-3/4 mb-2" />
         ) : (
-          <h1 className="text-[24px] lg:text-[36px] font-bold">{movieData.title}</h1>
+          <h1 className="text-[24px] lg:text-[36px] font-bold">
+            {movieData.title}
+          </h1>
         )}
         <div className="flex items-center space-x-4 text-gray-500 text-sm mt-1">
           {isLoading ? (
@@ -177,54 +213,53 @@ const Page = () => {
 
       {/* Movie Thumbnail & Trailer */}
       <div className="relative mt-4 flex flex-row justify-between">
-  {isLoading ? (
-    <Skeleton className="w-full h-64 rounded-lg" />
-  ) : (
-    <>
-      {/* Poster Image (Hidden on Small Screens) */}
-      <Image
-        src={`https://image.tmdb.org/t/p/w1280${movieData.poster_path}`}
-        alt={movieData.title}
-        width={800}
-        height={450}
-        objectFit="cover"
-        className="hidden sm:hidden lg:block w-[222px] h-[428px] rounded-lg"
-      />
+        {isLoading ? (
+          <Skeleton className="w-full h-64 rounded-lg" />
+        ) : (
+          <>
+            {/* Poster Image (Hidden on Small Screens) */}
+            <Image
+              src={`https://image.tmdb.org/t/p/w1280${movieData.poster_path}`}
+              alt={movieData.title}
+              width={800}
+              height={450}
+              objectFit="cover"
+              className="hidden sm:hidden lg:block w-[222px] h-[428px] rounded-lg"
+            />
 
-      {/* Backdrop Image */}
-      <div className="relative">
-        <Image
-          src={`https://image.tmdb.org/t/p/w1280${movieData.backdrop_path}`}
-          alt={movieData.title}
-          width={800}
-          height={450}
-          className="lg:w-[760px] lg:h-[428px] rounded-lg w-[375px] h-auto"
-        />
+            {/* Backdrop Image */}
+            <div className="relative">
+              <Image
+                src={`https://image.tmdb.org/t/p/w1280${movieData.backdrop_path}`}
+                alt={movieData.title}
+                width={800}
+                height={450}
+                className="lg:w-[760px] lg:h-[428px] rounded-lg w-[375px] h-auto"
+              />
 
-        {/* Buttons Positioned Bottom-Left */}
-        <div className="absolute bottom-4 left-4 flex gap-2">
-          {trailer && (
-            <button
-              onClick={() => openTrailerModal(trailer.key)}
-              className="flex items-center bg-black/70 text-white px-4 py-2 rounded-lg text-sm"
-            >
-              ▶ Play trailer
-            </button>
-          )}
-          <Button
-            onClick={() => router.push(`/watch/movie/${params.id}`)}
-            variant="outline"
-            className="text-base font-bold text-[#1A1D29] flex items-center bg-white/80 px-4 py-2 rounded-lg"
-          >
-            <Play className="fill-[#1A1D29]" />
-            PLAY
-          </Button>
-        </div>
+              {/* Buttons Positioned Bottom-Left */}
+              <div className="absolute bottom-4 left-4 flex gap-2">
+                {trailer && (
+                  <button
+                    onClick={() => openTrailerModal(trailer.key)}
+                    className="flex items-center bg-black/70 text-white px-4 py-2 rounded-lg text-sm"
+                  >
+                    ▶ Play trailer
+                  </button>
+                )}
+                <Button
+                  onClick={() => router.push(`/watch/movie/${params.id}`)}
+                  variant="outline"
+                  className="text-base font-bold text-[#1A1D29] flex items-center bg-white/80 px-4 py-2 rounded-lg"
+                >
+                  <Play className="fill-[#1A1D29]" />
+                  PLAY
+                </Button>
+              </div>
+            </div>
+          </>
+        )}
       </div>
-    </>
-  )}
-</div>
-
 
       {/* Trailer Modal */}
       {isTrailerModalOpen && (
@@ -307,12 +342,22 @@ const Page = () => {
         )}
       </div>
       {/*similar movies data */}
+      <div className="flex flex-row justify-between">
+        <p className="mt-[30px] text-[24px] font-semibold">More like This</p>{" "}
+        <button
+          className="w-auto h-auto text-[14px] bg-transparent font-bold flex flex-row items-center gap-[8px] hover:underline"
+          onClick={() => push(`/similarmovie/${params.id}`)}
+        >
+          See more
+          <RightArrow />
+        </button>
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mt-6 2xl:gap-[30px]">
         {isLoading ? (
           <p>Loading...</p>
         ) : errorMessage ? (
           <p>{errorMessage}</p>
-        ) : similarMovieData.length > 0 ? (
+        ) : similarMovieData && similarMovieData.length > 0 ? (
           similarMovieData.map((movie) => (
             <div
               key={movie.id}

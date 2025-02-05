@@ -25,6 +25,7 @@ export const ImageShiftPart = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [popularMovieData, setPopularMovieData] = useState<Movie[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
+ 
 
   const getMovieData = async () => {
     try {
@@ -37,8 +38,6 @@ export const ImageShiftPart = () => {
           },
         }
       );
-
-      console.log("is there any overview?",response.data.results);
       
       setPopularMovieData(response.data.results);
       setIsLoading(false);
