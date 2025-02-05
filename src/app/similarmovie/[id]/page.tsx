@@ -4,6 +4,12 @@ import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+} from "@/components/ui/pagination";
+import { Button } from "@/components/ui/button";
 
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
@@ -19,15 +25,17 @@ const Page = () => {
 
   const [similarData, setSimilarData] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(10); 
+  const [currentPage, setCurrentPage] = useState(1);
   const [errorMessage, setErrorMessage] = useState("");
   const params = useParams();
   const { push } = useRouter();
 
-  const fetchMovieData = async () => {
+  const fetchMovieData = async (page: number) => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/${params.id}/similar?language=en-US&page=4`,
+        `${TMDB_BASE_URL}/movie/${params.id}/similar?language=en-US&page=${page}`,
         {
           headers: {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
@@ -45,17 +53,59 @@ const Page = () => {
       setIsLoading(false);
     }
   };
-
   useEffect(() => {
-    
-      fetchMovieData();
-  }, []);
+    fetchMovieData(currentPage); 
+  }, [params.id, currentPage]);
+  
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prev) => prev + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prev) => prev - 1);
+    }
+  };
+
+  // Display page number above
+  const renderPageNumbers = () => {
+    const pages = [];
+    const maxPagesToShow = 3;
+
+    if (totalPages <= maxPagesToShow + 2) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1); 
+      if (currentPage > 2) {
+        pages.push("...");
+      }
+
+      let startPage = Math.max(2, currentPage - 1);
+      let endPage = Math.min(totalPages - 1, currentPage + 1);
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      if (currentPage < totalPages - 1) {
+        pages.push("..."); 
+      }
+      pages.push(totalPages); 
+    }
+
+    return pages;
+  };
 
   return (
     <div className="MovieList w-full h-auto px-[20px] flex flex-col">
       <div className="w-full h-[36px] flex flex-row justify-between mt-[92px]">
-        <div className="w-[114px] h-full flex justify-center items-center">
-          <p className="text-[30px] font-semibold">Title</p>
+        <div className="w-auto h-full flex justify-center items-center">
+          <p className="text-[30px] font-semibold">Similar Movies</p>
         </div>
       </div>
 
@@ -97,6 +147,46 @@ const Page = () => {
             <p>No similar movies found.</p>
           )}
         </div>
+      </div>
+
+       {/* Pagination Controls */}
+       <div className="flex justify-center mt-6">
+        <Pagination>
+          <PaginationContent className="flex items-center space-x-2">
+            {/* Previous Button */}
+            <PaginationItem>
+              <Button variant="outline" onClick={handlePreviousPage} disabled={currentPage === 1}>
+                Previous
+              </Button>
+            </PaginationItem>
+
+            {renderPageNumbers().map((page, index) =>
+  typeof page === "number" ? (
+    <PaginationItem key={index}>
+      <Button
+        variant={page === currentPage ? "default" : "ghost"}
+        onClick={() => setCurrentPage(page)}
+        className={page === currentPage ? "bg-white text-black" : ""}
+      >
+        {page}
+      </Button>
+    </PaginationItem>
+  ) : (
+    <PaginationItem key={index} className="text-gray-500 px-2">
+      ...
+    </PaginationItem>
+  )
+)}
+
+
+            {/* Next Button */}
+            <PaginationItem>
+              <Button variant="outline" onClick={handleNextPage} disabled={currentPage === totalPages}>
+                Next
+              </Button>
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
     </div>
   );
