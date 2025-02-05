@@ -13,6 +13,7 @@ const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
 const Page = () => {
   const params = useParams();
   const { push } = useRouter();
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const genreId = parseInt(params.id, 10) || 0; // ✅ Prevent NaN issues
@@ -72,24 +73,28 @@ const Page = () => {
     fetchGenreData();
   }, [genreId, currentPage]);
 
-  // ✅ Handle genre selection correctly
-  const handleGenreSelection = (genreId) => {
-    setSelectedGenreIds((prevSelected) => {
-      let updatedGenres;
-      if (prevSelected.includes(genreId)) {
-        updatedGenres = prevSelected.filter((id) => id !== genreId); // Remove genre
-      } else {
-        updatedGenres = [...prevSelected, genreId]; // Add genre
-      }
+  // // ✅ Handle genre selection correctly
+  // const handleGenreSelection = (genreId) => {
+  //   setSelectedGenreIds((prevSelected) => {
+  //     let updatedGenres;
+  //     if (prevSelected.includes(genreId)) {
+  //       updatedGenres = prevSelected.filter((id) => id !== genreId); // Remove genre
+  //     } else {
+  //       updatedGenres = [...prevSelected, genreId]; // Add genre
+  //     }
 
-      // ✅ Update URL with new selected genres
-      const queryParams = new URLSearchParams();
-      queryParams.set("genresId", updatedGenres.join(","));
-      push(`/genres?${queryParams.toString()}`);
+  //     // ✅ Update URL dynamically without a full reload
+  //     const queryParams = new URLSearchParams();
+  //     if (updatedGenres.length > 0) {
+  //       queryParams.set("genresId", updatedGenres.join(","));
+  //     }
+  //     router.replace(`/genres?${queryParams.toString()}`, undefined, {
+  //       shallow: true, // ✅ Avoid full page transition
+  //     });
 
-      return updatedGenres;
-    });
-  };
+  //     return updatedGenres;
+  //   });
+  // };
 
   return (
     <div className="w-full h-auto flex flex-row mt-[100px]">
@@ -115,9 +120,12 @@ const Page = () => {
           })}
       </div>
 
-      <Separator orientation="vertical" className="h-full w-[2px] bg-gray-300" />
+      <Separator
+        orientation="vertical"
+        className="h-full w-[2px] bg-gray-300"
+      />
 
-      <div className="col-span-2 w-50%">
+      {/* <div className="col-span-2 w-50%">
         <h1 className="text-2xl font-bold text-center">
           {genreId ? `Movies in Genre ${genreId}` : "Movies"}
         </h1>
@@ -162,7 +170,7 @@ const Page = () => {
         ) : (
           <p>No movies found.</p>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

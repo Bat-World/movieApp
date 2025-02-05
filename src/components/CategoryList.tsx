@@ -10,6 +10,8 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
+import RightArrow from "@/app/icons/RightArrow";
+
 
 interface MovieListProps {
   title: string;
@@ -147,7 +149,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
           <PaginationContent className="flex items-center space-x-2">
             {/* Previous Button */}
             <PaginationItem>
-              <Button variant="outline" onClick={handlePreviousPage} disabled={currentPage === 1}>
+              <Button variant="outline" onClick={handlePreviousPage} disabled={currentPage === 1 } className="bg-transparent border-none">
                 Previous
               </Button>
             </PaginationItem>
@@ -164,6 +166,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
                     variant={page === currentPage ? "default" : "ghost"}
                     onClick={() => setCurrentPage(page as number)}
                     className={page === currentPage ? "bg-white text-black" : ""}
+                    
                   >
                     {page}
                   </Button>
@@ -173,8 +176,8 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
 
             {/* Next Button */}
             <PaginationItem>
-              <Button variant="outline" onClick={handleNextPage} disabled={currentPage === totalPages}>
-                Next
+              <Button className="bg-transparent border-none" variant="outline" onClick={handleNextPage} disabled={currentPage === totalPages}>
+                Next<RightArrow/>
               </Button>
             </PaginationItem>
           </PaginationContent>
