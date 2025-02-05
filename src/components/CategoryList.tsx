@@ -81,8 +81,8 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
         pages.push("...");
       }
 
-      let startPage = Math.max(2, currentPage - 1);
-      let endPage = Math.min(totalPages - 1, currentPage + 1);
+      const startPage = Math.max(2, currentPage - 1);
+      const endPage = Math.min(totalPages - 1, currentPage + 1);
 
       for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
