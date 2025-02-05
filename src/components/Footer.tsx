@@ -3,6 +3,7 @@
 import FooterIcon from "@/app/icons/FooterIcon";
 import MailIcon from "@/app/icons/mailIcon";
 import PhoneIcon from "@/app/icons/phoneIcon";
+import Link from "next/link";
 import { FacebookIcon } from "lucide-react";
 import { InstagramIcon } from "lucide-react";
 import { TwitterIcon } from "lucide-react";

@@ -16,16 +16,16 @@ const Page = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const genreId = parseInt(params.id, 10) || 0; // ✅ Prevent NaN issues
+  const genreId = parseInt(params.id, 10) || 0; 
   const currentPage = parseInt(params.page, 10) || 1;
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [genreData, setGenreData] = useState([]);
-  const [genres, setGenres] = useState([]); // ✅ Store genres separately
-  const [selectedGenreIds, setSelectedGenreIds] = useState([]); // ✅ Properly store selected genre IDs
+  const [genres, setGenres] = useState([]); 
+  const [selectedGenreIds, setSelectedGenreIds] = useState([]); 
 
-  // ✅ Fetch list of all genres
+
   const fetchGenreList = async () => {
     try {
       const response = await axios.get(`${TMDB_BASE_URL}/genre/movie/list`, {
@@ -38,9 +38,9 @@ const Page = () => {
     }
   };
 
-  // ✅ Fetch movies for the selected genre
+  
   const fetchGenreData = async () => {
-    if (!genreId) return; // ✅ Prevent unnecessary API calls
+    if (!genreId) return; 
     try {
       setIsLoading(true);
       setErrorMessage("");
@@ -73,36 +73,39 @@ const Page = () => {
     fetchGenreData();
   }, [genreId, currentPage]);
 
-  // // ✅ Handle genre selection correctly
-  // const handleGenreSelection = (genreId) => {
-  //   setSelectedGenreIds((prevSelected) => {
-  //     let updatedGenres;
-  //     if (prevSelected.includes(genreId)) {
-  //       updatedGenres = prevSelected.filter((id) => id !== genreId); // Remove genre
-  //     } else {
-  //       updatedGenres = [...prevSelected, genreId]; // Add genre
-  //     }
-
-  //     // ✅ Update URL dynamically without a full reload
-  //     const queryParams = new URLSearchParams();
-  //     if (updatedGenres.length > 0) {
-  //       queryParams.set("genresId", updatedGenres.join(","));
-  //     }
-  //     router.replace(`/genres?${queryParams.toString()}`, undefined, {
-  //       shallow: true, // ✅ Avoid full page transition
-  //     });
-
-  //     return updatedGenres;
-  //   });
-  // };
-
+  const handleGenreSelection = (genreId) => {
+    setSelectedGenreIds((prevSelected = []) => {  // Default value added here
+        let updatedGenres;
+        if (prevSelected.includes(genreId)) {
+          updatedGenres = prevSelected.filter((id) => id !== genreId);
+        } else {
+          updatedGenres = [...prevSelected, genreId];
+        }
+      
+        console.log("Updated Genres:", updatedGenres);
+      
+        const queryParams = new URLSearchParams();
+        if (updatedGenres.length > 0) {
+          queryParams.set("genresId", updatedGenres.join(","));
+        }
+        const newPath = queryParams.toString();
+      
+        push(`/genres?${newPath}`);  // Uncomment to update URL
+        console.log(`/genres?${newPath}`);
+      
+        return updatedGenres; // Ensure the state updates correctly
+      });
+      
+  };
+  
   return (
     <div className="w-full h-auto flex flex-row mt-[100px]">
       <div className="col-span-1 space-x-1 w-[400px]">
         {genres.length > 0 &&
           genres.map((item) => {
             const genreIdStr = item.id.toString();
-            const isSelected = selectedGenreIds.includes(item.id);
+            const isSelected = Array.isArray(selectedGenreIds) && selectedGenreIds.includes(item.id);
+
             return (
               <Badge
                 onClick={() => handleGenreSelection(item.id)}
@@ -125,7 +128,7 @@ const Page = () => {
         className="h-full w-[2px] bg-gray-300"
       />
 
-      {/* <div className="col-span-2 w-50%">
+      <div className="col-span-2 w-50%">
         <h1 className="text-2xl font-bold text-center">
           {genreId ? `Movies in Genre ${genreId}` : "Movies"}
         </h1>
@@ -170,9 +173,9 @@ const Page = () => {
         ) : (
           <p>No movies found.</p>
         )}
-      </div> */}
+      </div>
     </div>
   );
 };
 
-export default Page;
+export default Page; 

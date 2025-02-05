@@ -181,7 +181,7 @@ const Page = () => {
           <Skeleton className="h-8 w-3/4 mb-2" />
         ) : (
           <h1 className="text-[24px] lg:text-[36px] font-bold">
-            {movieData.title}
+            {movieData.title}.
           </h1>
         )}
         <div className="flex items-center space-x-4 text-gray-500 text-sm mt-1">

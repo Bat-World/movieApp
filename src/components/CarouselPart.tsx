@@ -95,7 +95,7 @@ export const ImageShiftPart = () => {
         onMouseEnter={plugin.current.stop}
         onMouseLeave={plugin.current.reset}
         onSlideChange={(embla) => setActiveIndex(embla.selectedScrollSnap())}
-        slideIndex={activeIndex} // Ensures images switch with details
+        slideIndex={activeIndex} 
       >
         <CarouselContent>
           {popularMovieData.map((movie) => (

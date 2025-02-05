@@ -107,7 +107,7 @@ export const Header = () => {
   };
 
   const handleGenreClick = (value: string) => {
-    router.push(`/genre/${value}`);
+    router.push(`/genres`);
   };
 
   return (

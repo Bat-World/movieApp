@@ -100,10 +100,10 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
   };
 
   return (
-    <div className="MovieList w-full h-auto px-[20px] flex flex-col">
+    <div className="MovieList w-full h-auto px-[20px] flex flex-col gap-[32px]">
       <div className="w-full h-[36px] flex flex-row justify-between mt-[92px]">
         <div className="w-[114px] h-full flex justify-center items-center">
-          <p className="text-[30px] font-semibold">{title}</p>
+          <p className="text-[30px] font-semibold">{title.charAt(0).toUpperCase() + title.slice(1)}</p>
         </div>
       </div>
 
