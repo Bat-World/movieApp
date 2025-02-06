@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
@@ -14,19 +14,19 @@ const Page = () => {
   const { push } = useRouter();
   const searchParams = useSearchParams();
 
-  console.log(searchParams.get("genresId"));
-  console.log(searchParams.get("page"));
 
-  const selectedGenreIds = searchParams.get("genreIds")!;
+  const selectedGenreIds = useMemo(
+    () => searchParams.get("genresId")?.split(",").filter(Boolean) || [],
+    [searchParams]
+  );
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [genreData, setGenreData] = useState<
-    { id: number; poster_path: string; title: string; vote_average: number }[]
-  >([]);
+  const [genreData, setGenreData] = useState([]);
   const [genres, setGenres] = useState<{ id: number; name: string }[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  //  Fetch list of all genres
+  // Fetch list of all genres
   const fetchGenreList = async () => {
     try {
       const response = await axios.get(`${TMDB_BASE_URL}/genre/movie/list`, {
@@ -39,23 +39,25 @@ const Page = () => {
     }
   };
 
-  //  Fetch movies for selected genres
+  // Fetch movies for selected genres
   const fetchGenreData = async () => {
-    if (!selectedGenreIds.length) return;
+    if (selectedGenreIds.length === 0) return; 
+
+    setIsLoading(true);
+    setErrorMessage("");
 
     try {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      const response = await axios.get(`${TMDB_BASE_URL}/discover/movie`, {
-        headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
-        params: {
-          language: "en-US",
-          page: 1,
-          sort_by: "popularity.desc",
-          with_genres: selectedGenreIds,
-        },
-      });
+      const response = await axios.get(
+        `${TMDB_BASE_URL}/discover/movie`,
+        {
+          headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
+          params: {
+            language: "en",
+            with_genres: selectedGenreIds.join(","),
+            page: 1,
+          },
+        }
+      );
 
       setGenreData(response.data.results);
     } catch {
@@ -68,16 +70,18 @@ const Page = () => {
   useEffect(() => {
     fetchGenreList();
   }, []);
-  
+
   useEffect(() => {
     fetchGenreData();
-  }, [selectedGenreIds]);
+  }, [JSON.stringify(selectedGenreIds)]); //!!!!!!!
 
-  //  Handle genre selection
-  const handleGenreSelection = (genreId: number) => {
-    const updatedGenres = selectedGenreIds.includes(genreId)
-      ? selectedGenreIds.filter((id) => id !== genreId) // Remove genre
-      : [...selectedGenreIds, genreId]; // Add genre
+  // Handle genre selection
+  const handleGenreSelection = (genreId: string) => {
+    const currentGenres = searchParams.get("genresId")?.split(",").filter(Boolean) || [];
+
+    const updatedGenres = currentGenres.includes(genreId)
+      ? currentGenres.filter((id) => id !== genreId) // Remove genre
+      : [...currentGenres, genreId]; // Add genre
 
     const queryParams = new URLSearchParams();
     if (updatedGenres.length) {
@@ -88,15 +92,15 @@ const Page = () => {
   };
 
   return (
-    <div className="w-full h-auto flex flex-row mt-[100px]">
-      <div className="col-span-1 space-x-1 w-[400px]">
+    <div className="w-full h-auto flex flex-col lg:flex-row mt-[100px] space-y-8 space-y-0"> 
+      <div className="h-fit w-full lg:w-[387px]">
         {genres.map((item) => (
           <Badge
             key={item.id}
-            onClick={() => handleGenreSelection(item.id)}
+            onClick={() => handleGenreSelection(item.id.toString())}
             variant="outline"
             className={`${
-              selectedGenreIds.includes(item.id)
+              selectedGenreIds.includes(item.id.toString())
                 ? "bg-black text-white dark:bg-white dark:text-black"
                 : ""
             } rounded-full cursor-pointer`}
@@ -105,16 +109,10 @@ const Page = () => {
           </Badge>
         ))}
       </div>
+      <Separator orientation="vertical" className="h-full w-[1px] bg-border hidden lg:block" />
+      <div className="flex-1 space-y-8 lg:pr-12">
+    
 
-      <Separator
-        orientation="vertical"
-        className="h-full w-[2px] bg-gray-300"
-      />
-
-      <div className="col-span-2 w-50%">
-        <h1 className="text-2xl font-bold text-center">
-          {selectedGenreIds.length ? `Movies in Selected Genres` : "Movies"}
-        </h1>
         {isLoading ? (
           <p>Loading...</p>
         ) : errorMessage ? (

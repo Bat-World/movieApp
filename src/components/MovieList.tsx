@@ -49,8 +49,8 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
   return (
     <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[32px]">
       <div className="w-full h-[36px] flex flex-row justify-between">
-        <div className="w-[114px] h-full flex justify-center items-center">
-          <p className="text-[24px] font-semibold">{title}</p>
+        <div className="w-auto h-full flex justify-center items-center">
+          <p className=" text-[24px] font-semibold">{title}</p>
         </div>
         <div className="w-[120px] h-full flex flex-row justify-center items-center gap-[8px]">
           <button
@@ -65,7 +65,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
       </div>
 
       <div className="MovieImgs w-full h-auto mt-[20px]">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mt-6 2xl:gap-[30px]">
+        <div className="flex flex-wrap gap-5 lg:gap-8">
           {isLoading ? (
             <p>Loading...</p>
           ) : errorMessage ? (

@@ -1,6 +1,6 @@
 "use client";
 
-import { ImageShiftPart } from "@/components/CarouselPart";
+import ImageShiftPart from "@/components/CarouselPart";
 import UpcomingMovies from "@/components/Upcoming";
 import TopRatedMovies from "@/components/TopRated";
 import PopularMovies from "@/components/Popular";
