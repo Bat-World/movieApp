@@ -17,6 +17,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
+import { FilmIcon } from "lucide-react";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -109,12 +110,11 @@ export const Header = () => {
   };
 
   return (
-    <div className="fixed w-screen h-auto flex justify-center bg-transparent z-100">
+    <div className=" w-screen h-auto flex justify-content bg-transparent">
       <div className="header flex justify-center items-center h-auto w-full px-[20px] justify-between lg:w-90% lg:px-[40px] xl:max-w-[1280px]">
-        
         <div className="hidden lg:flex w-auto h-[36px] flex-row items-center gap-[8px]">
           <Select onValueChange={handleGenreClick}>
-            <SelectTrigger className="hidden w-[180px] lg:flex">
+            <SelectTrigger className="hidden w-[120px] lg:flex bg-transparent">
               <Clapperboard width={18} className="mr-2" />
               <SelectValue placeholder="Genre" />
             </SelectTrigger>
@@ -126,19 +126,16 @@ export const Header = () => {
               ))}
             </SelectContent>
           </Select>
-
-          <Input
+          {/* <Input
             className=" w-[379px] h-[36px] focus:outline-none focus:ring-0 focus:shadow-none"
             placeholder="Search for movies..."
             value={moviesSearch}
             onChange={handleChange}
-          />
+          /> */}
         </div>
-        <div className="flex flex-row items-center h-[20px] gap-[8px]">
-          <NavBarIcon />
-          <p className="text-[20px] font-bold text-[#4338CA] w-[64px]">
-            MovieZ
-          </p>
+        <div className="flex flex-row items-center w-auto h-auto gap-[8px]">
+    
+          <FilmIcon className="w-[40px] h-[40px] text-[#4338CA]"/>
         </div>
         <div className="flex flex-row items-center w-[84px] h-[36px] justify-between">
           {!showSearch && (
@@ -163,15 +160,15 @@ export const Header = () => {
           {theme === "dark" ? (
             <Button
               variant="outline"
-              className="w-9 h-9"
+              className="w-9 h-9 bg-transparent"
               onClick={() => setTheme("light")}
             >
-              <SunIcon />
+              <SunIcon className="bg-transparent"/>
             </Button>
           ) : (
             <Button
               variant="outline"
-              className="w-9 h-9"
+              className="w-9 h-9 bg-transparent"
               onClick={() => setTheme("dark")}
             >
               <MoonIcon />
