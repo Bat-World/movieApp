@@ -6,9 +6,24 @@ import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import NavBarIcon from "@/app/icons/headerIcon";
+import { Movie } from "@/app/types/types";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Clapperboard, MoonIcon, SearchIcon, SunIcon } from "lucide-react";
+import { useTheme } from "next-themes";
+
+
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
+
 
 const Page = () => {
   const { push } = useRouter();
@@ -92,8 +107,9 @@ const Page = () => {
   };
 
   return (
-    <div className="w-full h-auto flex flex-col lg:flex-row mt-[100px] space-y-8 space-y-0"> 
-      <div className="h-fit w-full lg:w-[387px]">
+    <div className="w-full h-full flex justify-center">
+    <div className="w-full h-auto flex flex-col lg:flex-row mt-[100px] space-y-8 space-y-0 max-w-[1280px]" > 
+      <div className="h-fit w-full lg:w-[387px] py-[48px] px-[20px]">
         {genres.map((item) => (
           <Badge
             key={item.id}
@@ -109,7 +125,7 @@ const Page = () => {
           </Badge>
         ))}
       </div>
-      <Separator orientation="vertical" className="h-full w-[1px] bg-border hidden lg:block" />
+      <Separator orientation="vertical" className="h-full w-[2px] bg-border hidden lg:block" />
       <div className="flex-1 space-y-8 lg:pr-12">
     
 
@@ -155,6 +171,7 @@ const Page = () => {
           <p>No movies found.</p>
         )}
       </div>
+    </div>
     </div>
   );
 };

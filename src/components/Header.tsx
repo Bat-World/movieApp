@@ -111,7 +111,7 @@ export const Header = () => {
   return (
     <div className="fixed top-0 left-0 w-screen h-[59px] flex justify-center bg-[var(--header-bg)] z-100">
       <div className="header flex justify-center items-center h-[59px] w-full px-[20px] justify-between lg:w-90% lg:px-[40px] xl:max-w-[1280px]">
-        <div className="flex flex-row items-center  h-[20px] gap-[8px]">
+        <div className="flex flex-row items-center h-[20px] gap-[8px]">
           <NavBarIcon />
           <p className="text-[20px] font-bold text-[#4338CA] w-[64px]">
             MovieZ
@@ -149,12 +149,15 @@ export const Header = () => {
             </button>
           )}
           {showSearch && (
-            <Input
-              className="w-[379px] h-[36px]"
-              placeholder="Search for movies..."
-              value={moviesSearch}
-              onChange={handleChange}
-            />
+            <div className="flex items-center w-[379px]">
+              <SearchIcon className="mr-2 text-gray-600" />
+              <Input
+                className="w-[100%] h-[36px] focus:outline-none focus:ring-0 border-none"
+                placeholder="Search"
+                value={moviesSearch}
+                onChange={handleChange}
+              />
+            </div>
           )}
           {theme === "dark" ? (
             <Button

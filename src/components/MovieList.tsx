@@ -47,7 +47,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
   const { push } = useRouter();
 
   return (
-    <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[32px]">
+    <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[50px]">
       <div className="w-full h-[36px] flex flex-row justify-between">
         <div className="w-auto h-full flex justify-center items-center">
           <p className=" text-[24px] font-semibold">{title}</p>
@@ -64,7 +64,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
         </div>
       </div>
 
-      <div className="MovieImgs w-full h-auto mt-[20px]">
+      <div className="MovieImgs w-full h-auto mt-[30px]">
         <div className="flex flex-wrap gap-5 lg:gap-8">
           {isLoading ? (
             <p>Loading...</p>

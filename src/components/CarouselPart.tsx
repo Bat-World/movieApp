@@ -95,7 +95,7 @@ export default function ImageShifPart() {
       {error && <p className="text-center mt-10 text-red-500">{error}</p>}
  
       {!loading && !error && popularMoviesData.length > 0 && (
-        <div className="relative w-full max-w-[vw] mt-[59px] lg:mt-[83px]">
+        <div className="relative w-full max-w-[vw] mt-[59px] lg:mt-[83px] h-[900px]">
           <Carousel className="w-full relative overflow-hidden">
             <CarouselContent
               style={{
@@ -105,7 +105,7 @@ export default function ImageShifPart() {
             >
               {popularMoviesData.map((movie, index) => (
                 <CarouselItem key={index} className="relative w-full">
-                  <div className="relative w-full h-[250px] lg:h-[600px]">
+                  <div className="relative w-full h-[250px] lg:h-[900px]">
                     <Image
                       src={`${TMDB_IMAGE_BASE_URL}/original${movie.backdrop_path}`}
                       alt={movie.title}
