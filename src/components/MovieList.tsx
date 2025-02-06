@@ -49,8 +49,9 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
   return (
     <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[50px]">
       <div className="w-full h-[36px] flex flex-row justify-between">
-        <div className="w-auto h-full flex justify-center items-center">
-          <p className=" text-[24px] font-semibold">{title}</p>
+        <div className="w-auto h-full flex flex-row justify-center items-center gap-[10px]">
+          <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA]"></div>
+          <p className="text-[30px] font-bold">{title}</p>
         </div>
         <div className="w-[120px] h-full flex flex-row justify-center items-center gap-[8px]">
           <button

@@ -109,14 +109,9 @@ export const Header = () => {
   };
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-[59px] flex justify-center bg-[var(--header-bg)] z-100">
-      <div className="header flex justify-center items-center h-[59px] w-full px-[20px] justify-between lg:w-90% lg:px-[40px] xl:max-w-[1280px]">
-        <div className="flex flex-row items-center h-[20px] gap-[8px]">
-          <NavBarIcon />
-          <p className="text-[20px] font-bold text-[#4338CA] w-[64px]">
-            MovieZ
-          </p>
-        </div>
+    <div className="fixed w-screen h-auto flex justify-center bg-transparent z-100">
+      <div className="header flex justify-center items-center h-auto w-full px-[20px] justify-between lg:w-90% lg:px-[40px] xl:max-w-[1280px]">
+        
         <div className="hidden lg:flex w-auto h-[36px] flex-row items-center gap-[8px]">
           <Select onValueChange={handleGenreClick}>
             <SelectTrigger className="hidden w-[180px] lg:flex">
@@ -133,16 +128,22 @@ export const Header = () => {
           </Select>
 
           <Input
-            className="w-[379px] h-[36px] focus:outline-none focus:ring-0 focus:shadow-none"
+            className=" w-[379px] h-[36px] focus:outline-none focus:ring-0 focus:shadow-none"
             placeholder="Search for movies..."
             value={moviesSearch}
             onChange={handleChange}
           />
         </div>
+        <div className="flex flex-row items-center h-[20px] gap-[8px]">
+          <NavBarIcon />
+          <p className="text-[20px] font-bold text-[#4338CA] w-[64px]">
+            MovieZ
+          </p>
+        </div>
         <div className="flex flex-row items-center w-[84px] h-[36px] justify-between">
           {!showSearch && (
             <button
-              className="flex justify-center items-center w-[36px] h-[36px] rounded-md border-[#E4E4E7] border-solid border lg:hidden"
+              className="flex justify-center items-center w-[36px] h-[36px] rounded-md border-[#E4E4E7] border-solid border "
               onClick={() => setShowSearch(true)}
             >
               <SearchIcon />
@@ -150,9 +151,9 @@ export const Header = () => {
           )}
           {showSearch && (
             <div className="flex items-center w-[379px]">
-              <SearchIcon className="mr-2 text-gray-600" />
+              <SearchIcon className="mr-2 text-gray-600 bg-transparent" />
               <Input
-                className="w-[100%] h-[36px] focus:outline-none focus:ring-0 border-none"
+                className="hidden w-[100%] h-[36px] focus:outline-none focus:ring-0 border-none"
                 placeholder="Search"
                 value={moviesSearch}
                 onChange={handleChange}
