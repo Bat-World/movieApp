@@ -75,8 +75,6 @@ export const Header = () => {
         }
       );
 
-
-
       setGenreList(response.data.genres);
     } catch (err: unknown) {
       console.log(err);
@@ -107,15 +105,17 @@ export const Header = () => {
   };
 
   const handleGenreClick = (value: string) => {
-    router.push(`/genres`);
+    router.push(`/genres?page=1&genreIds=${value}`);
   };
 
   return (
-    <div className="fixed top-0 left-0 w-screen h-[59px] flex justify-center bg-[var(--header-bg)] z-100" >
+    <div className="fixed top-0 left-0 w-screen h-[59px] flex justify-center bg-[var(--header-bg)] z-100">
       <div className="header flex justify-center items-center h-[59px] w-full px-[20px] justify-between lg:w-90% lg:px-[40px] xl:max-w-[1280px]">
         <div className="flex flex-row items-center  h-[20px] gap-[8px]">
           <NavBarIcon />
-          <p className="text-[20px] font-bold text-[#4338CA] w-[64px]">MovieZ</p>
+          <p className="text-[20px] font-bold text-[#4338CA] w-[64px]">
+            MovieZ
+          </p>
         </div>
         <div className="hidden lg:flex w-auto h-[36px] flex-row items-center gap-[8px]">
           <Select onValueChange={handleGenreClick}>

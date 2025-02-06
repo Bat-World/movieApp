@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
@@ -11,21 +11,22 @@ const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
 
 const Page = () => {
-  const params = useParams();
   const { push } = useRouter();
-  const router = useRouter();
   const searchParams = useSearchParams();
 
-  const genreId = parseInt(params.id, 10) || 0; 
-  const currentPage = parseInt(params.page, 10) || 1;
+  console.log(searchParams.get("genresId"));
+  console.log(searchParams.get("page"));
+
+  const selectedGenreIds = searchParams.get("genreIds")!;
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [genreData, setGenreData] = useState([]);
-  const [genres, setGenres] = useState([]); 
-  const [selectedGenreIds, setSelectedGenreIds] = useState([]); 
+  const [genreData, setGenreData] = useState<
+    { id: number; poster_path: string; title: string; vote_average: number }[]
+  >([]);
+  const [genres, setGenres] = useState<{ id: number; name: string }[]>([]);
 
-
+  //  Fetch list of all genres
   const fetchGenreList = async () => {
     try {
       const response = await axios.get(`${TMDB_BASE_URL}/genre/movie/list`, {
@@ -38,9 +39,10 @@ const Page = () => {
     }
   };
 
-  
+  //  Fetch movies for selected genres
   const fetchGenreData = async () => {
-    if (!genreId) return; 
+    if (!selectedGenreIds.length) return;
+
     try {
       setIsLoading(true);
       setErrorMessage("");
@@ -48,17 +50,15 @@ const Page = () => {
       const response = await axios.get(`${TMDB_BASE_URL}/discover/movie`, {
         headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
         params: {
-          include_adult: false,
-          include_video: false,
           language: "en-US",
-          page: currentPage,
+          page: 1,
           sort_by: "popularity.desc",
-          with_genres: genreId,
+          with_genres: selectedGenreIds,
         },
       });
 
       setGenreData(response.data.results);
-    } catch (err) {
+    } catch {
       setErrorMessage("Failed to load movies.");
     } finally {
       setIsLoading(false);
@@ -68,59 +68,42 @@ const Page = () => {
   useEffect(() => {
     fetchGenreList();
   }, []);
-
+  
   useEffect(() => {
     fetchGenreData();
-  }, [genreId, currentPage]);
+  }, [selectedGenreIds]);
 
-  const handleGenreSelection = (genreId) => {
-    setSelectedGenreIds((prevSelected = []) => {  // Default value added here
-        let updatedGenres;
-        if (prevSelected.includes(genreId)) {
-          updatedGenres = prevSelected.filter((id) => id !== genreId);
-        } else {
-          updatedGenres = [...prevSelected, genreId];
-        }
-      
-        console.log("Updated Genres:", updatedGenres);
-      
-        const queryParams = new URLSearchParams();
-        if (updatedGenres.length > 0) {
-          queryParams.set("genresId", updatedGenres.join(","));
-        }
-        const newPath = queryParams.toString();
-      
-        push(`/genres?${newPath}`);  // Uncomment to update URL
-        console.log(`/genres?${newPath}`);
-      
-        return updatedGenres; // Ensure the state updates correctly
-      });
-      
+  //  Handle genre selection
+  const handleGenreSelection = (genreId: number) => {
+    const updatedGenres = selectedGenreIds.includes(genreId)
+      ? selectedGenreIds.filter((id) => id !== genreId) // Remove genre
+      : [...selectedGenreIds, genreId]; // Add genre
+
+    const queryParams = new URLSearchParams();
+    if (updatedGenres.length) {
+      queryParams.set("genresId", updatedGenres.join(","));
+    }
+
+    push(`/genres?${queryParams.toString()}`);
   };
-  
+
   return (
     <div className="w-full h-auto flex flex-row mt-[100px]">
       <div className="col-span-1 space-x-1 w-[400px]">
-        {genres.length > 0 &&
-          genres.map((item) => {
-            const genreIdStr = item.id.toString();
-            const isSelected = Array.isArray(selectedGenreIds) && selectedGenreIds.includes(item.id);
-
-            return (
-              <Badge
-                onClick={() => handleGenreSelection(item.id)}
-                variant="outline"
-                key={item.id}
-                className={`${
-                  isSelected
-                    ? "bg-black text-white dark:bg-white dark:text-black"
-                    : ""
-                } rounded-full cursor-pointer`}
-              >
-                {item.name}
-              </Badge>
-            );
-          })}
+        {genres.map((item) => (
+          <Badge
+            key={item.id}
+            onClick={() => handleGenreSelection(item.id)}
+            variant="outline"
+            className={`${
+              selectedGenreIds.includes(item.id)
+                ? "bg-black text-white dark:bg-white dark:text-black"
+                : ""
+            } rounded-full cursor-pointer`}
+          >
+            {item.name}
+          </Badge>
+        ))}
       </div>
 
       <Separator
@@ -130,7 +113,7 @@ const Page = () => {
 
       <div className="col-span-2 w-50%">
         <h1 className="text-2xl font-bold text-center">
-          {genreId ? `Movies in Genre ${genreId}` : "Movies"}
+          {selectedGenreIds.length ? `Movies in Selected Genres` : "Movies"}
         </h1>
         {isLoading ? (
           <p>Loading...</p>
@@ -178,4 +161,4 @@ const Page = () => {
   );
 };
 
-export default Page; 
+export default Page;
