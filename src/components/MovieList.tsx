@@ -5,6 +5,7 @@ import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
 import { useRouter } from "next/navigation";
 import RightArrow from "@/app/icons/RightArrow";
+import { MoveRightIcon } from "lucide-react";
 
 interface MovieListProps {
   title: string;
@@ -54,14 +55,15 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
           <p className="text-[30px] font-bold">{title}</p>
         </div>
         <div className="w-[120px] h-full flex flex-row justify-center items-center gap-[8px]">
-          <button
-          className="w-auto h-auto text-[14px] bg-transparent font-bold flex flex-row items-center gap-[8px] hover:underline"
+        <button
+  className="w-auto h-auto text-[15px] bg-transparent font-bold flex flex-row items-center gap-[8px] 
+             hover:underline hover:decoration-[#4338CA] decoration-3 underline-offset-20"
+  onClick={() => push(`/category/${endpoint}`)}
+>
+  See more
+  <MoveRightIcon />
+</button>
 
-            onClick={() => push(`/category/${endpoint}`)}
-          >
-            See more
-            <RightArrow/>
-          </button>
         </div>
       </div>
 

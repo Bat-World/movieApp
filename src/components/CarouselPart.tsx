@@ -155,12 +155,12 @@ export default function ImageShifPart() {
   }, [popularMoviesData]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center h-[90vh]">
       {loading && <p className="text-center mt-10">Loading movies...</p>}
       {error && <p className="text-center mt-10 text-red-500">{error}</p>}
 
       {!loading && !error && popularMoviesData.length > 0 && (
-        <div className="relative w-full max-w-[vw]   h-screen">
+        <div className="relative w-full max-w-[vw]  h-[90vh]">
           <div className="absolute w-full h-[30px] bg-black z-1000"></div>
 
           {/* Carousel Container */}
@@ -174,7 +174,7 @@ export default function ImageShifPart() {
               >
                 {popularMoviesData.map((movie, index) => (
                   <CarouselItem key={index} className="relative w-full">
-                    <div className="relative w-full h-[250px] lg:h-[1000px]">
+                    <div className="relative w-full h-[90vh]">
                       <Image
                         src={`${TMDB_IMAGE_BASE_URL}/original${movie.backdrop_path}`}
                         alt={movie.title}
@@ -240,7 +240,8 @@ export default function ImageShifPart() {
             <div className="absolute top-4 left-0 w-full flex flex-row justify-center gap-[10px]">
               <Header />
             </div>
-
+            {/* Hero Section */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-100"></div>
             <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20">
               <Button
                 variant="outline"

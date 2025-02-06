@@ -11,6 +11,8 @@ import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import RightArrow from "@/app/icons/RightArrow";
 
+
+
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
