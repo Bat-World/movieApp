@@ -22,12 +22,12 @@ body {
 /* Optional: Adds slight red shadow effect */
 .letter-shadow-r {
   text-shadow: 2px 2px 5px rgba(255, 0, 0, 0.5);
+  /* text-shadow: black; */
 }
 
 .text-outline {
   -webkit-text-stroke: 2px oklch(0.188409 .00829 17.911578);
 }
-
 
 
 @layer base {
