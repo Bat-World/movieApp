@@ -17,7 +17,6 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "./ui/button";
-import { FilmIcon } from "lucide-react";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -110,11 +109,18 @@ export const Header = () => {
   };
 
   return (
-    <div className=" w-screen h-auto flex justify-content bg-transparent">
-      <div className="header flex justify-center items-center h-auto w-full px-[20px] justify-between lg:w-90% lg:px-[40px] xl:max-w-[1280px]">
+    <div className=" fixed top-0 left-0 w-screen h-[59px] flex justify-center bg-transparent z-[1000]">
+      <div className="header flex justify-center items-center h-[59px] w-full px-[20px] justify-between lg:w-90% lg:px-[40px] xl:max-w-[1280px]">
+       
+        <div className="flex flex-row items-center h-[20px] gap-[8px]">
+          {/* <NavBarIcon /> */}
+          <p className="text-[20px] font-bold text-[#4338CA] w-[64px]">
+            MovieZ
+          </p>
+        </div>
         <div className="hidden lg:flex w-auto h-[36px] flex-row items-center gap-[8px]">
           <Select onValueChange={handleGenreClick}>
-            <SelectTrigger className="hidden w-[120px] lg:flex bg-transparent">
+            <SelectTrigger className="hidden w-[180px] lg:flex focus:ring-offset-0">
               <Clapperboard width={18} className="mr-2" />
               <SelectValue placeholder="Genre" />
             </SelectTrigger>
@@ -126,31 +132,29 @@ export const Header = () => {
               ))}
             </SelectContent>
           </Select>
-          {/* <Input
-            className=" w-[379px] h-[36px] focus:outline-none focus:ring-0 focus:shadow-none"
+
+          <Input
+            className="w-[379px] h-[36px] focus:outline-none focus:ring-0 focus:shadow-none focus:ring-offset-0"
             placeholder="Search for movies..."
             value={moviesSearch}
             onChange={handleChange}
-          /> */}
-        </div>
-        <div className="flex flex-row items-center w-auto h-auto gap-[8px]">
-    
-          <FilmIcon className="w-[40px] h-[40px] text-[#4338CA]"/>
+          />
         </div>
         <div className="flex flex-row items-center w-[84px] h-[36px] justify-between">
           {!showSearch && (
             <button
-              className="flex justify-center items-center w-[36px] h-[36px] rounded-md border-[#E4E4E7] border-solid border "
+              className="flex justify-center items-center w-[36px] h-[36px] rounded-md border-[#E4E4E7] border-solid border lg:hidden"
               onClick={() => setShowSearch(true)}
             >
               <SearchIcon />
             </button>
           )}
           {showSearch && (
+          
             <div className="flex items-center w-[379px]">
-              <SearchIcon className="mr-2 text-gray-600 bg-transparent" />
+              <SearchIcon className="mr-2 text-gray-600" />
               <Input
-                className="hidden w-[100%] h-[36px] focus:outline-none focus:ring-0 border-none"
+                className="w-[100%] h-[36px] focus:outline-none focus:ring-0 border-none focus:ring-offset-0"
                 placeholder="Search"
                 value={moviesSearch}
                 onChange={handleChange}
@@ -160,15 +164,15 @@ export const Header = () => {
           {theme === "dark" ? (
             <Button
               variant="outline"
-              className="w-9 h-9 bg-transparent"
+              className="w-9 h-9"
               onClick={() => setTheme("light")}
             >
-              <SunIcon className="bg-transparent"/>
+              <SunIcon />
             </Button>
           ) : (
             <Button
               variant="outline"
-              className="w-9 h-9 bg-transparent"
+              className="w-9 h-9"
               onClick={() => setTheme("dark")}
             >
               <MoonIcon />
@@ -210,4 +214,4 @@ export const Header = () => {
       )}
     </div>
   );
-}; 
+};

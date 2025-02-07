@@ -10,7 +10,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // ✅ Manually Defined Colors
+    
         primary: {
           DEFAULT: "oklch(69.7764% .1353 17.911578)", // Main primary color
           foreground: "oklch(.188409 .00829 17.911578)", // Stroke/fill color

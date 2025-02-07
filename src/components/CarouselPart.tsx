@@ -155,12 +155,12 @@ export default function ImageShifPart() {
   }, [popularMoviesData]);
 
   return (
-    <div className="flex flex-col items-center h-[90vh]">
+    <div className="flex flex-col items-center h-[80vh] z-[-1]">
       {loading && <p className="text-center mt-10">Loading movies...</p>}
       {error && <p className="text-center mt-10 text-red-500">{error}</p>}
 
       {!loading && !error && popularMoviesData.length > 0 && (
-        <div className="relative w-full max-w-[vw]  h-[90vh]">
+        <div className="relative w-full max-w-[vw]  h-[80vh]">
           <div className="absolute w-full h-[30px] bg-black z-1000"></div>
 
           {/* Carousel Container */}
@@ -174,7 +174,7 @@ export default function ImageShifPart() {
               >
                 {popularMoviesData.map((movie, index) => (
                   <CarouselItem key={index} className="relative w-full">
-                    <div className="relative w-full h-[90vh]">
+                    <div className="relative w-full h-[80vh]">
                       <Image
                         src={`${TMDB_IMAGE_BASE_URL}/original${movie.backdrop_path}`}
                         alt={movie.title}
@@ -183,7 +183,7 @@ export default function ImageShifPart() {
                       />
                     </div>
 
-                    <div className="static text-foreground lg:absolute lg:top-1/2 lg:left-[140px] lg:-translate-y-1/2 z-10">
+                    <div className="static text-foreground absolute top-1/2 lg:left-[140px] translate-y-1/2 z-10">
                       <div className="p-4 relative text-black lg:text-white">
                         <div className="flex justify-between">
                           <div>
@@ -237,11 +237,18 @@ export default function ImageShifPart() {
             </Carousel>
 
             {/* Fixed Icons on Carousel Container */}
-            <div className="absolute top-4 left-0 w-full flex flex-row justify-center gap-[10px]">
-              <Header />
-            </div>
+            <div className="absolute top-4 left-0 w-full flex flex-row justify-center gap-[10px]"></div>
             {/* Hero Section */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-100"></div>
+            <div
+              style={{
+                position: "absolute",
+                inset: 0,
+                background:
+                  "linear-gradient(to top, rgb(13, 13, 13), rgba(13, 13, 13, 0.4), transparent)",
+                zIndex: 100,
+              }}
+            ></div>
+
             <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20">
               <Button
                 variant="outline"

@@ -4,7 +4,6 @@ import { Movie } from "@/app/types/types";
 import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
 import { useRouter } from "next/navigation";
-import RightArrow from "@/app/icons/RightArrow";
 import { MoveRightIcon } from "lucide-react";
 
 interface MovieListProps {
@@ -48,27 +47,28 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
   const { push } = useRouter();
 
   return (
-    <div className="MovieList w-full h-auto px-[20px] flex flex-col mt-[50px]">
+    <div className="MovieList w-full h-auto px-[40px] flex flex-col mt-[50px] items-center justify-center">
+
       <div className="w-full h-[36px] flex flex-row justify-between">
         <div className="w-auto h-full flex flex-row justify-center items-center gap-[10px]">
           <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA]"></div>
           <p className="text-[30px] font-bold">{title}</p>
         </div>
         <div className="w-[120px] h-full flex flex-row justify-center items-center gap-[8px]">
-        <button
-  className="w-auto h-auto text-[15px] bg-transparent font-bold flex flex-row items-center gap-[8px] 
+          <button
+            className="w-auto h-auto text-[15px] bg-transparent font-bold flex flex-row items-center gap-[8px] 
              hover:underline hover:decoration-[#4338CA] decoration-3 underline-offset-20"
-  onClick={() => push(`/category/${endpoint}`)}
->
-  See more
-  <MoveRightIcon />
-</button>
-
+            onClick={() => push(`/category/${endpoint}`)}
+          >
+            See more
+            <MoveRightIcon />
+          </button>
         </div>
       </div>
 
       <div className="MovieImgs w-full h-auto mt-[30px]">
-        <div className="flex flex-wrap gap-5 lg:gap-8">
+
+        <div className="flex flex-wrap gap-5 lg:gap-8 flex justify-center">
           {isLoading ? (
             <p>Loading...</p>
           ) : errorMessage ? (
