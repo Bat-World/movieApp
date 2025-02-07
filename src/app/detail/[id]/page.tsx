@@ -94,6 +94,9 @@ const Page = () => {
           },
         }
       );
+
+      console.log("trailerrr",response.data.results);
+      
       setVideoData(response.data.results);
     } catch (err) {
       console.log("Failed to load videos:", err);
