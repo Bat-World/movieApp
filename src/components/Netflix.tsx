@@ -1,9 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import NetflixIcon from "@/app/icons/Netflix";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -11,6 +15,7 @@ const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 export const Netflix = () => {
   const [firstMovie, setFirstMovie] = useState(null);
   const [netflixData, setNetflixData] = useState([]);
+  const swiperRef = useRef(null);
 
   const fetchNetflixMovies = async () => {
     try {
@@ -59,7 +64,7 @@ export const Netflix = () => {
         </div>
       </div>
 
-     {/* Swipe */}
+      {/* Swipe */}
       <div className="absolute bottom-[-100px] md:bottom-[-130px] left-0 w-full h-[150px] flex justify-center items-end pb-4">
         <Swiper
           spaceBetween={15}
@@ -70,6 +75,8 @@ export const Netflix = () => {
             1024: { slidesPerView: 5 }, // Small laptops
             1280: { slidesPerView: 6 }, // Desktops
           }}
+          onSwiper={(swiper) => (swiperRef.current = swiper)}
+          modules={[Navigation]} 
           className="w-full px-4 md:px-8"
         >
           {netflixData.map((movie) => (
@@ -79,13 +86,35 @@ export const Netflix = () => {
                 alt={movie.name || "Movie poster"}
                 width={300}
                 height={450}
-                className="rounded-lg shadow-lg cursor-pointer"
+                className="rounded-lg shadow-lg cursor-pointer transition-transform duration-300 hover:scale-110"
                 onClick={() => push(`/seriesdetail/${movie.id}`)}
                 priority
               />
             </SwiperSlide>
           ))}
         </Swiper>
+
+
+        {/* Navigation Button */}
+        {/* left */}
+        <button
+          className="absolute left-[-30px] top-1 transform -translate-y-1/2 z-10 
+             flex items-center justify-center w-12 h-12 rounded-full 
+             bg-black bg-opacity-40 hover:bg-opacity-60 transition duration-300"
+          onClick={() => swiperRef.current?.slidePrev()}
+        >
+          <FaChevronLeft className="text-white text-4xl" />
+        </button>
+
+        {/* Right  */}
+        <button
+          className="absolute right-[-30px] top-1 transform -translate-y-1/2 z-10 
+             flex items-center justify-center w-12 h-12 rounded-full 
+             bg-black bg-opacity-40 hover:bg-opacity-60 transition duration-300"
+          onClick={() => swiperRef.current?.slideNext()}
+        >
+          <FaChevronRight className="text-white text-4xl" />
+        </button>
       </div>
     </div>
   );

@@ -4,6 +4,9 @@ import "swiper/css";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { useRef } from "react";
+import { Navigation } from "swiper/modules";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -17,6 +20,7 @@ const Top10Movies = () => {
 
   const [topMovies, setTopMovies] = useState<Movie[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
+    const swiperRef = useRef(null);
 
   const fetchMovies = async () => {
     try {
@@ -37,32 +41,29 @@ const Top10Movies = () => {
   const { push } = useRouter();
 
   return (
-    <div className="w-full text-white px-6 md:px-10 py-10 h-auto mt-[50px]">
-      {/* Title Section */}
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
-        <div className="flex flex-row items-center justify-center">
-          <h3 className="text-outline text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-[#4338CA] leading-tight">
-            <span className="letter-shadow-r">T</span>
-            <span className="letter-shadow-r">O</span>
-            <span className="letter-shadow-r">P</span>
-            <span className="letter-shadow-r">1</span>
-            <span className="letter-shadow-r">0</span>
-          </h3>
-        </div>
-        <div className="text-center md:text-left">
-          <h2 className="text-lg md:text-xl tracking-widest font-semibold leading-[24px]">
-            CONTENT OF
-          </h2>
-          <h2 className="text-lg md:text-xl tracking-widest font-semibold leading-[24px]">
-            THE WEEK
-          </h2>
-        </div>
+    <div className="relative w-full text-white px-6 md:px-10 py-10 h-auto mt-[50px]">
+    {/* Title Section */}
+    <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
+      <div className="flex flex-row items-center justify-center">
+        <h3 className="text-outline text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-[#4338CA] leading-tight">
+          <span className="letter-shadow-r">T</span>
+          <span className="letter-shadow-r">O</span>
+          <span className="letter-shadow-r">P</span>
+          <span className="letter-shadow-r">1</span>
+          <span className="letter-shadow-r">0</span>
+        </h3>
       </div>
-
-      {/* Error Message */}
-      {errorMessage && <p className="text-red-500 text-center mt-4">{errorMessage}</p>}
-
-      {/* Swiper Slider */}
+      <div className="text-center md:text-left">
+        <h2 className="text-lg md:text-xl tracking-widest font-semibold leading-[24px]">CONTENT OF</h2>
+        <h2 className="text-lg md:text-xl tracking-widest font-semibold leading-[24px]">THE WEEK</h2>
+      </div>
+    </div>
+  
+    {/* Error Message */}
+    {errorMessage && <p className="text-red-500 text-center mt-4">{errorMessage}</p>}
+  
+    {/* Swiper Container */}
+    <div className="relative w-full mt-6">
       <Swiper
         spaceBetween={15}
         breakpoints={{
@@ -72,15 +73,17 @@ const Top10Movies = () => {
           1024: { slidesPerView: 5 }, // Small laptops
           1280: { slidesPerView: 6 }, // Large screens
         }}
-        className="mt-6"
+        onSwiper={(swiper) => (swiperRef.current = swiper)}
+        className="w-full"
+        modules={[Navigation]}
       >
         {topMovies.map((movie, index) => (
           <SwiperSlide key={movie.id} className="relative flex flex-col items-center group">
             {/* Background Number */}
-            <span className="absolute text-[100px] sm:text-[140px] md:text-[160px] lg:text-[200px] font-extrabold text-[#4338CA] opacity-40 transition-opacity duration-300 group-hover:opacity-100 -z-10 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            {/* <span className="absolute text-[100px] sm:text-[140px] md:text-[160px] lg:text-[200px] font-extrabold text-[#4338CA] opacity-40 transition-opacity duration-300 group-hover:opacity-100 -z-10 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
               {index + 1}
-            </span>
-
+            </span> */}
+  
             {/* Movie Poster */}
             <Image
               src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
@@ -94,7 +97,29 @@ const Top10Movies = () => {
           </SwiperSlide>
         ))}
       </Swiper>
+  
+      {/* Left Navigation Button */}
+      <button
+        className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 
+                   flex items-center justify-center w-12 h-12 rounded-full 
+                   bg-black bg-opacity-40 hover:bg-opacity-60 transition duration-300"
+        onClick={() => swiperRef.current?.slidePrev()}
+      >
+        <FaChevronLeft className="text-white text-4xl" />
+      </button>
+  
+      {/* Right Navigation Button */}
+      <button
+        className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 
+                   flex items-center justify-center w-12 h-12 rounded-full 
+                   bg-black bg-opacity-40 hover:bg-opacity-60 transition duration-300"
+        onClick={() => swiperRef.current?.slideNext()}
+      >
+        <FaChevronRight className="text-white text-4xl" />
+      </button>
     </div>
+  </div>
+  
   );
 };
 
