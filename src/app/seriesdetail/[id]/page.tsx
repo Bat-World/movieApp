@@ -3,14 +3,19 @@ import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Play } from "lucide-react";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 const SeriesDetail = () => {
-  const { id } = useParams(); // ✅ Use useParams() instead of query
+  const { id } = useParams();
   const [series, setSeries] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedSeason, setSelectedSeason] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     if (id) {
@@ -43,7 +48,6 @@ const SeriesDetail = () => {
   return (
     <div className="min-h-screen bg-black text-white px-6 md:px-10 py-10">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-        {/* Series Poster */}
         <Image
           src={`https://image.tmdb.org/t/p/w500${series.poster_path}`}
           alt={series.name}
@@ -52,7 +56,6 @@ const SeriesDetail = () => {
           className="rounded-lg shadow-lg"
         />
 
-        {/* Series Details */}
         <div className="flex-1">
           <h1 className="text-3xl md:text-5xl font-bold">{series.name}</h1>
           <p className="text-gray-400 mt-2">
@@ -60,7 +63,43 @@ const SeriesDetail = () => {
           </p>
           <p className="mt-4 text-lg">{series.overview}</p>
 
-          {/* Director & Cast */}
+          {/* Season Selector */}
+          {series.seasons && (
+            <div className="mt-6">
+              <label className="block text-lg font-bold">Select Season:</label>
+              <select
+                className="mt-2 bg-gray-800 text-white px-4 py-2 rounded-md"
+                value={selectedSeason || ""}
+                onChange={(e) => setSelectedSeason(e.target.value)}
+              >
+                <option value="" disabled>Select a Season</option>
+                {series.seasons.map((season) => (
+                  <option key={season.id} value={season.season_number}>
+                    Season {season.season_number}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
+          {/* Episode Selector */}
+          {selectedSeason && (
+            <div className="mt-4">
+              <label className="block text-lg font-bold">Select Episode:</label>
+              <select
+                className="mt-2 bg-gray-800 text-white px-4 py-2 rounded-md"
+                onChange={(e) => router.push(`/watch/tv/${series.id}/${selectedSeason}/${e.target.value}`)}
+              >
+                <option value="" disabled>Select an Episode</option>
+                {Array.from({ length: series.seasons.find(s => s.season_number == selectedSeason)?.episode_count || 0 }, (_, index) => (
+                  <option key={index} value={index + 1}>
+                    Episode {index + 1}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
+
           {series.credits && (
             <div className="mt-6">
               <p>
@@ -74,7 +113,6 @@ const SeriesDetail = () => {
             </div>
           )}
 
-          {/* Trailer Button */}
           {series.videos?.results.length > 0 && (
             <a
               href={`https://www.youtube.com/watch?v=${series.videos.results[0].key}`}

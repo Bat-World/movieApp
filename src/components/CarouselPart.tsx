@@ -183,7 +183,7 @@ export default function ImageShifPart() {
                       />
                     </div>
 
-                    <div className="static text-foreground absolute top-1/2 lg:left-[140px] translate-y-1/2 z-10">
+                    <div className="static text-foreground absolute top-1/4 lg:left-[140px] translate-y-1/2 z-[200]">
                       <div className="p-4 relative text-black lg:text-white">
                         <div className="flex justify-between">
                           <div>
@@ -205,7 +205,7 @@ export default function ImageShifPart() {
                             </span>
                           </div>
                         </div>
-                        <p className="w-[302px] text-sm line-clamp-5 mt-4 dark:text-white">
+                        <p className="w-[302px] text-[16px] leading-[24px] line-clamp-5 mt-4 dark:text-white ">
                           {movie.overview}
                         </p>
                       </div>
@@ -244,7 +244,7 @@ export default function ImageShifPart() {
                 position: "absolute",
                 inset: 0,
                 background:
-                  "linear-gradient(to top, rgb(13, 13, 13), rgba(13, 13, 13, 0.4), transparent)",
+                  "linear-gradient(to top, rgb(13, 13, 13), rgba(13, 13, 13, 0.3), transparent)",
                 zIndex: 100,
               }}
             ></div>

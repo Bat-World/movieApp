@@ -9,8 +9,14 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 
+
+
+
+
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+const grayscaleBackground = "/grayscale_breaking_bad.jpg";
+
 
 export const Netflix = () => {
   const [firstMovie, setFirstMovie] = useState(null);
@@ -42,13 +48,14 @@ export const Netflix = () => {
 
   return (
     <div
-      className="relative w-full min-h-[80vh] md:min-h-[90vh] flex flex-col justify-center items-center bg-cover bg-center mt-[70px] mb-[120px] md:mb-[150px]"
-      style={{
-        backgroundImage: firstMovie
-          ? `url(https://image.tmdb.org/t/p/original${firstMovie.backdrop_path})`
-          : "none",
-      }}
-    >
+    className="relative w-full min-h-[80vh] md:min-h-[90vh] flex flex-col justify-center items-center bg-cover bg-center mt-[70px] mb-[120px] md:mb-[150px]"
+    style={{
+      backgroundImage: "url('/grayscale_breaking_bad.jpg')", // ✅ No import needed
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundRepeat: "no-repeat",
+    }}
+  >
       {/* Gradient Overlay */}
       <div className="absolute inset-0 bg-gradient-to-b from-[rgb(13,13,13)] via-transparent to-[rgb(13,13,13)]"></div>
 

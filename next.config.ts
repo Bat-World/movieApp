@@ -13,7 +13,8 @@ const nextConfig: NextConfig = {
       "via.placeholder.com",
       "picsum.photos",
       "image.tmdb.org",
-     "loodibee.com", 
+      "loodibee.com",
+      "citypng.com", // No
     ],
   },
 };
