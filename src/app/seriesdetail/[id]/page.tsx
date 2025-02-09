@@ -1,5 +1,5 @@
 "use client";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
@@ -8,21 +8,13 @@ const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 const SeriesDetail = () => {
-  const router = useRouter();
-  const { query } = router;
-  
-  // Check if the `id` exists in the query
-  const id = query?.id;
-
+  const { id } = useParams(); // ✅ Use useParams() instead of query
   const [series, setSeries] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    console.log("Current id:", id);  // Debugging: Check if id is populated
     if (id) {
       fetchSeriesDetail();
-    } else {
-      console.log("id is not available yet.");
     }
   }, [id]);
 
@@ -41,15 +33,11 @@ const SeriesDetail = () => {
     }
   };
 
-  // Loading and error messages
-  if (!series && !errorMessage && !id) {
-    return <p className="text-white text-center">Waiting for ID...</p>;  // Show when id is not available
+  if (!series && !errorMessage) {
+    return <p className="text-white text-center">Loading...</p>;
   }
   if (errorMessage) {
     return <p className="text-white text-center">{errorMessage}</p>;
-  }
-  if (!series) {
-    return <p className="text-white text-center">Loading...</p>;
   }
 
   return (
@@ -67,14 +55,22 @@ const SeriesDetail = () => {
         {/* Series Details */}
         <div className="flex-1">
           <h1 className="text-3xl md:text-5xl font-bold">{series.name}</h1>
-          <p className="text-gray-400 mt-2">{series.first_air_date} | ⭐ {series.vote_average.toFixed(1)}</p>
+          <p className="text-gray-400 mt-2">
+            {series.first_air_date} | ⭐ {series.vote_average.toFixed(1)}
+          </p>
           <p className="mt-4 text-lg">{series.overview}</p>
 
           {/* Director & Cast */}
           {series.credits && (
             <div className="mt-6">
-              <p><span className="font-bold">Director:</span> {series.credits.crew.find(person => person.job === "Director")?.name || "Unknown"}</p>
-              <p><span className="font-bold">Stars:</span> {series.credits.cast.slice(0, 5).map(actor => actor.name).join(", ")}</p>
+              <p>
+                <span className="font-bold">Director:</span>{" "}
+                {series.credits.crew.find((person) => person.job === "Director")?.name || "Unknown"}
+              </p>
+              <p>
+                <span className="font-bold">Stars:</span>{" "}
+                {series.credits.cast.slice(0, 5).map((actor) => actor.name).join(", ")}
+              </p>
             </div>
           )}
 

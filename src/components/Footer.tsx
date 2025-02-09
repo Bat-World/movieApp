@@ -14,18 +14,18 @@ export const Footer = () => {
     <div className="w-screen h-auto  flex justify-center bg-[#4338CA] mt-[50px]">
       <div className="w-full h-[308px] bg-[#4338CA] px-[20px] py-[40px] flex flex-col items-center sm:flex-row sm:justify-between lg:w-90% lg:px-[40px] sm:items-start xl:max-w-[1280px] lg:h-[216px] ">
         <div className="flex flex-col w-[247px] h-[52px] gap-[12px]">
-          <div className="flex flex-row items-center w-[92px] h-[20px] gap-[8px]">
+          <div className="flex flex-row items-center w-auto h-[20px] gap-[8px]">
             <FooterIcon />
             <p className="text-16px font-bold text-[#FAFAFA]">Movie Z</p>
           </div>
-          <div className="w-[247px] h-[20px] flex items-center">
-            <p className="text-[14px] font-normal text-[#FAFAFA]">
+          <div className="w-[247px] h-[20px] flex items-center mt-[10px]">
+            <p className="text-[14px] font-normal text-[#FAFAFA] ">
               © 2024 Movie Z. All Rights Reserved.
             </p>
           </div>
         </div>
         <div className="flex flex-row w-auto h-[148px] mt-[28px] gap-[48px] lg:mt-0">
-          <div className="w-[174px] h-[136px] flex flex-col">
+          <div className="w-auto h-[136px] flex flex-col">
             <div>
               <p className="text-[14px] font-normal text-[#FAFAFA]">
                 Contact Information
@@ -38,7 +38,7 @@ export const Footer = () => {
                   Email:
                 </p>
                 <p className="text-[14px] font-normal text-[#FAFAFA]">
-                  drew@gmail.com
+                  drewuncle863724lu@gmail.com
                 </p>
               </div>
             </div>
@@ -49,7 +49,7 @@ export const Footer = () => {
                   Phone:
                 </p>
                 <p className="text-[14px] font-normal text-[#FAFAFA]">
-                  (+976) 969377799
+                  (+976) 9693 - 7799
                 </p>
               </div>
             </div>

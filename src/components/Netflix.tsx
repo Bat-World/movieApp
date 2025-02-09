@@ -42,7 +42,7 @@ export const Netflix = () => {
 
   return (
     <div
-      className="relative w-full min-h-[70vh] md:min-h-[80vh] flex flex-col justify-center items-center bg-cover bg-center mt-[70px] mb-[120px] md:mb-[150px]"
+      className="relative w-full min-h-[80vh] md:min-h-[90vh] flex flex-col justify-center items-center bg-cover bg-center mt-[70px] mb-[120px] md:mb-[150px]"
       style={{
         backgroundImage: firstMovie
           ? `url(https://image.tmdb.org/t/p/original${firstMovie.backdrop_path})`
@@ -65,7 +65,7 @@ export const Netflix = () => {
       </div>
 
       {/* Swipe */}
-      <div className="absolute bottom-[-100px] md:bottom-[-130px] left-0 w-full h-[150px] flex justify-center items-end pb-4">
+      <div className="absolute bottom-[-130px] md:bottom-[-150px] left-0 w-full h-[150px] flex justify-center items-end pb-4">
         <Swiper
           spaceBetween={15}
           breakpoints={{
@@ -93,8 +93,6 @@ export const Netflix = () => {
             </SwiperSlide>
           ))}
         </Swiper>
-
-
         {/* Navigation Button */}
         {/* left */}
         <button
