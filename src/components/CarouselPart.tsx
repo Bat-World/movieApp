@@ -122,8 +122,8 @@ export default function ImageShifPart() {
                       />
                     </div>
                     {/* Content goes here */}
-                    <div className="w-full lg:w-[1280px] h-auto">
-                      <div className="static text-foreground absolute top-1/4 lg:left-[140px] translate-y-1/2 z-[200]">
+                    <div className="w-full flex justify-center">
+                      <div className="w-full max-w-[1200px] px-4 lg:px-0 text-foreground absolute top-1/4 left-0 right-0 mx-auto z-[200]">
                         <div className="p-4 relative text-black lg:text-white">
                           <div className="flex justify-between">
                             <div>

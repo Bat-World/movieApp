@@ -5,6 +5,7 @@ import Image from "next/image";
 import StarSmall from "@/app/icons/StarSmall";
 import { useRouter } from "next/navigation";
 import { MoveRightIcon } from "lucide-react";
+import { Skeleton } from "./ui/skeleton";
 
 interface MovieListProps {
   title: string;

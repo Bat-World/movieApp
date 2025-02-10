@@ -10,7 +10,7 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
-
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -25,7 +25,7 @@ const Page = () => {
 
   const [similarData, setSimilarData] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [totalPages, setTotalPages] = useState(10); 
+  const [totalPages, setTotalPages] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [errorMessage, setErrorMessage] = useState("");
   const params = useParams();
@@ -43,8 +43,8 @@ const Page = () => {
         }
       );
 
-      console.log("appear here pls",response.data.results);
-      
+      console.log("appear here pls", response.data.results);
+
       setSimilarData(response.data.results);
     } catch (err) {
       console.error("Failed to load similar movies:", err);
@@ -54,9 +54,8 @@ const Page = () => {
     }
   };
   useEffect(() => {
-    fetchMovieData(currentPage); 
+    fetchMovieData(currentPage);
   }, [params.id, currentPage]);
-  
 
   const handleNextPage = () => {
     if (currentPage < totalPages) {
@@ -80,7 +79,7 @@ const Page = () => {
         pages.push(i);
       }
     } else {
-      pages.push(1); 
+      pages.push(1);
       if (currentPage > 2) {
         pages.push("...");
       }
@@ -93,9 +92,9 @@ const Page = () => {
       }
 
       if (currentPage < totalPages - 1) {
-        pages.push("..."); 
+        pages.push("...");
       }
-      pages.push(totalPages); 
+      pages.push(totalPages);
     }
 
     return pages;
@@ -110,9 +109,9 @@ const Page = () => {
       </div>
 
       <div className="MovieImgs w-full h-auto mt-[20px]">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mt-6 2xl:gap-[30px]">
+        <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
           {isLoading ? (
-            <p>Loading...</p>
+            <p>Loading</p>
           ) : errorMessage ? (
             <p>{errorMessage}</p>
           ) : similarData.length > 0 ? (
@@ -149,39 +148,48 @@ const Page = () => {
         </div>
       </div>
 
-       {/* Pagination Controls */}
-       <div className="flex justify-center mt-6">
+      {/* Pagination Controls */}
+      <div className="flex justify-center mt-6">
         <Pagination>
           <PaginationContent className="flex items-center space-x-2">
             {/* Previous Button */}
             <PaginationItem>
-              <Button variant="outline" onClick={handlePreviousPage} disabled={currentPage === 1}>
+              <Button
+                variant="outline"
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+              >
                 Previous
               </Button>
             </PaginationItem>
 
             {renderPageNumbers().map((page, index) =>
-  typeof page === "number" ? (
-    <PaginationItem key={index}>
-      <Button
-        variant={page === currentPage ? "default" : "ghost"}
-        onClick={() => setCurrentPage(page)}
-        className={page === currentPage ? "bg-white text-black" : ""}
-      >
-        {page}
-      </Button>
-    </PaginationItem>
-  ) : (
-    <PaginationItem key={index} className="text-gray-500 px-2">
-      ...
-    </PaginationItem>
-  )
-)}
-
+              typeof page === "number" ? (
+                <PaginationItem key={index}>
+                  <Button
+                    variant={page === currentPage ? "default" : "ghost"}
+                    onClick={() => setCurrentPage(page)}
+                    className={
+                      page === currentPage ? "bg-white text-black" : ""
+                    }
+                  >
+                    {page}
+                  </Button>
+                </PaginationItem>
+              ) : (
+                <PaginationItem key={index} className="text-gray-500 px-2">
+                  ...
+                </PaginationItem>
+              )
+            )}
 
             {/* Next Button */}
             <PaginationItem>
-              <Button variant="outline" onClick={handleNextPage} disabled={currentPage === totalPages}>
+              <Button
+                variant="outline"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
                 Next
               </Button>
             </PaginationItem>
