@@ -185,8 +185,8 @@ const Page = () => {
               variant="outline"
               className={`rounded-full cursor-pointer ${
                 selectedGenreIds.includes(genre.id.toString())
-                  ? "bg-black text-white dark:bg-white dark:text-black"
-                  : "bg-gray-200 dark:bg-gray-700"
+                  ? "bg-white text-black"
+                  : "bg-black text-white"
               }`}
             >
               {genre.name}

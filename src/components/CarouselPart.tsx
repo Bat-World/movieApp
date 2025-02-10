@@ -155,7 +155,7 @@ export default function ImageShifPart() {
   }, [popularMoviesData]);
 
   return (
-    <div className="flex flex-col items-center h-[80vh] z-[-1]">
+    <div className="flex flex-col items-center h-[80vh] z-[-1] ">
       {loading && <p className="text-center mt-10">Loading movies...</p>}
       {error && <p className="text-center mt-10 text-red-500">{error}</p>}
 
@@ -182,32 +182,34 @@ export default function ImageShifPart() {
                         className="object-cover"
                       />
                     </div>
-
-                    <div className="static text-foreground absolute top-1/4 lg:left-[140px] translate-y-1/2 z-[200]">
-                      <div className="p-4 relative text-black lg:text-white">
-                        <div className="flex justify-between">
-                          <div>
-                            <h4 className="text-sm">Now Playing:</h4>
-                            <h3 className="text-xl font-bold truncate dark:text-white">
-                              {movie.title}
-                            </h3>
+                    {/* Content goes here */}
+                    <div className="w-full lg:w-[1280px] h-auto">
+                      <div className="static text-foreground absolute top-1/4 lg:left-[140px] translate-y-1/2 z-[200]">
+                        <div className="p-4 relative text-black lg:text-white">
+                          <div className="flex justify-between">
+                            <div>
+                              <h4 className="text-sm">Now Playing:</h4>
+                              <h3 className="text-xl font-bold truncate dark:text-white">
+                                {movie.title}
+                              </h3>ƒ
+                            </div>
+                            <div className="flex items-center gap-x-2 mt-2">
+                              <Star
+                                className="w-5 h-5 text-[#FDE047]"
+                                fill="currentColor"
+                              />
+                              <span className="text-md font-semibold dark:text-white">
+                                {movie.vote_average.toFixed(1)}
+                              </span>
+                              <span className=" text-sm dark:text-white">
+                                /10
+                              </span>
+                            </div>
                           </div>
-                          <div className="flex items-center gap-x-2 mt-2">
-                            <Star
-                              className="w-5 h-5 text-[#FDE047]"
-                              fill="currentColor"
-                            />
-                            <span className="text-md font-semibold dark:text-white">
-                              {movie.vote_average.toFixed(1)}
-                            </span>
-                            <span className=" text-sm dark:text-white">
-                              /10
-                            </span>
-                          </div>
+                          <p className="w-[302px] text-[16px] leading-[24px] line-clamp-5 mt-4 dark:text-white ">
+                            {movie.overview}
+                          </p>
                         </div>
-                        <p className="w-[302px] text-[16px] leading-[24px] line-clamp-5 mt-4 dark:text-white ">
-                          {movie.overview}
-                        </p>
                       </div>
                     </div>
                   </CarouselItem>
