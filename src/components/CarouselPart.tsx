@@ -12,12 +12,11 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
-import { Header } from "./Header";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_IMAGE_BASE_URL = process.env.NEXT_PUBLIC_TMDB_IMAGE_SERVICE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
-const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
+
 export default function ImageShifPart() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -27,8 +26,6 @@ export default function ImageShifPart() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [moviesSearch, setMoviesSearch] = useState("");
-  const [showSearchValue, setShowSearchValue] = useState("");
 
   interface Movie {
     id: number;
@@ -37,53 +34,6 @@ export default function ImageShifPart() {
     vote_average: number;
     overview: string;
   }
-
-  // Search movie data
-  const fetchSearchMovies = async () => {
-    try {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      const response = await axios.get(
-        `${TMDB_BASE_URL}/search/movie?query=${moviesSearch}&api_key=${TMDB_API_KEY}&language=en-US&page=1`,
-        {
-          headers: {
-            Authorization: `Bearer ${TMDB_API_TOKEN}`,
-          },
-        }
-      );
-
-      setSearchMoviesData(response.data.results.slice(0, 10));
-    } catch (err) {
-      setErrorMessage("Failed to load movies.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  // genre list
-  const fetchGenreListData = async () => {
-    try {
-      setIsLoading(true);
-      setErrorMessage("");
-
-      const response = await axios.get(
-        `${TMDB_BASE_URL}/genre/movie/list?api_key=${TMDB_API_KEY}&language=en`,
-        {
-          headers: {
-            Authorization: `Bearer ${TMDB_API_TOKEN}`,
-          },
-        }
-      );
-
-      setGenreList(response.data.genres);
-    } catch (err: unknown) {
-      console.log(err);
-      setErrorMessage("Failed to load genres.");
-    } finally {
-      setIsLoading(false);
-    }
-  };
 
   const getMovieData = async () => {
     try {
@@ -105,19 +55,8 @@ export default function ImageShifPart() {
       setLoading(false);
     }
   };
-  useEffect(() => {
-    if (moviesSearch) {
-      setShowSearchValue(true);
-      fetchSearchMovies();
-    } else {
-      setShowSearchValue(false);
-    }
-  }, [moviesSearch]);
 
-  useEffect(() => {
-    fetchGenreListData();
-  }, []);
-
+  // trailer
   const getMovieTrailer = async (movieId: number) => {
     try {
       const response = await axios.get(

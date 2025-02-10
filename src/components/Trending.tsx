@@ -20,7 +20,7 @@ const Top10Movies = () => {
 
   const [topMovies, setTopMovies] = useState<Movie[]>([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const swiperRef = useRef(null);
+  const swiperRef = useRef<{ slidePrev: () => void; slideNext: () => void } | null>(null);
 
   const fetchMovies = async () => {
     try {
@@ -31,7 +31,7 @@ const Top10Movies = () => {
     } catch (error) {
       console.error(
         "Error fetching movies:",
-        error.response ? error.response.data : error.message
+        axios.isAxiosError(error) && error.response ? error.response.data : error.message
       );
       setErrorMessage("Failed to fetch movies. Please try again later.");
     }
@@ -76,7 +76,7 @@ const Top10Movies = () => {
       )}
 
       {/* Swiper Container */}
-      <div className="relative w-full mt-6 lg:mt-0">
+      <div className="relative w-full mt-6 ">
         <Swiper
           spaceBetween={15}
           breakpoints={{
@@ -90,7 +90,7 @@ const Top10Movies = () => {
           className="w-full"
           modules={[Navigation]}
         >
-          {topMovies.map((movie, index) => (
+          {topMovies.map((movie) => (
             <SwiperSlide
               key={movie.id}
               className="relative flex flex-col items-center group"
