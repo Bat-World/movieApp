@@ -191,7 +191,7 @@ export default function ImageShifPart() {
                               <h4 className="text-sm">Now Playing:</h4>
                               <h3 className="text-xl font-bold truncate dark:text-white">
                                 {movie.title}
-                              </h3>ƒ
+                              </h3>
                             </div>
                             <div className="flex items-center gap-x-2 mt-2">
                               <Star
