@@ -48,7 +48,6 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
 
   return (
     <div className="MovieList w-full h-auto px-[40px] flex flex-col mt-[50px] items-center justify-center">
-
       <div className="w-full h-[36px] flex flex-row justify-between">
         <div className="w-auto h-full flex flex-row justify-center items-center gap-[10px]">
           <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA]"></div>
@@ -67,8 +66,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
       </div>
 
       <div className="MovieImgs w-full h-auto mt-[30px]">
-
-        <div className="flex flex-wrap gap-5 lg:gap-8 flex justify-center">
+        <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
           {isLoading ? (
             <p>Loading...</p>
           ) : errorMessage ? (
@@ -77,7 +75,7 @@ const MovieList = ({ title, endpoint }: MovieListProps) => {
             movieData.map((movie) => (
               <div
                 key={movie.id}
-                className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]"
+                className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px] hover:scale-105 transition-transform duration-300 cursor-pointer"
                 onClick={() => push(`/detail/${movie.id}`)}
               >
                 <Image

@@ -79,12 +79,7 @@ const Top10Movies = () => {
       >
         {topMovies.map((movie, index) => (
           <SwiperSlide key={movie.id} className="relative flex flex-col items-center group">
-            {/* Background Number */}
-            {/* <span className="absolute text-[100px] sm:text-[140px] md:text-[160px] lg:text-[200px] font-extrabold text-[#4338CA] opacity-40 transition-opacity duration-300 group-hover:opacity-100 -z-10 left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
-              {index + 1}
-            </span> */}
-  
-            {/* Movie Poster */}
+      
             <Image
               src={`https://image.tmdb.org/t/p/w300${movie.poster_path}`}
               alt={movie.title}
