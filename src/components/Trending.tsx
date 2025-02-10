@@ -56,8 +56,8 @@ const Top10Movies = () => {
             <span className="letter-shadow-r">0</span>
           </h3>
         </div>
-        <div className="flex flex-col items-between">
-          <div></div>
+        <div className="flex flex-col items-between h-[128px]">
+          <div className="hidden md:block w-[30px] h-[50px] bg-transparent"></div>
           <div className="text-center md:text-left">
             {" "}
             <h2 className="text-lg md:text-xl tracking-widest font-semibold leading-[24px]">
@@ -76,7 +76,7 @@ const Top10Movies = () => {
       )}
 
       {/* Swiper Container */}
-      <div className="relative w-full mt-6">
+      <div className="relative w-full mt-6 lg:mt-0">
         <Swiper
           spaceBetween={15}
           breakpoints={{
