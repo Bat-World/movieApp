@@ -11,8 +11,6 @@ import { Button } from "@/components/ui/button";
 import { Play } from "lucide-react";
 import RightArrow from "@/app/icons/RightArrow";
 
-
-
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -53,7 +51,9 @@ const Page = () => {
     vote_average: number;
   }
 
-  const [similarMovieData, setSimilarMovieData] = useState<SimilarMovie[] | null>(null);
+  const [similarMovieData, setSimilarMovieData] = useState<
+    SimilarMovie[] | null
+  >(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
@@ -95,8 +95,8 @@ const Page = () => {
         }
       );
 
-      console.log("trailerrr",response.data.results);
-      
+      console.log("trailerrr", response.data.results);
+
       setVideoData(response.data.results);
     } catch (err) {
       console.log("Failed to load videos:", err);
@@ -142,7 +142,6 @@ const Page = () => {
     fetchVideos();
     fetchSimilarMoviesData();
   }, [params.id]);
-  
 
   const openTrailerModal = (trailerKey: string) => {
     setTrailerKey(trailerKey);
@@ -162,21 +161,15 @@ const Page = () => {
     return <div className="text-center mt-10">No movie data found.</div>;
   }
 
-
   const trailer = videoData?.find((video: Video) => video.type === "Trailer");
-
 
   const director = creditData?.crew.find(
     (member: { name: string; job: string }) => member.job === "Director"
   );
   const writers = creditData?.crew
     .filter((member: { name: string; job: string }) => member.job === "Writer")
-    .slice(0, 3); 
-  const topCast = creditData?.cast.slice(0, 3); 
-
-
-
-;
+    .slice(0, 3);
+  const topCast = creditData?.cast.slice(0, 3);
 
   return (
     <div className="max-w-2xl mx-auto px-4 mt-[80px] md:max-w-4xl lg:max-w-6xl">
@@ -347,17 +340,24 @@ const Page = () => {
         )}
       </div>
       {/*similar movies data */}
-      <div className="flex flex-row justify-between">
-        <p className="mt-[30px] text-[24px] font-semibold">More like This</p>{" "}
+      <div className="flex flex-row justify-between mt-[50px]">
+        <div className="flex flex-row gap-[10px] items-center">
+          {" "}
+          <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA] mt-[30px]"></div>
+          <p className="mt-[30px] text-[24px] font-semibold">
+            You may like
+          </p>{" "}
+        </div>
+
         <button
-          className="w-auto h-auto text-[14px] bg-transparent font-bold flex flex-row items-center gap-[8px] hover:underline"
+          className="w-auto h-auto text-[14px] bg-transparent font-bold flex flex-row items-center gap-[8px] hover:underline mt-[30px]"
           onClick={() => push(`/similarmovie/${params.id}`)}
         >
           See more
           <RightArrow />
         </button>
       </div>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5 gap-4 mt-6 2xl:gap-[30px]">
+      <div className="flex flex-wrap gap-5 lg:gap-8 justify-start mt-[30px]">
         {isLoading ? (
           <p>Loading...</p>
         ) : errorMessage ? (

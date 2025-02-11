@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
-import { Star, Play, X } from "lucide-react";
+import { Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Carousel,
@@ -12,6 +12,9 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Skeleton } from "./ui/skeleton";
+import { ListCollapse } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_IMAGE_BASE_URL = process.env.NEXT_PUBLIC_TMDB_IMAGE_SERVICE_URL;
@@ -23,9 +26,7 @@ export default function ImageShifPart() {
   const [popularMoviesData, setPopularMoviesData] = useState<Movie[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
   const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
+  const { push } = useRouter();
 
   interface Movie {
     id: number;
@@ -33,6 +34,7 @@ export default function ImageShifPart() {
     title: string;
     vote_average: number;
     overview: string;
+    logo_path: string | null;
   }
 
   const getMovieData = async () => {
@@ -44,7 +46,29 @@ export default function ImageShifPart() {
           headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
         }
       );
-      setPopularMoviesData(response.data.results.slice(0, 8));
+
+      // Fetch logos for each movie
+      const moviesWithLogos = await Promise.all(
+        response.data.results.slice(0, 8).map(async (movie: any) => {
+          const logoResponse = await axios.get(
+            `${TMDB_BASE_URL}/movie/${movie.id}/images`,
+            {
+              headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
+            }
+          );
+
+          const logo = logoResponse.data.logos.find(
+            (logo: any) => logo.iso_639_1 === "en"
+          );
+
+          return {
+            ...movie,
+            logo_path: logo ? logo.file_path : null,
+          };
+        })
+      );
+
+      setPopularMoviesData(moviesWithLogos);
     } catch (error) {
       if (axios.isAxiosError(error)) {
         setError(
@@ -53,29 +77,6 @@ export default function ImageShifPart() {
       }
     } finally {
       setLoading(false);
-    }
-  };
-
-  // trailer
-  const getMovieTrailer = async (movieId: number) => {
-    try {
-      const response = await axios.get(
-        `${TMDB_BASE_URL}/movie/${movieId}/videos?language=en-US`,
-        {
-          headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
-        }
-      );
-      const trailers = response.data.results.filter(
-        (video: { type: string; site: string; key: string }) =>
-          video.type === "Trailer" && video.site === "YouTube"
-      );
-      if (trailers.length > 0) {
-        setTrailerUrl(`https://www.youtube.com/embed/${trailers[0].key}`);
-      } else {
-        setTrailerUrl(null);
-      }
-    } catch (error) {
-      console.error("Error fetching trailer:", error);
     }
   };
 
@@ -94,12 +95,12 @@ export default function ImageShifPart() {
   }, [popularMoviesData]);
 
   return (
-    <div className="flex flex-col items-center h-[80vh] z-[-1] ">
-      {loading && <p className="text-center mt-10">Loading movies...</p>}
+    <div className="flex flex-col items-center h-[80vh] z-[-1]">
+      {loading && <Skeleton className="w-full h-[80vh]" />}
       {error && <p className="text-center mt-10 text-red-500">{error}</p>}
 
       {!loading && !error && popularMoviesData.length > 0 && (
-        <div className="relative w-full max-w-[vw]  h-[80vh]">
+        <div className="relative w-full max-w-[vw] h-[80vh]">
           <div className="absolute w-full h-[30px] bg-black z-1000"></div>
 
           {/* Carousel Container */}
@@ -123,14 +124,25 @@ export default function ImageShifPart() {
                     </div>
                     {/* Content goes here */}
                     <div className="w-full flex justify-center">
-                      <div className="w-full max-w-[1200px] px-4 lg:px-0 text-foreground absolute top-1/4 left-0 right-0 mx-auto z-[200]">
+                      <div className="w-full max-w-[1200px] px-[40px] lg:px-0 text-foreground absolute top-1/3 left-0 right-0 mx-auto z-[200]">
                         <div className="p-4 relative text-black lg:text-white">
-                          <div className="flex justify-between">
+                          <div className="flex flex-col">
                             <div>
-                              <h4 className="text-sm">Now Playing:</h4>
-                              <h3 className="text-xl font-bold truncate dark:text-white">
-                                {movie.title}
-                              </h3>
+                              {/* Display the logo if available, otherwise fallback to title */}
+                              {movie.logo_path ? (
+                                <div className="relative w-[400px] h-[200px]">
+                                  <Image
+                                    src={`${TMDB_IMAGE_BASE_URL}/original${movie.logo_path}`}
+                                    alt={movie.title}
+                                    layout="fill"
+                                    className="object-contain"
+                                  />
+                                </div>
+                              ) : (
+                                <h3 className="text-[20px] font-bold truncate text-white lg:text-[30px]">
+                                  {movie.title}
+                                </h3>
+                              )}
                             </div>
                             <div className="flex items-center gap-x-2 mt-2">
                               <Star
@@ -140,14 +152,20 @@ export default function ImageShifPart() {
                               <span className="text-md font-semibold dark:text-white">
                                 {movie.vote_average.toFixed(1)}
                               </span>
-                              <span className=" text-sm dark:text-white">
+                              <span className="text-sm dark:text-white">
                                 /10
                               </span>
                             </div>
                           </div>
-                          <p className="w-[302px] text-[16px] leading-[24px] line-clamp-5 mt-4 dark:text-white ">
+                          <p className="w-[302px] text-[16px] leading-[24px] line-clamp-5 mt-4 text-white normal">
                             {movie.overview}
                           </p>
+                          <button
+                            className="text-white bg-transparent border-white border-[1px] w-[180px] h-[40px] rounded-[40px] flex flex-row items-center px-[20px] justify-between font-semibold mt-[20px] cursor-pointer"
+                            onClick={() => push(`/detail/${movie.id}`)} 
+                          >
+                            <ListCollapse /> See more
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -176,9 +194,6 @@ export default function ImageShifPart() {
                 />
               </div>
             </Carousel>
-
-            {/* Fixed Icons on Carousel Container */}
-            <div className="absolute top-4 left-0 w-full flex flex-row justify-center gap-[10px]"></div>
             {/* Hero Section */}
             <div
               style={{
@@ -190,35 +205,7 @@ export default function ImageShifPart() {
               }}
             ></div>
 
-            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20">
-              <Button
-                variant="outline"
-                className="w-[144.45px] flex items-center justify-center bg-gray-200 dark:bg-gray-800 dark:text-white"
-                onClick={() => getMovieTrailer(movie.id)}
-              >
-                <Play className="w-4 h-4" />
-                <span>Watch Trailer</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {trailerUrl && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75 z-50">
-          <div className="relative w-[90%] max-w-3xl bg-white p-4 rounded-lg">
-            <button
-              onClick={() => setTrailerUrl(null)}
-              className="absolute top-2 right-2 bg-gray-200 p-2 rounded-full"
-            >
-              <X className="w-6 h-6 text-black" />
-            </button>
-            <iframe
-              className="w-full h-[300px] lg:h-[500px]"
-              src={trailerUrl}
-              title="Movie Trailer"
-              allow="fullscreen"
-            ></iframe>
+            <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 z-20"></div>
           </div>
         </div>
       )}
