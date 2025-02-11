@@ -12,7 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import RightArrow from "@/app/icons/RightArrow";
 
-
 interface MovieListProps {
   title: string;
   endpoint: string;
@@ -26,7 +25,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
   const [movieData, setMovieData] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [totalPages, setTotalPages] = useState(10); 
+  const [totalPages, setTotalPages] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchMovies = async (page: number) => {
@@ -41,7 +40,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
         }
       );
       setMovieData(response.data.results);
-      setTotalPages(response.data.total_pages || 10); 
+      setTotalPages(response.data.total_pages || 10);
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
@@ -78,7 +77,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
         pages.push(i);
       }
     } else {
-      pages.push(1); 
+      pages.push(1);
       if (currentPage > 2) {
         pages.push("...");
       }
@@ -91,9 +90,9 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
       }
 
       if (currentPage < totalPages - 1) {
-        pages.push("..."); 
+        pages.push("...");
       }
-      pages.push(totalPages); 
+      pages.push(totalPages);
     }
 
     return pages;
@@ -103,7 +102,9 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
     <div className="MovieList w-full h-auto px-[20px] flex flex-col items-center gap-[32px]">
       <div className="w-full h-[36px] flex flex-row justify-between mt-[92px] max-w-[1280px]">
         <div className="w-[114px] h-full flex justify-center items-center">
-          <p className="text-[30px] font-semibold">{title.charAt(0).toUpperCase() + title.slice(1)}</p>
+          <p className="text-[30px] font-semibold">
+            {title.charAt(0).toUpperCase() + title.slice(1)}
+          </p>
         </div>
       </div>
 
@@ -132,7 +133,9 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
                 <div className="flex flex-col w-auto h-auto items-start mt-2 px-2">
                   <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
                     <StarSmall />
-                    <p className="text-[16px] font-semibold">{movie.vote_average.toFixed(1)}</p>
+                    <p className="text-[16px] font-semibold">
+                      {movie.vote_average.toFixed(1)}
+                    </p>
                     <p>/10</p>
                   </div>
                   <p className="text-[18px] font-semibold">{movie.title}</p>
@@ -149,7 +152,12 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
           <PaginationContent className="flex items-center space-x-2">
             {/* Previous Button */}
             <PaginationItem>
-              <Button variant="outline" onClick={handlePreviousPage} disabled={currentPage === 1 } className="bg-transparent border-none">
+              <Button
+                variant="outline"
+                onClick={handlePreviousPage}
+                disabled={currentPage === 1}
+                className="bg-transparent border-none"
+              >
                 Previous
               </Button>
             </PaginationItem>
@@ -165,8 +173,9 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
                   <Button
                     variant={page === currentPage ? "default" : "ghost"}
                     onClick={() => setCurrentPage(page as number)}
-                    className={page === currentPage ? "bg-white text-black" : ""}
-                    
+                    className={
+                      page === currentPage ? "bg-white text-black" : ""
+                    }
                   >
                     {page}
                   </Button>
@@ -176,8 +185,14 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
 
             {/* Next Button */}
             <PaginationItem>
-              <Button className="bg-transparent border-none" variant="outline" onClick={handleNextPage} disabled={currentPage === totalPages}>
-                Next<RightArrow/>
+              <Button
+                className="bg-transparent border-none"
+                variant="outline"
+                onClick={handleNextPage}
+                disabled={currentPage === totalPages}
+              >
+                Next
+                <RightArrow />
               </Button>
             </PaginationItem>
           </PaginationContent>

@@ -299,36 +299,31 @@ const Page = () => {
       )}
 
       {/* Acting crew */}
- 
-      <div className="flex flex-row gap-[10px] items-center">
-          {" "}
-          <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA] mt-[30px]"></div>
-          <p className="mt-[30px] text-[24px] font-semibold">Actors</p>{" "}
-      </div>
-  {/* <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {firstEightActors.map((actor) => (
-              <div
-                key={actor.id}
-                className="flex flex-col items-center text-center"
-              >
-                {actor.profile_path ? (
-                  <Image
-                    src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
-                    alt={actor.name}
-                    width={150}
-                    height={150}
-                    className="rounded-lg object-cover"
-                  />
-                ) : (
-                  <div className="w-[150px] h-[150px] flex items-center justify-center bg-gray-300 rounded-lg">
-                    <p className="text-gray-600">No Image</p>
-                  </div>
-                )}
-                <p className="mt-2 font-semibold">{actor.name}</p>
-                <p className="text-sm text-gray-500">{actor.character}</p>
-              </div>
-            ))}
-          </div> */}
+
+  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-5">
+            {director && (
+                <div>
+                  <h3 className="font-semibold">Director</h3>
+                  <p className="text-gray-600 text-sm">{director.name}</p>
+                </div>
+              )}
+              {writers && writers.length > 0 && (
+                <div>
+                  <h3 className="font-semibold">Writers</h3>
+                  <p className="text-gray-600 text-sm">
+                    {writers.map((writer: any) => writer.name).join(" · ")}
+                  </p>
+                </div>
+              )}
+              {topCast && topCast.length > 0 && (
+                <div>
+                  <h3 className="font-semibold">Stars</h3>
+                  <p className="text-gray-600 text-sm">
+                    {topCast.map((cast: any) => cast.name).join(" · ")}
+                  </p>
+                </div>
+              )}
+          </div>
       {/*similar movies data */}
       <div className="flex flex-row justify-between mt-[50px]">
         <div className="flex flex-row gap-[10px] items-center">

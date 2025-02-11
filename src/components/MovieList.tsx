@@ -59,7 +59,7 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
   }, [choosentype, endpoint, seriesEndpoint]);
 
   return (
-    <div className="MovieList w-full h-auto px-[40px] flex flex-col mt-[50px] items-center justify-center">
+    <div className="MovieList w-full h-auto px-[40px] flex flex-col mt-[50px] items-center">
       <div className="w-full h-[36px] flex flex-row justify-between">
         <div className="w-auto h-full flex flex-row justify-center items-center gap-[10px]">
           <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA]"></div>

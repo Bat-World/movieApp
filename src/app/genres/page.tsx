@@ -256,7 +256,7 @@ const Page = () => {
               {searchMoviesData.map((movie) => (
                 <div
                   key={movie.id}
-                  className="bg-[var(--detail-bg)] rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  className="bg-transparent rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
                   onClick={() => handleMovieClick(movie.id)}
                 >
                   {movie.poster_path ? (
