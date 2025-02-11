@@ -36,7 +36,7 @@ const Page = () => {
   const [showSearchResults, setShowSearchResults] = useState(false);
   const [searchType, setSearchType] = useState<"genre" | "name">("genre");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(10); 
+  const [totalPages, setTotalPages] = useState(10);
   // Fetch list of all genres
   const fetchGenreList = async () => {
     try {
@@ -139,8 +139,8 @@ const Page = () => {
     push(`/detail/${movieId}`);
   };
 
-   // Display page number above
-   const renderPageNumbers = () => {
+  // Display page number above
+  const renderPageNumbers = () => {
     const pages = [];
     const maxPagesToShow = 3;
 
@@ -149,7 +149,7 @@ const Page = () => {
         pages.push(i);
       }
     } else {
-      pages.push(1); 
+      pages.push(1);
       if (currentPage > 2) {
         pages.push("...");
       }
@@ -162,9 +162,9 @@ const Page = () => {
       }
 
       if (currentPage < totalPages - 1) {
-        pages.push("..."); 
+        pages.push("...");
       }
-      pages.push(totalPages); 
+      pages.push(totalPages);
     }
 
     return pages;
@@ -289,45 +289,57 @@ const Page = () => {
           )}
         </div>
         {/* Pagination */}
-      <div className="flex justify-center mt-6">
-        <Pagination>
-          <PaginationContent className="flex items-center space-x-2">
-            {/* Previous Button */}
-            <PaginationItem>
-              <Button variant="outline" onClick={handlePreviousPage} disabled={currentPage === 1 } className="bg-transparent border-none">
-                Previous
-              </Button>
-            </PaginationItem>
+        <div className="flex justify-center mt-6">
+          <Pagination>
+            <PaginationContent className="flex items-center space-x-2">
+              {/* Previous Button */}
+              <PaginationItem>
+                <Button
+                  variant="outline"
+                  onClick={handlePreviousPage}
+                  disabled={currentPage === 1}
+                  className="bg-transparent border-none"
+                >
+                  Previous
+                </Button>
+              </PaginationItem>
 
-            {/* Page Numbers */}
-            {renderPageNumbers().map((page, index) =>
-              page === "..." ? (
-                <PaginationItem key={index} className="text-gray-500 px-2">
-                  ...
-                </PaginationItem>
-              ) : (
-                <PaginationItem key={index}>
-                  <Button
-                    variant={page === currentPage ? "default" : "ghost"}
-                    onClick={() => setCurrentPage(page as number)}
-                    className={page === currentPage ? "bg-white text-black" : ""}
-                    
-                  >
-                    {page}
-                  </Button>
-                </PaginationItem>
-              )
-            )}
+              {/* Page Numbers */}
+              {renderPageNumbers().map((page, index) =>
+                page === "..." ? (
+                  <PaginationItem key={index} className="text-gray-500 px-2">
+                    ...
+                  </PaginationItem>
+                ) : (
+                  <PaginationItem key={index}>
+                    <Button
+                      variant={page === currentPage ? "default" : "ghost"}
+                      onClick={() => setCurrentPage(page as number)}
+                      className={
+                        page === currentPage ? "bg-white text-black" : ""
+                      }
+                    >
+                      {page}
+                    </Button>
+                  </PaginationItem>
+                )
+              )}
 
-            {/* Next Button */}
-            <PaginationItem>
-              <Button className="bg-transparent border-none" variant="outline" onClick={handleNextPage} disabled={currentPage === totalPages}>
-                Next<RightArrow/>
-              </Button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      </div>
+              {/* Next Button */}
+              <PaginationItem>
+                <Button
+                  className="bg-transparent border-none"
+                  variant="outline"
+                  onClick={handleNextPage}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                  <RightArrow />
+                </Button>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       </div>
     </div>
   );

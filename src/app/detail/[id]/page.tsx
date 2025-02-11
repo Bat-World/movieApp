@@ -37,11 +37,7 @@ const Page = () => {
     overview: string;
   }
 
-  const [movieData, setMovieData] = useState<Movie | null>(null);
-  interface Credit {
-    cast: { name: string }[];
-    crew: { name: string; job: string }[];
-  }
+  const [movieData, setMovieData] = useState([]);
 
   const [creditData, setCreditData] = useState<Credit | null>(null);
   interface SimilarMovie {
@@ -173,232 +169,233 @@ const Page = () => {
 
   return (
     <div className="max-w-2xl mx-auto px-4 mt-[80px] md:max-w-4xl lg:max-w-6xl">
-      {/* Movie Title & Details */}
-      <div className="mt-6">
-        {isLoading ? (
-          <Skeleton className="h-8 w-3/4 mb-2" />
-        ) : (
-          <h1 className="text-[24px] lg:text-[36px] font-bold">
-            {movieData.title}.
-          </h1>
+     {/* Movie Title & Details */}
+     <div className="mt-6">
+       {isLoading ? (
+         <Skeleton className="h-8 w-3/4 mb-2" />
+       ) : (
+         <h1 className="text-[24px] lg:text-[36px] font-bold">
+           {movieData.title}.
+         </h1>
+       )}
+       <div className="flex items-center space-x-4 text-gray-500 text-sm mt-1">
+         {isLoading ? (
+           <>
+             <Skeleton className="h-4 w-20" />
+             <Skeleton className="h-4 w-10" />
+             <Skeleton className="h-4 w-10" />
+             <Skeleton className="h-4 w-24" />
+           </>
+         ) : (
+           <>
+             <span>{movieData.release_date}</span>
+             <span>• {movieData.adult ? "R" : "PG"}</span>
+             <span>• {movieData.runtime}m</span>
+             <div className="flex items-center text-yellow-500 font-semibold">
+               ⭐{" "}
+               <span className="ml-1">
+                 {movieData.vote_average.toFixed(1)}/10
+               </span>
+               <span className="text-gray-400 ml-2 text-xs">
+                 {movieData.vote_count}
+               </span>
+             </div>
+           </>
+         )}
+       </div>
+     </div>
+
+
+     {/* Movie Thumbnail & Trailer */}
+     <div className="relative mt-4 flex flex-row justify-between">
+       {isLoading ? (
+         <Skeleton className="w-full h-64 rounded-lg" />
+       ) : (
+         <>
+           {/* Poster Image (Hidden on Small Screens) */}
+           <Image
+             src={`https://image.tmdb.org/t/p/w1280${movieData.poster_path}`}
+             alt={movieData.title}
+             width={800}
+             height={450}
+             objectFit="cover"
+             className="hidden sm:hidden lg:block w-[222px] h-[428px] rounded-lg"
+           />
+
+
+           {/* Backdrop Image */}
+           <div className="relative">
+             <Image
+               src={`https://image.tmdb.org/t/p/w1280${movieData.backdrop_path}`}
+               alt={movieData.title}
+               width={800}
+               height={450}
+               className="lg:w-[760px] lg:h-[428px] rounded-lg w-[375px] h-auto"
+             />
+
+
+             {/* Buttons Positioned Bottom-Left */}
+             <div className="absolute bottom-4 left-4 flex gap-2">
+               {trailer && (
+                 <button
+                   onClick={() => openTrailerModal(trailer.key)}
+                   className="flex items-center bg-black/70 text-white px-4 py-2 rounded-lg text-sm"
+                 >
+                   ▶ Play trailer
+                 </button>
+               )}
+               <Button
+                 onClick={() => router.push(`/watch/movie/${params.id}`)}
+                 variant="outline"
+                 className="text-base font-bold text-[#1A1D29] flex items-center bg-white/80 px-4 py-2 rounded-lg"
+               >
+                 <Play className="fill-[#1A1D29]" />
+                 PLAY
+               </Button>
+             </div>
+           </div>
+         </>
+       )}
+     </div>
+
+        {/* Trailer Modal */}
+        {isTrailerModalOpen && (
+          <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
+            <div className="relative w-full max-w-4xl bg-white p-4 rounded-lg">
+              <button
+                onClick={closeTrailerModal}
+                className="absolute top-4 right-4 text-white text-2xl"
+              >
+                ×
+              </button>
+              <div
+                className="aspect-w-16 aspect-h-9"
+                style={{ height: "400px", margin: 0, padding: 0 }}
+              >
+                <iframe
+                  width="100%"
+                  height="100%"
+                  src={`https://www.youtube.com/embed/${trailerKey}`}
+                  title="Trailer"
+                  style={{ border: "none" }}
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                  className="border-none"
+                ></iframe>
+              </div>
+            </div>
+          </div>
         )}
-        <div className="flex items-center space-x-4 text-gray-500 text-sm mt-1">
+
+        {/* Movie Description */}
+        {isLoading ? (
+          <div className="mt-4 space-y-2">
+            <Skeleton className="h-4 w-full" />
+          </div>
+        ) : (
+          <p className="text-gray-700 mt-4 text-sm leading-relaxed">
+            {movieData.overview}
+          </p>
+        )}
+
+        {/* Director, Writers, Stars */}
+        <div className="mt-6 space-y-4">
           {isLoading ? (
             <>
-              <Skeleton className="h-4 w-20" />
-              <Skeleton className="h-4 w-10" />
-              <Skeleton className="h-4 w-10" />
-              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-6 w-24" />
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-6 w-24" />
+              <Skeleton className="h-4 w-48" />
+              <Skeleton className="h-6 w-24" />
+              <Skeleton className="h-4 w-48" />
             </>
           ) : (
             <>
-              <span>{movieData.release_date}</span>
-              <span>• {movieData.adult ? "R" : "PG"}</span>
-              <span>• {movieData.runtime}m</span>
-              <div className="flex items-center text-yellow-500 font-semibold">
-                ⭐{" "}
-                <span className="ml-1">
-                  {movieData.vote_average.toFixed(1)}/10
-                </span>
-                <span className="text-gray-400 ml-2 text-xs">
-                  {movieData.vote_count}
-                </span>
-              </div>
+              {director && (
+                <div>
+                  <h3 className="font-semibold">Director</h3>
+                  <p className="text-gray-600 text-sm">{director.name}</p>
+                </div>
+              )}
+
+              {writers && writers.length > 0 && (
+                <div>
+                  <h3 className="font-semibold">Writers</h3>
+                  <p className="text-gray-600 text-sm">
+                    {writers.map((writer: any) => writer.name).join(" · ")}
+                  </p>
+                </div>
+              )}
+
+              {topCast && topCast.length > 0 && (
+                <div>
+                  <h3 className="font-semibold">Stars</h3>
+                  <p className="text-gray-600 text-sm">
+                    {topCast.map((cast: any) => cast.name).join(" · ")}
+                  </p>
+                </div>
+              )}
             </>
           )}
         </div>
-      </div>
-
-      {/* Movie Thumbnail & Trailer */}
-      <div className="relative mt-4 flex flex-row justify-between">
-        {isLoading ? (
-          <Skeleton className="w-full h-64 rounded-lg" />
-        ) : (
-          <>
-            {/* Poster Image (Hidden on Small Screens) */}
-            <Image
-              src={`https://image.tmdb.org/t/p/w1280${movieData.poster_path}`}
-              alt={movieData.title}
-              width={800}
-              height={450}
-              objectFit="cover"
-              className="hidden sm:hidden lg:block w-[222px] h-[428px] rounded-lg"
-            />
-
-            {/* Backdrop Image */}
-            <div className="relative">
-              <Image
-                src={`https://image.tmdb.org/t/p/w1280${movieData.backdrop_path}`}
-                alt={movieData.title}
-                width={800}
-                height={450}
-                className="lg:w-[760px] lg:h-[428px] rounded-lg w-[375px] h-auto"
-              />
-
-              {/* Buttons Positioned Bottom-Left */}
-              <div className="absolute bottom-4 left-4 flex gap-2">
-                {trailer && (
-                  <button
-                    onClick={() => openTrailerModal(trailer.key)}
-                    className="flex items-center bg-black/70 text-white px-4 py-2 rounded-lg text-sm"
-                  >
-                    ▶ Play trailer
-                  </button>
-                )}
-                <Button
-                  onClick={() => router.push(`/watch/movie/${params.id}`)}
-                  variant="outline"
-                  className="text-base font-bold text-[#1A1D29] flex items-center bg-white/80 px-4 py-2 rounded-lg"
-                >
-                  <Play className="fill-[#1A1D29]" />
-                  PLAY
-                </Button>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-
-      {/* Trailer Modal */}
-      {isTrailerModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-          <div className="relative w-full max-w-4xl bg-white p-4 rounded-lg">
-            <button
-              onClick={closeTrailerModal}
-              className="absolute top-4 right-4 text-white text-2xl"
-            >
-              ×
-            </button>
-            <div
-              className="aspect-w-16 aspect-h-9"
-              style={{ height: "400px", margin: 0, padding: 0 }}
-            >
-              <iframe
-                width="100%"
-                height="100%"
-                src={`https://www.youtube.com/embed/${trailerKey}`}
-                title="Trailer"
-                style={{ border: "none" }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-                className="border-none"
-              ></iframe>
-            </div>
+        {/*similar movies data */}
+        <div className="flex flex-row justify-between mt-[50px]">
+          <div className="flex flex-row gap-[10px] items-center">
+            {" "}
+            <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA] mt-[30px]"></div>
+            <p className="mt-[30px] text-[24px] font-semibold">You may like</p>{" "}
           </div>
+
+          <button
+            className="w-auto h-auto text-[14px] bg-transparent font-bold flex flex-row items-center gap-[8px] hover:underline mt-[30px]"
+            onClick={() => push(`/similarmovie/${params.id}`)}
+          >
+            See more
+            <RightArrow />
+          </button>
         </div>
-      )}
-
-      {/* Movie Description */}
-      {isLoading ? (
-        <div className="mt-4 space-y-2">
-          <Skeleton className="h-4 w-full" />
-        </div>
-      ) : (
-        <p className="text-gray-700 mt-4 text-sm leading-relaxed">
-          {movieData.overview}
-        </p>
-      )}
-
-      {/* Director, Writers, Stars */}
-      <div className="mt-6 space-y-4">
-        {isLoading ? (
-          <>
-            <Skeleton className="h-6 w-24" />
-            <Skeleton className="h-4 w-48" />
-            <Skeleton className="h-6 w-24" />
-            <Skeleton className="h-4 w-48" />
-            <Skeleton className="h-6 w-24" />
-            <Skeleton className="h-4 w-48" />
-          </>
-        ) : (
-          <>
-            {director && (
-              <div>
-                <h3 className="font-semibold">Director</h3>
-                <p className="text-gray-600 text-sm">{director.name}</p>
-              </div>
-            )}
-
-            {writers && writers.length > 0 && (
-              <div>
-                <h3 className="font-semibold">Writers</h3>
-                <p className="text-gray-600 text-sm">
-                  {writers.map((writer: any) => writer.name).join(" · ")}
-                </p>
-              </div>
-            )}
-
-            {topCast && topCast.length > 0 && (
-              <div>
-                <h3 className="font-semibold">Stars</h3>
-                <p className="text-gray-600 text-sm">
-                  {topCast.map((cast: any) => cast.name).join(" · ")}
-                </p>
-              </div>
-            )}
-          </>
-        )}
-      </div>
-      {/*similar movies data */}
-      <div className="flex flex-row justify-between mt-[50px]">
-        <div className="flex flex-row gap-[10px] items-center">
-          {" "}
-          <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA] mt-[30px]"></div>
-          <p className="mt-[30px] text-[24px] font-semibold">
-            You may like
-          </p>{" "}
-        </div>
-
-        <button
-          className="w-auto h-auto text-[14px] bg-transparent font-bold flex flex-row items-center gap-[8px] hover:underline mt-[30px]"
-          onClick={() => push(`/similarmovie/${params.id}`)}
-        >
-          See more
-          <RightArrow />
-        </button>
-      </div>
-      <div className="flex flex-wrap gap-5 lg:gap-8 justify-start mt-[30px]">
-        {isLoading ? (
-          <p>Loading...</p>
-        ) : errorMessage ? (
-          <p>{errorMessage}</p>
-        ) : similarMovieData && similarMovieData.length > 0 ? (
-          similarMovieData.map((movie) => (
-            <div
-              key={movie.id}
-              className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col  lg:w-[230px] lg:h-[440px] cursor-pointer"
-              onClick={() => router.push(`/detail/${movie.id}`)}
-            >
-              {movie.poster_path ? (
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                  alt={movie.title}
-                  width={230}
-                  height={340}
-                  className="rounded-t-[8px] lg:w-[230px] lg:h-[340px] hover:opacity-60"
-                />
-              ) : (
-                <div className="w-[230px] h-[340px] flex items-center justify-center bg-gray-300">
-                  <p className="text-center text-gray-600">No Image</p>
+        <div className="flex flex-wrap gap-5 lg:gap-8 justify-start mt-[30px]">
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : errorMessage ? (
+            <p>{errorMessage}</p>
+          ) : similarMovieData && similarMovieData.length > 0 ? (
+            similarMovieData.map((movie) => (
+              <div
+                key={movie.id}
+                className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col  lg:w-[230px] lg:h-[440px] cursor-pointer"
+                onClick={() => router.push(`/detail/${movie.id}`)}
+              >
+                {movie.poster_path ? (
+                  <Image
+                    src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                    alt={movie.title}
+                    width={230}
+                    height={340}
+                    className="rounded-t-[8px] lg:w-[230px] lg:h-[340px] hover:opacity-60"
+                  />
+                ) : (
+                  <div className="w-[230px] h-[340px] flex items-center justify-center bg-gray-300">
+                    <p className="text-center text-gray-600">No Image</p>
+                  </div>
+                )}
+                <div className=" flex flex-col w-auto h-auto items-start mt-2 px-2">
+                  <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
+                    <StarSmall />
+                    <p className="text-[16px] font-semibold">
+                      {movie.vote_average.toFixed(1)}
+                    </p>
+                    <p>/10</p>
+                  </div>
+                  <p className="text-[18px] font-semibold">{movie.title}</p>
                 </div>
-              )}
-              <div className=" flex flex-col w-auto h-auto items-start mt-2 px-2">
-                <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
-                  <StarSmall />
-                  <p className="text-[16px] font-semibold">
-                    {movie.vote_average.toFixed(1)}
-                  </p>
-                  <p>/10</p>
-                </div>
-                <p className="text-[18px] font-semibold">{movie.title}</p>
               </div>
-            </div>
-          ))
-        ) : (
-          <p>No movies found for this genre.</p>
-        )}
+            ))
+          ) : (
+            <p>No movies found for this genre.</p>
+          )}
+        </div>
       </div>
-    </div>
   );
 };
 

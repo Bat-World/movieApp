@@ -32,7 +32,10 @@ export const Footer = () => {
               </p>
             </div>
             <div className="flex flex-row w-full h-auto items-center gap-[12px] mt-[12px]">
-              <MailIcon />
+              <Link href="/https://mail.google.com/mail/u/0/#inbox?compose=new">
+                {" "}
+                <MailIcon />
+              </Link>
               <div className="flex flex-col">
                 <p className="text-[14px] font-semibold text-[#FAFAFA]">
                   Email:
@@ -58,16 +61,28 @@ export const Footer = () => {
             <p className="text-[14px] font-normal text-[#FAFAFA]">Follow us</p>
             <div className="flex flex-col gap-[12px] mt-[12px] lg:flex-row">
               <p className="text-[14px] font-semibold text-[#FAFAFA]">
-                <FacebookIcon/>
+                <Link href="/dashboard">
+                  {" "}
+                  <FacebookIcon className="font-normal hover:font-semi-bold cursor:pointer" />
+                </Link>
               </p>
               <p className="text-[14px] font-semibold text-[#FAFAFA]">
-              <InstagramIcon/>
+                <Link href="/dashboard">
+                  {" "}
+                  <InstagramIcon />
+                </Link>
               </p>
               <p className="text-[14px] font-semibold text-[#FAFAFA]">
-               <YoutubeIcon/>
+                <Link href="/dashboard">
+                  {" "}
+                  <YoutubeIcon />
+                </Link>
               </p>
               <p className="text-[14px] font-semibold text-[#FAFAFA]">
-               <TwitterIcon/>
+                <Link href="/dashboard">
+                  {" "}
+                  <TwitterIcon />
+                </Link>
               </p>
             </div>
           </div>

@@ -134,8 +134,9 @@ export default function ImageShifPart() {
                                   <Image
                                     src={`${TMDB_IMAGE_BASE_URL}/original${movie.logo_path}`}
                                     alt={movie.title}
-                                    layout="fill"
                                     className="object-contain"
+                                    width={600}
+                                    height={1000}
                                   />
                                 </div>
                               ) : (
@@ -160,12 +161,12 @@ export default function ImageShifPart() {
                           <p className="w-[302px] text-[16px] leading-[24px] line-clamp-5 mt-4 text-white normal">
                             {movie.overview}
                           </p>
-                          <button
+                          {/* <button
                             className="text-white bg-transparent border-white border-[1px] w-[180px] h-[40px] rounded-[40px] flex flex-row items-center px-[20px] justify-between font-semibold mt-[20px] cursor-pointer"
                             onClick={() => push(`/detail/${movie.id}`)} 
                           >
                             <ListCollapse /> See more
-                          </button>
+                          </button> */}
                         </div>
                       </div>
                     </div>

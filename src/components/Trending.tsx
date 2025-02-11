@@ -100,7 +100,7 @@ const Top10Movies = () => {
                 alt={movie.title}
                 width={250}
                 height={375}
-                className="rounded-lg shadow-lg cursor-pointer"
+                className="rounded-lg shadow-lg cursor-pointer hover:scale-105 transition-transform duration-300"
                 onClick={() => push(`/detail/${movie.id}`)}
                 priority
               />

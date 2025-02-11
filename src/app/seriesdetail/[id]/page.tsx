@@ -4,8 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Play } from "lucide-react";
+
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -46,7 +45,7 @@ const SeriesDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 md:px-10 py-10">
+    <div className="min-h-screen bg-black text-white px-6 md:px-10 py-10 mt-[80px]">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
         <Image
           src={`https://image.tmdb.org/t/p/w500${series.poster_path}`}
