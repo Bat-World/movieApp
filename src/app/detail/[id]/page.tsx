@@ -356,7 +356,7 @@ const Page = () => {
         </div>
         <div className="flex flex-wrap gap-5 lg:gap-8 justify-start mt-[30px]">
           {isLoading ? (
-            <p>Loading...</p>
+          <Skeleton className="flex flex-wrap gap-5 lg:gap-8 justify-start mt-[30px]"/>
           ) : errorMessage ? (
             <p>{errorMessage}</p>
           ) : similarMovieData && similarMovieData.length > 0 ? (
