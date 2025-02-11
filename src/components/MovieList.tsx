@@ -106,7 +106,8 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
         {choosentype === "movie" && (
           <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
             {isLoading ? (
-              <p>Loading...</p>
+              <Skeleton className="flex flex-wrap gap-5 lg:gap-8 justify-start"/>
+            
             ) : errorMessage ? (
               <p>{errorMessage}</p>
             ) : (
@@ -145,7 +146,7 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
         {choosentype === "series" && (
           <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
             {isLoading ? (
-              <p>Loading...</p>
+                 <Skeleton className="flex flex-wrap gap-5 lg:gap-8 justify-start"/>
             ) : errorMessage ? (
               <p>{errorMessage}</p>
             ) : (

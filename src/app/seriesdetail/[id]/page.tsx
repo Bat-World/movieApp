@@ -45,7 +45,7 @@ const SeriesDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black text-white px-6 md:px-10 py-10 mt-[80px]">
+    <div className="min-h-screen text-white px-6 md:px-10 py-10 mt-[80px]">
       <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
         <Image
           src={`https://image.tmdb.org/t/p/w500${series.poster_path}`}
