@@ -117,7 +117,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
             movieData.map((movie) => (
               <div
                 key={movie.id}
-                className="bg-[var(--detail-bg)] w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px] cursor-pointer"
+                className="bg-transparent w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px] cursor-pointer"
                 onClick={() => push(`/detail/${movie.id}`)}
               >
                 <Image
