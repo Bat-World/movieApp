@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+
 import axios from "axios";
 import Image from "next/image";
 import { Star } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { useEffect, useState } from "react";
 import {
   Carousel,
   CarouselContent,
@@ -13,20 +13,16 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Skeleton } from "./ui/skeleton";
-import { ListCollapse } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_IMAGE_BASE_URL = process.env.NEXT_PUBLIC_TMDB_IMAGE_SERVICE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
 
-export default function ImageShifPart() {
+export default function ImageShiftPart() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [popularMoviesData, setPopularMoviesData] = useState<Movie[]>([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [trailerUrl, setTrailerUrl] = useState<string | null>(null);
-  const { push } = useRouter();
 
   interface Movie {
     id: number;
@@ -56,6 +52,7 @@ export default function ImageShifPart() {
               headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
             }
           );
+console.log("logo dtaaaa",logoResponse.data);
 
           const logo = logoResponse.data.logos.find(
             (logo: any) => logo.iso_639_1 === "en"
@@ -128,7 +125,6 @@ export default function ImageShifPart() {
                         <div className="p-4 relative text-black lg:text-white">
                           <div className="flex flex-col">
                             <div>
-                              {/* Display the logo if available, otherwise fallback to title */}
                               {movie.logo_path ? (
                                 <div className="relative w-[400px] h-[200px]">
                                   <Image
@@ -161,12 +157,6 @@ export default function ImageShifPart() {
                           <p className="w-[302px] text-[16px] leading-[24px] line-clamp-5 mt-4 text-white normal">
                             {movie.overview}
                           </p>
-                          {/* <button
-                            className="text-white bg-transparent border-white border-[1px] w-[180px] h-[40px] rounded-[40px] flex flex-row items-center px-[20px] justify-between font-semibold mt-[20px] cursor-pointer"
-                            onClick={() => push(`/detail/${movie.id}`)} 
-                          >
-                            <ListCollapse /> See more
-                          </button> */}
                         </div>
                       </div>
                     </div>
@@ -195,7 +185,7 @@ export default function ImageShifPart() {
                 />
               </div>
             </Carousel>
-            {/* Hero Section */}
+            {/* Gradient */}
             <div
               style={{
                 position: "absolute",

@@ -4,8 +4,9 @@ import ImageShiftPart from "@/components/CarouselPart";
 import UpcomingMovies from "@/components/Upcoming";
 import TopRatedMovies from "@/components/TopRated";
 import PopularMovies from "@/components/Popular";
-import Trending from "@/components/Trending";
 import { Netflix } from "@/components/Netflix";
+import Trending from "@/components/Trending";
+
 
 export default function Home() {
   return (

@@ -1,19 +1,22 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+
 import axios from "axios";
 import Image from "next/image";
-import StarSmall from "@/app/icons/StarSmall";
+import { SearchIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import { SearchIcon } from "lucide-react";
+import StarSmall from "@/app/icons/StarSmall";
+import React, { useState, useEffect, useMemo } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
 } from "@/components/ui/pagination";
-import { Button } from "@/components/ui/button";
+import { Movie } from "../types/movieData";
 import RightArrow from "../icons/RightArrow";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -37,6 +40,7 @@ const Page = () => {
   const [searchType, setSearchType] = useState<"genre" | "name">("genre");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(10);
+
   // Fetch list of all genres
   const fetchGenreList = async () => {
     try {
@@ -182,6 +186,19 @@ const Page = () => {
     }
   };
 
+  const Skeleton = () => (
+    <div className=" rounded-lg shadow-lg animate-pulse">
+      <div className="w-full h-[300px] bg-gray-400 rounded-t-lg"></div>
+      <div className="p-4">
+        <div className="flex items-center gap-2">
+          <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
+          <div className="w-16 h-4 bg-gray-400 rounded"></div>
+        </div>
+        <div className="w-3/4 h-6 bg-gray-400 rounded mt-2"></div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="flex w-full h-auto justify-center">
       <div className="w-full h-full flex flex-col items-center mt-[100px] max-w-[1200px] px-[40px]">
@@ -248,7 +265,11 @@ const Page = () => {
         {/* Movie Display */}
         <div className="w-full">
           {isLoading ? (
-            <p className="text-center">Loading...</p>
+             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+             {Array.from({ length: 10 }).map((_, index) => (
+               <Skeleton key={index} />
+             ))}
+           </div>
           ) : errorMessage ? (
             <p className="text-center text-red-500">{errorMessage}</p>
           ) : searchMoviesData.length > 0 ? (
@@ -292,7 +313,6 @@ const Page = () => {
         <div className="flex justify-center mt-6">
           <Pagination>
             <PaginationContent className="flex items-center space-x-2">
-              {/* Previous Button */}
               <PaginationItem>
                 <Button
                   variant="outline"
@@ -304,7 +324,6 @@ const Page = () => {
                 </Button>
               </PaginationItem>
 
-              {/* Page Numbers */}
               {renderPageNumbers().map((page, index) =>
                 page === "..." ? (
                   <PaginationItem key={index} className="text-gray-500 px-2">
@@ -325,7 +344,7 @@ const Page = () => {
                 )
               )}
 
-              {/* Next Button */}
+              {/*Button */}
               <PaginationItem>
                 <Button
                   className="bg-transparent border-none"

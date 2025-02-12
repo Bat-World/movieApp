@@ -1,16 +1,17 @@
 "use client";
+
 import React from "react";
-import { useParams } from "next/navigation";
-import Image from "next/image";
-import { useState, useEffect } from "react";
 import axios from "axios";
-import { Skeleton } from "@/components/ui/skeleton";
-import StarSmall from "@/app/icons/StarSmall";
-import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { Play } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import StarSmall from "@/app/icons/StarSmall";
+import { Button } from "@/components/ui/button";
 import RightArrow from "@/app/icons/RightArrow";
-import { log } from "console";
+import { movieDetail } from "@/app/types/movieDetail";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -38,7 +39,7 @@ const Page = () => {
     overview: string;
   }
 
-  const [movieData, setMovieData] = useState([]);
+  const [movieData, setMovieData] = useState<movieDetail[]>([]);
 
   const [creditData, setCreditData] = useState<Credit | null>(null);
   interface SimilarMovie {
@@ -71,6 +72,8 @@ const Page = () => {
           },
         }
       );
+      console.log("this is the movie's dataa",response.data);
+      
       setMovieData(response.data);
       setIsLoading(false);
     } catch (err) {
@@ -91,9 +94,6 @@ const Page = () => {
           },
         }
       );
-
-      console.log("trailerrr", response.data.results);
-
       setVideoData(response.data.results);
     } catch (err) {
       console.log("Failed to load videos:", err);
@@ -217,7 +217,7 @@ const Page = () => {
             {/* Poster Image (Hidden on Small Screens) */}
             <Image
               src={`https://image.tmdb.org/t/p/w1280${movieData.poster_path}`}
-              alt={movieData.title}
+              alt={movieData?.title || "Movie Poster"}
               width={800}
               height={450}
               objectFit="cover"
@@ -300,30 +300,30 @@ const Page = () => {
 
       {/* Acting crew */}
 
-  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-5">
-            {director && (
-                <div>
-                  <h3 className="font-semibold">Director</h3>
-                  <p className="text-gray-600 text-sm">{director.name}</p>
-                </div>
-              )}
-              {writers && writers.length > 0 && (
-                <div>
-                  <h3 className="font-semibold">Writers</h3>
-                  <p className="text-gray-600 text-sm">
-                    {writers.map((writer: any) => writer.name).join(" · ")}
-                  </p>
-                </div>
-              )}
-              {topCast && topCast.length > 0 && (
-                <div>
-                  <h3 className="font-semibold">Stars</h3>
-                  <p className="text-gray-600 text-sm">
-                    {topCast.map((cast: any) => cast.name).join(" · ")}
-                  </p>
-                </div>
-              )}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-5">
+        {director && (
+          <div>
+            <h3 className="font-semibold">Director</h3>
+            <p className="text-gray-600 text-sm">{director.name}</p>
           </div>
+        )}
+        {writers && writers.length > 0 && (
+          <div>
+            <h3 className="font-semibold">Writers</h3>
+            <p className="text-gray-600 text-sm">
+              {writers.map((writer: any) => writer.name).join(" · ")}
+            </p>
+          </div>
+        )}
+        {topCast && topCast.length > 0 && (
+          <div>
+            <h3 className="font-semibold">Stars</h3>
+            <p className="text-gray-600 text-sm">
+              {topCast.map((cast: any) => cast.name).join(" · ")}
+            </p>
+          </div>
+        )}
+      </div>
       {/*similar movies data */}
       <div className="flex flex-row justify-between mt-[50px]">
         <div className="flex flex-row gap-[10px] items-center">

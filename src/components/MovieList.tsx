@@ -1,16 +1,20 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Movie } from "@/app/types/types";
-import Image from "next/image";
+"use client";
+
+import { SeriesData } from "@/app/types/seriesData";
+import { Movie } from "@/app/types/movieData";
 import StarSmall from "@/app/icons/StarSmall";
-import { useRouter } from "next/navigation";
 import { MoveRightIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 import { Skeleton } from "./ui/skeleton";
+import Image from "next/image";
+import axios from "axios";
 
 interface MovieListProps {
   title: string;
   endpoint: string;
   seriesEndpoint: string;
+  name: string;
 }
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
@@ -19,7 +23,7 @@ const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
   const [movieData, setMovieData] = useState<Movie[]>([]);
-  const [seriesData, setSeriesData] = useState<Movie[]>([]);
+  const [seriesData, setSeriesData] = useState<SeriesData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [choosentype, setChoosenType] = useState<"movie" | "series">("movie");
@@ -42,9 +46,9 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
       });
 
       if (choosentype === "movie") {
-        setMovieData(response.data.results.slice(0, 10)); 
+        setMovieData(response.data.results.slice(0, 10));
       } else {
-        setSeriesData(response.data.results.slice(0, 10)); 
+        setSeriesData(response.data.results.slice(0, 10));
       }
       setIsLoading(false);
     } catch (err) {
@@ -89,7 +93,6 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
           </div>
         </div>
         <div className="w-auto h-full flex flex-row justify-center items-center gap-[8px]">
-
           <button
             className="w-auto h-auto text-[15px] bg-transparent font-bold flex flex-row items-center gap-[8px] 
              hover:underline hover:decoration-[#4338CA] decoration-3 underline-offset-20"
@@ -106,8 +109,12 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
         {choosentype === "movie" && (
           <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
             {isLoading ? (
-              <Skeleton className="flex flex-wrap gap-5 lg:gap-8 justify-start"/>
-            
+              <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
+                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
+                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
+                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
+                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
+              </div>
             ) : errorMessage ? (
               <p>{errorMessage}</p>
             ) : (
@@ -146,7 +153,12 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
         {choosentype === "series" && (
           <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
             {isLoading ? (
-                 <Skeleton className="flex flex-wrap gap-5 lg:gap-8 justify-start"/>
+              <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
+                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
+                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
+                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
+                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
+              </div>
             ) : errorMessage ? (
               <p>{errorMessage}</p>
             ) : (

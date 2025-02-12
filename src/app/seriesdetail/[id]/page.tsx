@@ -1,9 +1,10 @@
 "use client";
-import { useParams } from "next/navigation";
-import { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { SeriesData } from "@/app/types/seriesData";
 
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
@@ -13,8 +14,9 @@ const SeriesDetail = () => {
   const { id } = useParams();
   const [series, setSeries] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [selectedSeason, setSelectedSeason] = useState(null);
+  const [selectedSeason, setSelectedSeason] = useState<SeriesData[]>();
   const router = useRouter();
+
 
   useEffect(() => {
     if (id) {

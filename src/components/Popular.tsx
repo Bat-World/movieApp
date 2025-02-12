@@ -1,7 +1,7 @@
 import MovieList from "./MovieList";
 const Popular = () => {
   return (
-  <MovieList title="Popular" endpoint="popular" seriesEndpoint="popular"/>
+  <MovieList title="Popular" endpoint="popular" seriesEndpoint="popular" name="Popular Movies"/>
   )
 };
 
