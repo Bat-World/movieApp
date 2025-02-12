@@ -1,11 +1,10 @@
 "use client";
 
-import { SearchIcon } from "lucide-react";
-
-import { useRouter } from "next/navigation";
-
 import { House } from "lucide-react";
 import { Popcorn } from "lucide-react";
+import { SearchIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
+
 
 export const Header = () => {
   const { push } = useRouter();

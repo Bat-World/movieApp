@@ -16,7 +16,6 @@ import {
 import { Movie } from "../types/movieData";
 import RightArrow from "../icons/RightArrow";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -248,7 +247,7 @@ const Page = () => {
                 key={genre.id}
                 onClick={() => handleGenreSelection(genre.id.toString())}
                 variant="outline"
-                className={`rounded-full cursor-pointer ${
+                className={`rounded-full cursor-pointer  ${
                   selectedGenreIds.includes(genre.id.toString())
                     ? "bg-white text-black"
                     : "bg-black text-white"
@@ -275,7 +274,7 @@ const Page = () => {
               {searchMoviesData.map((movie) => (
                 <div
                   key={movie.id}
-                  className="bg-transparent rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
+                  className="bg-transparent rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer "
                   onClick={() => handleMovieClick(movie.id)}
                 >
                   {movie.poster_path ? (

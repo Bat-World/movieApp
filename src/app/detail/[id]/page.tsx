@@ -27,18 +27,6 @@ const Page = () => {
   }
 
   const [videoData, setVideoData] = useState<Video[] | null>(null);
-  interface Movie {
-    title: string;
-    release_date: string;
-    adult: boolean;
-    runtime: number;
-    vote_average: number;
-    vote_count: number;
-    poster_path: string;
-    backdrop_path: string;
-    overview: string;
-  }
-
   const [movieData, setMovieData] = useState<movieDetail[]>([]);
 
   const [creditData, setCreditData] = useState<Credit | null>(null);

@@ -1,13 +1,12 @@
 "use client";
 
-import FooterIcon from "@/app/icons/FooterIcon";
-import MailIcon from "@/app/icons/mailIcon";
 import PhoneIcon from "@/app/icons/phoneIcon";
-import Link from "next/link";
-import { FacebookIcon } from "lucide-react";
 import { InstagramIcon } from "lucide-react";
-import { TwitterIcon } from "lucide-react";
-import { YoutubeIcon } from "lucide-react";
+import MailIcon from "@/app/icons/mailIcon";
+import { FacebookIcon } from "lucide-react";
+import { Popcorn } from "lucide-react";
+import Link from "next/link";
+
 
 export const Footer = () => {
   return (
@@ -15,7 +14,7 @@ export const Footer = () => {
       <div className="w-full h-[308px] bg-[#4338CA] px-[20px] py-[40px] flex flex-col items-center sm:flex-row sm:justify-between lg:w-90% lg:px-[40px] sm:items-start xl:max-w-[1280px] lg:h-[216px] ">
         <div className="flex flex-col w-auto h-[52px] gap-[12px]">
           <div className="flex flex-row items-center w-auto h-[20px] gap-[8px]">
-            <FooterIcon />
+            <Popcorn />
             <p className="text-16px font-bold text-[#FAFAFA]">Movie Z</p>
           </div>
           <div className="w-auto h-[20px] flex items-center mt-[10px]">

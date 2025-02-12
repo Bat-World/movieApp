@@ -1,3 +1,5 @@
+"use client";
+
 import MovieList from "./MovieList";
 
 const UpcomingMovies = () => {

@@ -1,14 +1,16 @@
-import { useState, useEffect } from "react";
+"use client";
+
 import axios from "axios";
-import { Movie } from "@/app/types/movieData";
 import Image from "next/image";
-import StarSmall from "@/app/icons/StarSmall";
-import { useRouter } from "next/navigation";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
 } from "@/components/ui/pagination";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Movie } from "@/app/types/movieData";
+import StarSmall from "@/app/icons/StarSmall";
 import { Button } from "@/components/ui/button";
 import RightArrow from "@/app/icons/RightArrow";
 

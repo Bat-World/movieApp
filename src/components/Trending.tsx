@@ -1,3 +1,5 @@
+"use client";
+
 import axios from "axios";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";

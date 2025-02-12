@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import NetflixIcon from "@/app/icons/Netflix";
