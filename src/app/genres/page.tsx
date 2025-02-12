@@ -16,6 +16,7 @@ import {
 import { Movie } from "../types/movieData";
 import RightArrow from "../icons/RightArrow";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -183,19 +184,6 @@ const Page = () => {
     }
   };
 
-  const Skeleton = () => (
-    <div className=" rounded-lg shadow-lg animate-pulse">
-      <div className="w-full h-[300px] bg-gray-400 rounded-t-lg"></div>
-      <div className="p-4">
-        <div className="flex items-center gap-2">
-          <div className="w-4 h-4 bg-gray-400 rounded-full"></div>
-          <div className="w-16 h-4 bg-gray-400 rounded"></div>
-        </div>
-        <div className="w-3/4 h-6 bg-gray-400 rounded mt-2"></div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="flex w-full h-auto justify-center">
       <div className="w-full h-full flex flex-col items-center mt-[100px] max-w-[1200px] px-[40px]">
@@ -264,7 +252,13 @@ const Page = () => {
           {isLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
               {Array.from({ length: 10 }).map((_, index) => (
-                <Skeleton key={index} />
+                <div key={index} className="flex flex-col">
+                  <Skeleton className="w-full h-[250px] bg-gray-400 rounded-t-lg" />
+                  <div className="mt-3 space-y-2">
+                    <Skeleton className="w-3/4 h-4 bg-gray-400 rounded" />{" "}    
+                    <Skeleton className="w-full h-6 bg-gray-400 rounded" />{" "}
+                  </div>
+                </div>
               ))}
             </div>
           ) : errorMessage ? (

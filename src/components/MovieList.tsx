@@ -109,12 +109,14 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
         {choosentype === "movie" && (
           <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
             {isLoading ? (
-              <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
-                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
-                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
-                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
-                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
-              </div>
+              // Skeleton loading state
+              Array.from({ length: 10 }).map((_, index) => (
+                <div key={index} className="flex flex-col">
+                  <Skeleton className="w-[157px] h-[250px] rounded-[8px] lg:w-[230px] lg:h-[345px]" />
+                  <Skeleton className="w-[157px] lg:w-[230px] h-[10px] mt-[10px]" />
+                  <Skeleton className="w-[157px] lg:w-[230px] h-[27px] mt-[10px]" />
+                </div>
+              ))
             ) : errorMessage ? (
               <p>{errorMessage}</p>
             ) : (
@@ -153,12 +155,13 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
         {choosentype === "series" && (
           <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
             {isLoading ? (
-              <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
-                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
-                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
-                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
-                <Skeleton className="w-[157px] h-[334px] rounded-[8px] flex flex-col lg:w-[230px] lg:h-[440px]" />
+            Array.from({ length: 10 }).map((_, index) => (
+              <div key={index} className="flex flex-col">
+                <Skeleton className="w-[157px] h-[250px] rounded-[8px] lg:w-[230px] lg:h-[345px]" />
+                <Skeleton className="w-[157px] lg:w-[230px] h-[10px] mt-[10px]" />
+                <Skeleton className="w-[157px] lg:w-[230px] h-[27px] mt-[10px]" />
               </div>
+            ))
             ) : errorMessage ? (
               <p>{errorMessage}</p>
             ) : (

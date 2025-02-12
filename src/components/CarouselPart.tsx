@@ -1,17 +1,18 @@
 "use client";
 
+
 import axios from "axios";
 import Image from "next/image";
 import { Star } from "lucide-react";
-import { useEffect, useState } from "react";
 import {
   Carousel,
+  CarouselContent,
   CarouselItem,
   CarouselNext,
-  CarouselContent,
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Skeleton } from "./ui/skeleton";
+import { useEffect, useState } from "react";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_IMAGE_BASE_URL = process.env.NEXT_PUBLIC_TMDB_IMAGE_SERVICE_URL;
@@ -19,10 +20,9 @@ const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
 
 export default function ImageShiftPart() {
   const [loading, setLoading] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [popularMoviesData, setPopularMoviesData] = useState<Movie[]>([]);
- 
+  const [activeIndex, setActiveIndex] = useState(0);
 
   interface Movie {
     id: number;
@@ -52,6 +52,8 @@ export default function ImageShiftPart() {
               headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
             }
           );
+console.log(logoResponse.data);
+
           const logo = logoResponse.data.logos.find(
             (logo: any) => logo.iso_639_1 === "en"
           );
