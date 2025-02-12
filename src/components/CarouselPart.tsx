@@ -1,6 +1,5 @@
 "use client";
 
-
 import axios from "axios";
 import Image from "next/image";
 import { Star } from "lucide-react";
@@ -52,7 +51,7 @@ export default function ImageShiftPart() {
               headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
             }
           );
-console.log("logo dtaaaa",logoResponse.data);
+          console.log("logo dtaaaa", logoResponse.data);
 
           const logo = logoResponse.data.logos.find(
             (logo: any) => logo.iso_639_1 === "en"

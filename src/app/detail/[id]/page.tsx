@@ -111,8 +111,6 @@ const Page = () => {
           },
         }
       );
-      console.log("crewwwwwwww", response.data);
-
       setCreditData(response.data);
     } catch (err) {
       console.log("Failed to load credits:", err);

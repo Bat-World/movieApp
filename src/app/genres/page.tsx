@@ -121,7 +121,6 @@ const Page = () => {
     }
   }, [moviesSearch, searchType]);
 
-  // Handle genre selection
   const handleGenreSelection = (genreId: string) => {
     const currentGenres =
       searchParams.get("genresId")?.split(",").filter(Boolean) || [];
@@ -138,12 +137,11 @@ const Page = () => {
     push(`/genres?${queryParams.toString()}`);
   };
 
-  // Handle movie click
   const handleMovieClick = (movieId: number) => {
     push(`/detail/${movieId}`);
   };
 
-  // Display page number above
+  // page number
   const renderPageNumbers = () => {
     const pages = [];
     const maxPagesToShow = 3;
@@ -265,11 +263,11 @@ const Page = () => {
         {/* Movie Display */}
         <div className="w-full">
           {isLoading ? (
-             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-             {Array.from({ length: 10 }).map((_, index) => (
-               <Skeleton key={index} />
-             ))}
-           </div>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {Array.from({ length: 10 }).map((_, index) => (
+                <Skeleton key={index} />
+              ))}
+            </div>
           ) : errorMessage ? (
             <p className="text-center text-red-500">{errorMessage}</p>
           ) : searchMoviesData.length > 0 ? (
