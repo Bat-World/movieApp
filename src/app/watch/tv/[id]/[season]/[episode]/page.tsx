@@ -17,7 +17,7 @@ const WatchSeries = () => {
     "https://embed.7xtream.com/embed",
     "https://vidbinge.dev/embed",
   ];
-
+ const { push } = useRouter();
   // Ensure params are valid
   const { id, season, episode } = params || {};
   if (!id || !season || !episode)
@@ -26,18 +26,18 @@ const WatchSeries = () => {
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center relative">
       <button
-        onClick={() => router.back()}
-        className="absolute top-3 left-7 flex items-center text-white text-base z-1000"
+        onClick={() => push(`/seriesdetail/${params.id}`)}
+        className="absolute top-3 left-7 flex items-center text-white text-base z-[10000] cursor-pointer"
       >
         <ChevronLeft width={18} /> Back
       </button>
 
       {/*Dropdown */}
-      <div className="absolute top-3 right-14 z-1000">
+      <div className="absolute top-3 right-14 z-[10000]">
         <select
           value={selectedSource}
           onChange={(e) => setSelectedSource(e.target.value)}
-          className="p-2 bg-gray-800 text-white rounded"
+          className="p-2 bg-tranparent text-white rounded cursor-pointer focus:ring-0"
         >
           {sources.map((source, index) => (
             <option key={index} value={source}>
@@ -46,7 +46,6 @@ const WatchSeries = () => {
           ))}
         </select>
       </div>
-
 
       <iframe
         className="w-full h-full"

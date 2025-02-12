@@ -218,7 +218,7 @@ const Page = () => {
             <div className="relative w-[70%] max-w-[600px]">
               <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600" />
               <Input
-                className="w-full pl-10 pr-4 h-[40px] rounded-full focus:outline-none focus:ring-2 focus:ring-black dark:focus:ring-white"
+                className="w-full pl-10 pr-4 h-[40px] rounded-full border border-gray-300 focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Search movies by name..."
                 value={moviesSearch}
                 onChange={(e) => setMoviesSearch(e.target.value)}
@@ -255,7 +255,7 @@ const Page = () => {
                 <div key={index} className="flex flex-col">
                   <Skeleton className="w-full h-[250px] bg-gray-400 rounded-t-lg" />
                   <div className="mt-3 space-y-2">
-                    <Skeleton className="w-3/4 h-4 bg-gray-400 rounded" />{" "}    
+                    <Skeleton className="w-3/4 h-4 bg-gray-400 rounded" />{" "}
                     <Skeleton className="w-full h-6 bg-gray-400 rounded" />{" "}
                   </div>
                 </div>
@@ -268,7 +268,7 @@ const Page = () => {
               {searchMoviesData.map((movie) => (
                 <div
                   key={movie.id}
-                  className="bg-transparent rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer "
+                  className="bg-transparent rounded-lg overflow-hidden shadow-lg  hover:scale-105 transition-transform duration-300 cursor-pointer "
                   onClick={() => handleMovieClick(movie.id)}
                 >
                   {movie.poster_path ? (
@@ -297,7 +297,10 @@ const Page = () => {
               ))}
             </div>
           ) : (
-            <p className="text-center">No movies found.</p>
+            <div className="w-full h-[60vw] flex justify-center items-center">
+              {" "}
+              <p className="text-center">No movies found.</p>
+            </div>
           )}
         </div>
         {/* Pagination */}
