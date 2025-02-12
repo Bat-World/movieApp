@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import RightArrow from "@/app/icons/RightArrow";
 import { movieDetail } from "@/app/types/movieDetail";
 import { Skeleton } from "@/components/ui/skeleton";
+import CastAndCrew from "@/components/CastandCrew";
+import SimilarMovies from "@/components/SimilarMovie";
 
 // Type Definitions
 interface Video {
@@ -60,9 +62,7 @@ const Page = () => {
   );
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [isTrailerModalOpen, setIsTrailerModalOpen] = useState(false);
   const [trailerKey, setTrailerKey] = useState("");
-  
 
   const params = useParams();
   const router = useRouter();
@@ -94,6 +94,7 @@ const Page = () => {
           }
         ),
       ]);
+      console.log("apply image from heree", creditRes.data);
 
       setMovieData(movieRes.data);
       setVideoData(videoRes.data.results);
@@ -116,18 +117,8 @@ const Page = () => {
   const director = creditData?.crew.find((member) => member.job === "Director");
   const writers = creditData?.crew
     .filter((member) => member.job === "Writer")
-    .slice(0, 3);
-  const topCast = creditData?.cast.slice(0, 3);
-
-  const openTrailerModal = (key: string) => {
-    setTrailerKey(key);
-    setIsTrailerModalOpen(true);
-  };
-  const closeTrailerModal = () => {
-    setIsTrailerModalOpen(false);
-    setTrailerKey(""); // Reset trailerKey when closing
-  };
-    
+    .slice(0, 12);
+  const topCast = creditData?.cast.slice(0, 12);
 
   return (
     <div className="max-w-2xl mx-auto px-4 mt-[80px] md:max-w-4xl lg:max-w-6xl">
@@ -191,15 +182,6 @@ const Page = () => {
                 className="lg:w-[760px] lg:h-[428px] rounded-lg w-[375px] h-auto"
               />
               <div className="absolute bottom-4 left-4 flex gap-2">
-                {trailer && (
-                 <button
-                 onClick={() => openTrailerModal(trailer.key)}
-                 className="flex items-center bg-black/70 text-white px-4 py-2 rounded-lg text-sm"
-               >
-                 ▶ Play trailer
-               </button>
-               
-                )}
                 <Button
                   onClick={() => router.push(`/watch/movie/${params.id}`)}
                   variant="outline"
@@ -214,68 +196,35 @@ const Page = () => {
         )}
       </div>
 
-      {/* Trailer Modal */}
-      {isTrailerModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-          <div className="relative w-full max-w-4xl bg-transparent p-0 rounded-lg">
-            <button
-              onClick={closeTrailerModal}
-              className="absolute top-4 right-4 text-white text-2xl"
-            >
-              ×
-            </button>
-            <div className="w-full h-auto">
-              <iframe
-                width="100%"
-                height="400px"
-                src={`https://www.youtube.com/embed/${trailerKey}`}
-                title="Trailer"
-                style={{ border: "none", display: "block" }}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              ></iframe>
-            </div>
-          </div>
-        </div>
-      )}
-
       {/* Movie Description */}
       {isLoading ? (
         <div className="mt-4 space-y-2">
           <Skeleton className="h-4 w-full" />
         </div>
       ) : (
-        <p className="text-gray-700 mt-4 text-sm leading-relaxed">
-          {movieData.overview}
-        </p>
+        <div className="mt-4">
+          <p className="text-gray-700 text-sm leading-relaxed">
+            {movieData.overview}
+          </p>
+
+          {/* Trailer Video Directly Below Overview */}
+          {trailer && (
+            <div className="mt-4 w-full h-auto">
+              <iframe
+                width="100%"
+                height="400px"
+                src={`https://www.youtube.com/embed/${trailer.key}`}
+                title="Trailer"
+                style={{ border: "none", display: "block" }}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          )}
+        </div>
       )}
-
-      {/* Acting crew */}
-
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 mt-5">
-        {director && (
-          <div>
-            <h3 className="font-semibold">Director</h3>
-            <p className="text-gray-600 text-sm">{director.name}</p>
-          </div>
-        )}
-        {writers && writers.length > 0 && (
-          <div>
-            <h3 className="font-semibold">Writers</h3>
-            <p className="text-gray-600 text-sm">
-              {writers.map((writer: any) => writer.name).join(" · ")}
-            </p>
-          </div>
-        )}
-        {topCast && topCast.length > 0 && (
-          <div>
-            <h3 className="font-semibold">Stars</h3>
-            <p className="text-gray-600 text-sm">
-              {topCast.map((cast: any) => cast.name).join(" · ")}
-            </p>
-          </div>
-        )}
-      </div>
+      {/* cast and crew */}
+      <CastAndCrew director={director} writers={writers} topCast={topCast} />
       {/*similar movies data */}
       <div className="flex flex-row justify-between mt-[50px]">
         <div className="flex flex-row gap-[10px] items-center">
@@ -292,47 +241,7 @@ const Page = () => {
           <RightArrow />
         </button>
       </div>
-      <div className="flex flex-wrap gap-5 lg:gap-8 justify-start mt-[30px]">
-        {isLoading ? (
-          <Skeleton className="flex flex-wrap gap-5 lg:gap-8 justify-start mt-[30px]" />
-        ) : errorMessage ? (
-          <p>{errorMessage}</p>
-        ) : similarMovies && similarMovies.length > 0 ? (
-          similarMovies.map((movie) => (
-            <div
-              key={movie.id}
-              className="bg-transparent w-[157px] h-[334px] bg-[#E4E4E7] rounded-[8px] flex flex-col  lg:w-[230px] lg:h-[440px] cursor-pointer"
-              onClick={() => router.push(`/detail/${movie.id}`)}
-            >
-              {movie.poster_path ? (
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                  alt={movie.title}
-                  width={230}
-                  height={340}
-                  className="rounded-t-[8px] lg:w-[230px] lg:h-[340px] hover:opacity-60"
-                />
-              ) : (
-                <div className="w-[230px] h-[340px] flex items-center justify-center bg-gray-300">
-                  <p className="text-center text-gray-600">No Image</p>
-                </div>
-              )}
-              <div className=" flex flex-col w-auto h-auto items-start mt-2 px-2 overflow-hidden">
-                <div className="flex flex-row w-auto h-auto items-center gap-[8px]">
-                  <StarSmall />
-                  <p className="text-[16px] font-semibold">
-                    {movie.vote_average.toFixed(1)}
-                  </p>
-                  <p>/10</p>
-                </div>
-                <p className="text-[18px] font-semibold">{movie.title}</p>
-              </div>
-            </div>
-          ))
-        ) : (
-          <p>No movies found for this genre.</p>
-        )}
-      </div>
+      <SimilarMovies similarMovies={similarMovies} router={router} />
     </div>
   );
 };
