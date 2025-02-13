@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
-import NetflixIcon from "@/app/icons/Netflix";
+import NetflixIcon from "@/icons/Netflix";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

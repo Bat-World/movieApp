@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
-import StarSmall from "@/app/icons/StarSmall";
+import StarSmall from "@/icons/StarSmall";
 import {
   Pagination,
   PaginationContent,

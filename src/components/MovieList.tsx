@@ -1,8 +1,8 @@
 "use client";
 
-import { SeriesData } from "@/app/types/seriesData";
-import { Movie } from "@/app/types/movieData";
-import StarSmall from "@/app/icons/StarSmall";
+import { SeriesData } from "@/types/seriesData";
+import { Movie } from "@/types/movieData";
+import StarSmall from "@/icons/StarSmall";
 import { MoveRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";

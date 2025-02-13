@@ -1,8 +1,8 @@
 "use client";
 
-import PhoneIcon from "@/app/icons/phoneIcon";
+import PhoneIcon from "@/icons/phoneIcon";
 import { InstagramIcon } from "lucide-react";
-import MailIcon from "@/app/icons/mailIcon";
+import MailIcon from "@/icons/mailIcon";
 import { FacebookIcon } from "lucide-react";
 import { Popcorn } from "lucide-react";
 import Link from "next/link";

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { SearchIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
-import StarSmall from "@/app/icons/StarSmall";
+import StarSmall from "@/icons/StarSmall";
 import React, { useState, useEffect, useMemo } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import {
@@ -13,8 +13,8 @@ import {
   PaginationContent,
   PaginationItem,
 } from "@/components/ui/pagination";
-import { Movie } from "../types/movieData";
-import RightArrow from "../icons/RightArrow";
+import { Movie } from "../../types/movieData";
+import RightArrow from "../../icons/RightArrow";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 

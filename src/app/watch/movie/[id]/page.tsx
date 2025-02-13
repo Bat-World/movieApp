@@ -35,7 +35,7 @@ const WatchMovie = () => {
         <select
           value={selectedSource}
           onChange={(e) => setSelectedSource(e.target.value)}
-          className="p-2 bg-transparent text-white rounded cursor-pointer cursor-pointer focus:ring-0"
+          className="p-2 bg-transparent text-white rounded cursor-pointer focus:ring-0"
         >
           {sources.map((source, index) => (
             <option key={index} value={source}>

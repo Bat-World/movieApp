@@ -9,10 +9,10 @@ import {
 } from "@/components/ui/pagination";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Movie } from "@/app/types/movieData";
-import StarSmall from "@/app/icons/StarSmall";
+import { Movie } from "@/types/movieData";
+import StarSmall from "@/icons/StarSmall";
 import { Button } from "@/components/ui/button";
-import RightArrow from "@/app/icons/RightArrow";
+import RightArrow from "@/icons/RightArrow";
 
 interface MovieListProps {
   title: string;

@@ -6,9 +6,9 @@ import { Play } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import StarSmall from "@/app/icons/StarSmall";
+import StarSmall from "@/icons/StarSmall";
 import { Button } from "@/components/ui/button";
-import RightArrow from "@/app/icons/RightArrow";
+import RightArrow from "@/icons/RightArrow";
 import { Skeleton } from "@/components/ui/skeleton";
 
 // Type Definitions

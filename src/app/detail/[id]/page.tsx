@@ -7,10 +7,7 @@ import { Play } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import StarSmall from "@/app/icons/StarSmall";
 import { Button } from "@/components/ui/button";
-import RightArrow from "@/app/icons/RightArrow";
-import { movieDetail } from "@/app/types/movieDetail";
 import { Skeleton } from "@/components/ui/skeleton";
 import CastAndCrew from "@/components/CastandCrew";
 import SimilarMovies from "@/components/SimilarMovie";
@@ -198,7 +195,7 @@ const Page = () => {
 
       {/* Movie Description */}
       {isLoading ? (
-        <div className="mt-4 space-y-2">
+        <div className="space-y-2 mt-[30px] md:mt-[50px]">
           <Skeleton className="h-4 w-full" />
         </div>
       ) : (
@@ -209,7 +206,7 @@ const Page = () => {
 
           {/* Trailer Video Directly Below Overview */}
           {trailer && (
-            <div className="mt-4 w-full h-auto">
+            <div className="w-full h-auto mt-[30px] md:mt-[50px]">
               <iframe
                 width="100%"
                 height="400px"
@@ -224,7 +221,7 @@ const Page = () => {
         </div>
       )}
       {/* cast and crew */}
-      <CastAndCrew director={director} writers={writers} topCast={topCast} />
+      <CastAndCrew director={director} writers={writers} topCast={topCast} isLoading={isLoading} />
       {/*similar movies data */}
       <div className="flex flex-row justify-between mt-[50px]">
         <div className="flex flex-row gap-[10px] items-center">
@@ -232,14 +229,6 @@ const Page = () => {
           <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA] mt-[30px]"></div>
           <p className="mt-[30px] text-[24px] font-semibold">You may like</p>{" "}
         </div>
-
-        <button
-          className="w-auto h-auto text-[14px] bg-transparent font-bold flex flex-row items-center gap-[8px] hover:underline mt-[30px]"
-          onClick={() => push(`/similarmovie/${params.id}`)}
-        >
-          See more
-          <RightArrow />
-        </button>
       </div>
       <SimilarMovies similarMovies={similarMovies} router={router} />
     </div>
