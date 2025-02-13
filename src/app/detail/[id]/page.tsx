@@ -173,7 +173,7 @@ const Page = () => {
           isLoading={isLoading}
         />
         {/*similar movies data */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 auto-rows-fr mt-[30px] lg:mt-[30px]">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-5 auto-rows-fr mt-[30px] lg:mt-[30px]">
           <div className="flex flex-row gap-[10px] items-center">
             {" "}
             <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA]"></div>

@@ -107,7 +107,7 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
       <div className="MovieImgs w-full h-auto mt-[30px]">
         {/* Movie */}
         {choosentype === "movie" && (
-         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 auto-rows-fr">
+         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-5 auto-rows-fr">
 
             {isLoading ? (
               // Skeleton loading state
