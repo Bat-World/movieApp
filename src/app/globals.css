@@ -8,27 +8,27 @@
 body {
   font-family: var(--font-montserrat), sans-serif;
   background-color: rgb(13, 13, 13);
+  overflow-x: hidden;
+}
+/* Custom scrollbar styles */
+::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
 }
 
-/* .stroke-text {
-  -webkit-text-stroke: 2px red;
+::-webkit-scrollbar-track {
+  background: #1a1d29; /* Background color of the track */
+  border-radius: 10px; /* Rounded corners for the track */
 }
 
-.text-outline {
-  -webkit-text-stroke: 2px red;
-  -webkit-text-fill-color: transparent; 
-  color: red; 
+::-webkit-scrollbar-thumb {
+  background: #4338ca; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners for the thumb */
+  border: 3px solid #1a1d29; /* Padding around the thumb */
 }
 
-
-.letter-shadow-r {
-  text-shadow: 2px 2px 5px rgba(255, 0, 0, 0.5);
- 
+::-webkit-scrollbar-thumb:hover {
+  background: #5a4fcf; /* Color of the thumb on hover */
 }
-
-.text-outline {
-  -webkit-text-stroke: 2px oklch(0.188409 .00829 17.911578);
-} */
 
 
 @layer base {

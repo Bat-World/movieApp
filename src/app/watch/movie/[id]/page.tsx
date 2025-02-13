@@ -1,12 +1,12 @@
 "use client";
 
 import { useParams, useRouter } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { MoveLeft } from "lucide-react";
 import React, { useState } from "react";
 
 const WatchMovie = () => {
   const params = useParams();
-  const { push } = useRouter();
+  const router = useRouter();
   const [selectedSource, setSelectedSource] = useState("https://embed.su/embed/movie");
 
   const sources = [
@@ -20,15 +20,22 @@ const WatchMovie = () => {
   const { id } = params || {};
   if (!id) return <p className="text-white text-center">Loading...</p>;
 
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back(); 
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
     <div className="w-full h-screen flex flex-col justify-center items-center relative">
       {/* Back Button */}
-      <button
-        onClick={() => push(`/moviedetail/${params.id}}`)}
-        className="absolute top-3 left-7 flex items-center text-white text-base z-[10000] cursor-pointer"
-      >
-        <ChevronLeft width={18} /> Back
-      </button>
+      <MoveLeft
+        className="absolute top-4 left-10 cursor-pointer z-[10000] transition-transform duration-300 hover:scale-125"
+        onClick={handleBack}
+      />
 
       {/* Source Selection Dropdown */}
       <div className="absolute top-3 right-14 z-[10000]">

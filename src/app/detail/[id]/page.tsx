@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import CastAndCrew from "@/components/CastandCrew";
 import SimilarMovies from "@/components/SimilarMovie";
 import MovieMedia from "@/components/MovieMedia";
+import { MoveLeft } from "lucide-react";
 
 // Type Definitions
 interface Video {
@@ -57,7 +58,6 @@ const Page = () => {
   );
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [trailerKey, setTrailerKey] = useState("");
 
   const params = useParams();
   const router = useRouter();
@@ -90,8 +90,6 @@ const Page = () => {
           }
         ),
       ]);
-      console.log("apply image from heree", creditRes.data);
-
       setMovieData(movieRes.data);
       setVideoData(videoRes.data.results);
       setCreditData(creditRes.data);
@@ -116,8 +114,20 @@ const Page = () => {
     .slice(0, 12);
   const topCast = creditData?.cast.slice(0, 12);
 
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back(); 
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
-    <div className="w-full h-auto flex-col items-center justify-center">
+    <div className="w-full h-auto flex-col items-center justify-center relative">
+      <MoveLeft
+        className="absolute top-4 left-10 cursor-pointer z-[10000] transition-transform duration-300 hover:scale-125"
+        onClick={handleBack}
+      />
       <MovieMedia
         movieData={movieData}
         trailerKey={trailer?.key || ""}
@@ -163,7 +173,7 @@ const Page = () => {
           isLoading={isLoading}
         />
         {/*similar movies data */}
-        <div className="flex flex-row justify-between mt-[50px]">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-5 auto-rows-fr mt-[30px] lg:mt-[30px]">
           <div className="flex flex-row gap-[10px] items-center">
             {" "}
             <div className="w-[10px] h-[30px] rounded-[20px] bg-[#4338CA]"></div>

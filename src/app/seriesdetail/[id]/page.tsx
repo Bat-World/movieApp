@@ -6,10 +6,10 @@ import { Play } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import MovieMedia from "@/components/MovieMedia";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import CastAndCrew from "@/components/CastandCrew";
+import { MoveLeft } from "lucide-react";
 
 // Type Definitions
 interface Credit {
@@ -28,6 +28,10 @@ interface SeriesDetail {
   vote_count: number;
   number_of_seasons: number;
   number_of_episodes: number;
+  seasons: {
+    season_number: number;
+    episode_count: number;
+  }[];
 }
 
 interface SimilarSeries {
@@ -47,6 +51,8 @@ const SeriesDetail = () => {
   const [similarSeries, setSimilarSeries] = useState<SimilarSeries[] | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [selectedSeason, setSelectedSeason] = useState<number>(1);
+  const [selectedEpisode, setSelectedEpisode] = useState<number>(1);
 
   const params = useParams();
   const router = useRouter();
@@ -86,8 +92,33 @@ const SeriesDetail = () => {
   const writers = creditData?.crew.filter((member) => member.job === "Writer").slice(0, 3);
   const topCast = creditData?.cast.slice(0, 3);
 
+  const handleSeasonChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedSeason(Number(e.target.value));
+    setSelectedEpisode(1); // Reset episode to 1 when season changes
+  };
+
+  const handleEpisodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSelectedEpisode(Number(e.target.value));
+  };
+
+  const handlePlay = () => {
+    router.push(`/watch/tv/${params.id}/${selectedSeason}/${selectedEpisode}`);
+  };
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      router.back(); 
+    } else {
+      router.push("/");
+    }
+  };
+
   return (
     <div className="max-w-2xl mx-auto px-4 mt-[80px] md:max-w-4xl lg:max-w-6xl">
+         <MoveLeft
+        className="absolute top-4 left-10 cursor-pointer z-[10000] transition-transform duration-300 hover:scale-125"
+        onClick={handleBack}
+      />
       {/* Title & Details */}
       <div className="mt-6">
         {isLoading ? (
@@ -135,14 +166,14 @@ const SeriesDetail = () => {
             <div className="relative">
               <Image
                 src={`https://image.tmdb.org/t/p/w1280${seriesData?.backdrop_path}`}
-                alt={seriesData?.name}
+                alt={seriesData?.name || "Series Backdrop"}
                 width={800}
                 height={450}
                 className="lg:w-[760px] lg:h-[428px] rounded-lg w-[375px] h-auto"
               />
               <div className="absolute bottom-4 left-4 flex gap-2">
                 <Button
-                  onClick={() => router.push(`/watch/tv/${params.id}/1/1`)}
+                  onClick={handlePlay}
                   variant="outline"
                   className="text-base font-bold text-[#1A1D29] flex items-center bg-white/80 px-4 py-2 rounded-lg"
                 >
@@ -161,6 +192,44 @@ const SeriesDetail = () => {
       ) : (
         <p className="text-white font-semibold md:text-lg mt-4 text-sm leading-relaxed">{seriesData?.overview}</p>
       )}
+
+      {/* Season and Episode Selector */}
+      <div className="mt-6 flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-4">
+        <div className="flex-1">
+          <label htmlFor="season" className="block text-sm font-medium text-gray-300 mb-1">
+            Season
+          </label>
+          <select
+            id="season"
+            value={selectedSeason}
+            onChange={handleSeasonChange}
+            className="w-full p-2 bg-[#1A1D29] text-white rounded-lg border border-gray-600 focus:border-[#4338CA] focus:ring-0"
+          >
+            {seriesData?.seasons.map((season) => (
+              <option key={season.season_number} value={season.season_number}>
+                Season {season.season_number}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="flex-1">
+          <label htmlFor="episode" className="block text-sm font-medium text-gray-300 mb-1">
+            Episode
+          </label>
+          <select
+            id="episode"
+            value={selectedEpisode}
+            onChange={handleEpisodeChange}
+            className="w-full p-2 bg-[#1A1D29] text-white rounded-lg border border-gray-600 focus:border-[#4338CA] focus:ring-0"
+          >
+            {Array.from({ length: seriesData?.seasons[selectedSeason - 1]?.episode_count || 0 }, (_, i) => (
+              <option key={i + 1} value={i + 1}>
+                Episode {i + 1}
+              </option>
+            ))}
+          </select>
+        </div>
+      </div>
 
       {/* Cast & Crew */}
       <CastAndCrew director={director} writers={writers} topCast={topCast} isLoading={isLoading} />

@@ -193,8 +193,8 @@ const Page = () => {
             onClick={() => setSearchType("genre")}
             className={`px-4 py-2 rounded-full ${
               searchType === "genre"
-                ? "text-white bg-transparent text-white font-semibold"
-                : "text-white bg-transparent text-white font-normal"
+                ? "text-white bg-transparent  font-semibold"
+                : "text-white bg-transparent  font-normal"
             }`}
           >
             Search by Genre
@@ -204,8 +204,8 @@ const Page = () => {
             onClick={() => setSearchType("name")}
             className={`px-4 py-2 rounded-full ${
               searchType === "name"
-                ? "text-white bg-transparent text-white font-semibold"
-                : "text-white bg-transparent text-white font-normal"
+                ? "text-white bg-transparent  font-semibold"
+                : "text-white bg-transparent  font-normal"
             }`}
           >
             Search by Name
@@ -218,7 +218,7 @@ const Page = () => {
             <div className="relative w-[70%] max-w-[600px]">
               <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-600" />
               <Input
-                className="w-full pl-10 pr-4 h-[40px] rounded-full border border-gray-300 focus:border-transparent focus:ring-0 focus:outline-none"
+                className="w-full pl-10 pr-4 h-[40px] rounded-full border-none focus:border-transparent focus:ring-0 focus:outline-none"
                 placeholder="Search movies by name..."
                 value={moviesSearch}
                 onChange={(e) => setMoviesSearch(e.target.value)}
