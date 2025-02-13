@@ -4,8 +4,7 @@ import TopRatedMovies from "@/components/TopRated";
 import PopularMovies from "@/components/Popular";
 import { Netflix } from "@/components/Netflix";
 import Trending from "@/components/Trending";
-// import Link from "next/link";
-// import Head from "next/head";
+
 
 
 export default function Home() {

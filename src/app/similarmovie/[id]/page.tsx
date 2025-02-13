@@ -10,7 +10,7 @@ import {
   PaginationItem,
 } from "@/components/ui/pagination";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
@@ -101,7 +101,8 @@ const Page = () => {
   };
 
   return (
-    <div className="MovieList w-full h-auto px-[20px] flex flex-col">
+    <div className="flex w-full h-auto justify-center">
+    <div className="MovieList w-full h-auto px-[20px] flex flex-col max-w-[1280px]">
       <div className="w-full h-[36px] flex flex-row justify-between mt-[92px]">
         <div className="w-auto h-full flex justify-center items-center">
           <p className="text-[30px] font-semibold">Similar Movies</p>
@@ -196,6 +197,7 @@ const Page = () => {
           </PaginationContent>
         </Pagination>
       </div>
+    </div>
     </div>
   );
 };

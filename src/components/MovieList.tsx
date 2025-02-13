@@ -107,7 +107,8 @@ const MovieList = ({ title, endpoint, seriesEndpoint }: MovieListProps) => {
       <div className="MovieImgs w-full h-auto mt-[30px]">
         {/* Movie */}
         {choosentype === "movie" && (
-          <div className="flex flex-wrap gap-5 lg:gap-8 justify-start">
+         <div className="w-full flex flex-wrap gap-5 lg:gap-10 justify-start">
+
             {isLoading ? (
               // Skeleton loading state
               Array.from({ length: 10 }).map((_, index) => (
