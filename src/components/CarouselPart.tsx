@@ -1,6 +1,5 @@
 "use client";
 
-
 import axios from "axios";
 import Image from "next/image";
 import { Star } from "lucide-react";
@@ -45,17 +44,17 @@ export default function ImageShiftPart() {
 
       // Fetch logos for each movie
       const moviesWithLogos = await Promise.all(
-        response.data.results.slice(0, 8).map(async (movie: any) => {
+        response.data.results.slice(0, 8).map(async (movie: Movie) => {
           const logoResponse = await axios.get(
             `${TMDB_BASE_URL}/movie/${movie.id}/images`,
             {
               headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
             }
           );
-console.log(logoResponse.data);
+          console.log(logoResponse.data);
 
           const logo = logoResponse.data.logos.find(
-            (logo: any) => logo.iso_639_1 === "en"
+            (logo: { iso_639_1: string; file_path: string }) => logo.iso_639_1 === "en"
           );
 
           return {

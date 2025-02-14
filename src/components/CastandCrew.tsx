@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { useState } from "react";
-import { Skeleton } from "@/components/ui/skeleton";  // Import Skeleton component
+import { Skeleton } from "@/components/ui/skeleton"; 
 
 const CastAndCrew = ({ director, writers, topCast, isLoading }) => {
   const [selectedCategory, setSelectedCategory] = useState("actors");

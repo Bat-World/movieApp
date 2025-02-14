@@ -40,7 +40,7 @@ const CategoryList = ({ title, endpoint }: MovieListProps) => {
             Authorization: `Bearer ${TMDB_API_TOKEN}`,
           },
         }
-      );
+      );      
       setMovieData(response.data.results);
       setTotalPages(response.data.total_pages || 10);
       setIsLoading(false);
