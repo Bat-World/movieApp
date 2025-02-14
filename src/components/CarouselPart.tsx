@@ -6,17 +6,17 @@ import Image from "next/image";
 import { Star } from "lucide-react";
 import {
   Carousel,
-  CarouselContent,
   CarouselItem,
   CarouselNext,
+  CarouselContent,
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Skeleton } from "./ui/skeleton";
 import { useEffect, useState } from "react";
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
-const TMDB_IMAGE_BASE_URL = process.env.NEXT_PUBLIC_TMDB_IMAGE_SERVICE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
+const TMDB_IMAGE_BASE_URL = process.env.NEXT_PUBLIC_TMDB_IMAGE_SERVICE_URL;
 
 export default function ImageShiftPart() {
   const [loading, setLoading] = useState(false);

@@ -2,14 +2,16 @@
 
 import React from "react";
 import axios from "axios";
+import { MoveLeft } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
-import { Skeleton } from "@/components/ui/skeleton";
-import CastAndCrew from "@/components/CastandCrew";
-import SimilarMovies from "@/components/SimilarMovie";
 import MovieMedia from "@/components/MovieMedia";
-import { MoveLeft } from "lucide-react";
+import CastAndCrew from "@/components/CastandCrew";
+import { Skeleton } from "@/components/ui/skeleton";
+import SimilarMovies from "@/components/SimilarMovie";
+
+
 
 // Type Definitions
 interface Video {
