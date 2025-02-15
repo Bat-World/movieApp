@@ -22,7 +22,7 @@ const CastAndCrew = ({ director, writers, topCast, isLoading }) => {
             className={`px-4 py-2 rounded-md ${
               selectedCategory === key
                 ? "bg-transparent text-white font-bold text-[22px] lg:text-[30px] p-0"
-                : "bg-transparent text-gray-300 text-[22px] lg:text-[30px] font-normal p-0"
+                : "bg-transparent text-gray-500 text-[22px] lg:text-[30px] font-normal p-0"
             }`}
           >
             {label}

@@ -9,7 +9,7 @@ import Trending from "@/components/Trending";
 
 export default function Home() {
   return (
-    <div className="overflow-x-hidden scroll-bar-red">
+    <div className="overflow-x-hidden">
       <ImageShiftPart />
       <div className="w-screen h-auto flex flex-col items-center">
         <div className="w-full h-auto lg:w-90% lg:px-[40px] xl:max-w-[1280px]">
