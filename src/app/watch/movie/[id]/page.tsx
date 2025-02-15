@@ -10,9 +10,9 @@ const WatchMovie = () => {
   const [selectedSource, setSelectedSource] = useState("https://embed.su/embed/movie");
 
   const sources = [
+    "https://embed.su/embed/movie",
     "https://vidlink.pro/embed/movie",
     "https://vidsrc.cc/v2/embed/movie",
-    "https://embed.su/embed/movie",
     "https://embed.7xtream.com/embed/movie",
     "https://vidbinge.dev/embed/movie",
   ];

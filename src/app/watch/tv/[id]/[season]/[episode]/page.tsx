@@ -11,12 +11,13 @@ const WatchSeries = () => {
   );
 
   const sources = [
-    "https://vidlink.pro",
-    "https://vidsrc.cc/v2/embed",
-    "https://embed.su/embed",
-    "https://embed.7xtream.com/embed",
-    "https://vidbinge.dev/embed",
+    "https://vidlink.pro/tv",
+    "https://vidsrc.cc/v2/embed/tv",
+    "https://embed.su/embed/tv",
+    "https://embed.7xtream.com/embed/tv",
+    "https://vidbinge.dev/embed/tv",
   ];
+  
 
   // Ensure params are valid
   const { id, season, episode } = params || {};

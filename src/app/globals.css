@@ -12,7 +12,7 @@ body {
 }
 /* Custom scrollbar styles */
 ::-webkit-scrollbar {
-  width: 12px; /* Width of the scrollbar */
+  width: 10px; /* Width of the scrollbar */
 }
 
 ::-webkit-scrollbar-track {

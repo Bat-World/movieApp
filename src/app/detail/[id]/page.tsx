@@ -2,14 +2,16 @@
 
 import React from "react";
 import axios from "axios";
+import { MoveLeft } from "lucide-react";
+import { useParams } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
-import { Skeleton } from "@/components/ui/skeleton";
-import CastAndCrew from "@/components/CastandCrew";
-import SimilarMovies from "@/components/SimilarMovie";
 import MovieMedia from "@/components/MovieMedia";
-import { MoveLeft } from "lucide-react";
+import CastAndCrew from "@/components/CastandCrew";
+import { Skeleton } from "@/components/ui/skeleton";
+import SimilarMovies from "@/components/SimilarMovie";
+
+
 
 // Type Definitions
 interface Video {
@@ -50,9 +52,10 @@ const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 const Page = () => {
-  const [movieData, setMovieData] = useState<MovieDetail | null>(null);
+
   const [videoData, setVideoData] = useState<Video[] | null>(null);
   const [creditData, setCreditData] = useState<Credit | null>(null);
+  const [movieData, setMovieData] = useState<MovieDetail | null>(null);
   const [similarMovies, setSimilarMovies] = useState<SimilarMovie[] | null>(
     null
   );
