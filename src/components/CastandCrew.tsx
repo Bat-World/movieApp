@@ -2,7 +2,20 @@ import Image from "next/image";
 import { useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton"; 
 
-const CastAndCrew = ({ director, writers, topCast, isLoading }) => {
+interface Person {
+  id?: number;
+  name: string;
+  profile_path?: string;
+}
+
+interface CastAndCrewProps {
+  director: Person | null;
+  writers: Person[];
+  topCast: Person[];
+  isLoading: boolean;
+}
+
+const CastAndCrew: React.FC<CastAndCrewProps> = ({ director, writers, topCast, isLoading }) => {
   const [selectedCategory, setSelectedCategory] = useState("actors");
 
   const categories = [

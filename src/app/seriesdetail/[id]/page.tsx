@@ -17,21 +17,23 @@ interface Credit {
   crew: { name: string; job: string }[];
 }
 
-interface SeriesDetail {
+interface Genre {
   id: number;
   name: string;
+}
+
+interface SeriesDetail {
+  id: number;
+  title: string;
   poster_path: string;
   backdrop_path: string;
   overview: string;
-  first_air_date: string;
+  release_date: string;
   vote_average: number;
   vote_count: number;
-  number_of_seasons: number;
-  number_of_episodes: number;
-  seasons: {
-    season_number: number;
-    episode_count: number;
-  }[];
+  runtime: number;
+  adult: boolean;
+  genres: Genre[]; // Add this line
 }
 
 interface SimilarSeries {
@@ -134,19 +136,21 @@ const SeriesDetail = () => {
         
 
         {/* Season and Episode Selector */}
+      {seriesData && (
         <SeasonEpisodeSelector
-        seriesData={seriesData}
-        selectedSeason={selectedSeason}
-        selectedEpisode={selectedEpisode}
-        handleSeasonChange={handleSeasonChange}
-        handleEpisodeChange={handleEpisodeChange}
-      />
+          seriesData={seriesData}
+          selectedSeason={selectedSeason}
+          selectedEpisode={selectedEpisode}
+          handleSeasonChange={handleSeasonChange}
+          handleEpisodeChange={handleEpisodeChange}
+        />
+      )}
 
         {/* Cast & Crew */}
         <CastAndCrew
-          director={director}
-          writers={writers}
-          topCast={topCast}
+          director={director || null}
+          writers={writers || []}
+          topCast={topCast || []}
           isLoading={isLoading}
         />
 

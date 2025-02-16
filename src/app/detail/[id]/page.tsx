@@ -27,6 +27,11 @@ interface Credit {
   crew: { name: string; job: string }[];
 }
 
+interface Genre {
+  id: number;
+  name: string;
+}
+
 interface MovieDetail {
   id: number;
   title: string;
@@ -38,6 +43,7 @@ interface MovieDetail {
   vote_count: number;
   runtime: number;
   adult: boolean;
+  genres: Genre[]; // Add this line
 }
 
 interface SimilarMovie {
@@ -45,6 +51,13 @@ interface SimilarMovie {
   title: string;
   poster_path: string;
   vote_average: number;
+}
+
+
+interface MovieMediaProps {
+  movieData: MovieDetail | null;
+  isLoading: boolean;
+  trailerKey: string;
 }
 
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
@@ -170,9 +183,9 @@ const Page = () => {
         )}
         {/* cast and crew */}
         <CastAndCrew
-          director={director}
-          writers={writers}
-          topCast={topCast}
+          director={director || null}
+          writers={writers || []}
+          topCast={topCast || []}
           isLoading={isLoading}
         />
         {/*similar movies data */}
