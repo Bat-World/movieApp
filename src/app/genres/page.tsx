@@ -18,6 +18,7 @@ import RightArrow from "../../icons/RightArrow";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
+
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -36,10 +37,10 @@ const Page = () => {
   const [genres, setGenres] = useState<{ id: number; name: string }[]>([]);
   const [moviesSearch, setMoviesSearch] = useState("");
   const [searchMoviesData, setSearchMoviesData] = useState<Movie[]>([]);
-  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [, setShowSearchResults] = useState(false);
   const [searchType, setSearchType] = useState<"genre" | "name">("genre");
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(10);
+  const [totalPages, ] = useState(10);
 
   // Fetch list of all genres
   const fetchGenreList = async () => {
@@ -95,12 +96,12 @@ const Page = () => {
       );
 
       setSearchMoviesData(response.data.results.slice(0, 10));
-    } catch (err) {
-      setErrorMessage("Failed to load movies.");
     } finally {
       setIsLoading(false);
     }
   };
+
+  
 
   useEffect(() => {
     fetchGenreList();

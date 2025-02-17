@@ -1,6 +1,21 @@
-import Image from "next/image";
+"use client"; // Add this if using Next.js App Router
 
-const SimilarMovies = ({ similarMovies, router }) => {
+import Image from "next/image";
+import { useRouter } from "next/navigation"; // Correct import for App Router
+
+interface Movie {
+  id: number;
+  poster_path: string;
+  title: string;
+}
+
+interface SimilarMoviesProps {
+  similarMovies: Movie[];
+}
+
+const SimilarMovies = ({ similarMovies }: SimilarMoviesProps) => {
+  const router = useRouter(); // Get router instance
+
   return (
     <div className="flex flex-wrap gap-5 lg:gap-8 justify-start mt-[30px]">
       {similarMovies?.map((movie) => (

@@ -1,9 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+
 import axios from "axios";
 import Image from "next/image";
 import StarSmall from "@/icons/StarSmall";
+import React, { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import {
   Pagination,
   PaginationContent,
@@ -25,7 +26,7 @@ const Page = () => {
 
   const [similarData, setSimilarData] = useState<Movie[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [totalPages, setTotalPages] = useState(10);
+  const [totalPages,] = useState(10);
   const [currentPage, setCurrentPage] = useState(1);
   const [errorMessage, setErrorMessage] = useState("");
   const params = useParams();

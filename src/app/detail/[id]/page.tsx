@@ -53,13 +53,6 @@ interface SimilarMovie {
   vote_average: number;
 }
 
-
-interface MovieMediaProps {
-  movieData: MovieDetail | null;
-  isLoading: boolean;
-  trailerKey: string;
-}
-
 const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_TOKEN = process.env.NEXT_PUBLIC_TMDB_API_TOKEN;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
@@ -73,7 +66,7 @@ const Page = () => {
     null
   );
   const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [, setErrorMessage] = useState("");
 
   const params = useParams();
   const router = useRouter();
@@ -205,7 +198,7 @@ const Page = () => {
             See more
           </button>
         </div>
-        <SimilarMovies similarMovies={similarMovies} router={router} />
+        {similarMovies && <SimilarMovies similarMovies={similarMovies} />}
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import NetflixIcon from "@/icons/Netflix";
 import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore from "swiper";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -15,8 +16,14 @@ const TMDB_BASE_URL = process.env.NEXT_PUBLIC_TMDB_BASE_URL;
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
 export const Netflix = () => {
-  const [netflixData, setNetflixData] = useState([]);
-  const swiperRef = useRef(null);
+  interface Movie {
+    id: number;
+    poster_path: string;
+    name: string;
+  }
+
+  const [netflixData, setNetflixData] = useState<Movie[]>([]);
+  const swiperRef = useRef<SwiperCore | null>(null);
 
   const fetchNetflixMovies = async () => {
     try {

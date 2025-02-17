@@ -33,7 +33,7 @@ const Top10Movies = () => {
     } catch (error) {
       console.error(
         "Error fetching movies:",
-        axios.isAxiosError(error) && error.response ? error.response.data : error.message
+        axios.isAxiosError(error) && error.response ? error.response.data : null
       );
       setErrorMessage("Failed to fetch movies. Please try again later.");
     }

@@ -22,6 +22,13 @@ interface Genre {
   name: string;
 }
 
+interface Season {
+  id: number;
+  name: string;
+  episode_count: number;
+  season_number: number;
+}
+
 interface SeriesDetail {
   id: number;
   title: string;
@@ -33,6 +40,7 @@ interface SeriesDetail {
   vote_count: number;
   runtime: number;
   adult: boolean;
+  seasons: Season[]; // Add this line
   genres: Genre[]; // Add this line
 }
 
@@ -111,10 +119,6 @@ const SeriesDetail = () => {
 
   const handleEpisodeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedEpisode(Number(e.target.value));
-  };
-
-  const handlePlay = () => {
-    router.push(`/watch/tv/${params.id}/${selectedSeason}/${selectedEpisode}`);
   };
 
   const handleBack = () => {

@@ -1,9 +1,11 @@
+"use client"; 
+
 import React from "react";
 import Image from "next/image";
-import { Play, } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { Play } from "lucide-react";
 import { Skeleton } from "./ui/skeleton";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 interface MovieMediaProps {
   movieData: {
@@ -13,16 +15,17 @@ interface MovieMediaProps {
     backdrop_path: string;
     overview: string;
     release_date: string;
-    vote_average: number;
-    vote_count: number;
+    vote_average?: number; 
+    vote_count?: number; 
     runtime: number;
     adult: boolean;
     genres: { id: number; name: string }[];
   } | null;
   isLoading: boolean;
+  trailerKey?: string; 
 }
 
-const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading }) => {
+const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading, trailerKey }) => {
   const router = useRouter();
 
   return (
@@ -31,13 +34,14 @@ const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading }) => {
         {isLoading ? (
           <Skeleton className="w-full h-full" />
         ) : (
-          <Image
-            src={`https://image.tmdb.org/t/p/original${movieData?.backdrop_path}`}
-            alt={movieData?.title || "Backdrop Image"}
-            layout="fill"
-            objectFit="cover"
-            className="opacity-40"
-          />
+          movieData?.backdrop_path && (
+            <Image
+              src={`https://image.tmdb.org/t/p/original${movieData.backdrop_path}`}
+              alt={movieData.title || "Backdrop Image"}
+              fill 
+              className="opacity-40 object-cover"
+            />
+          )
         )}
       </div>
 
@@ -47,13 +51,15 @@ const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading }) => {
         {isLoading ? (
           <Skeleton className="w-[250px] h-[375px] md:w-[350px] md:h-[500px] rounded-lg" />
         ) : (
-          <Image
-            src={`https://image.tmdb.org/t/p/original${movieData?.poster_path}`}
-            alt={movieData?.title || "Movie Poster"}
-            width={350}
-            height={500}
-            className="w-[250px] h-[375px] md:w-[350px] md:h-[500px] rounded-lg shadow-lg"
-          />
+          movieData?.poster_path && (
+            <Image
+              src={`https://image.tmdb.org/t/p/original${movieData.poster_path}`}
+              alt={movieData.title || "Movie Poster"}
+              width={350}
+              height={500}
+              className="w-[250px] h-[375px] md:w-[350px] md:h-[500px] rounded-lg shadow-lg"
+            />
+          )
         )}
 
         {/* Movie Info */}
@@ -66,7 +72,9 @@ const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading }) => {
               {movieData?.title}
             </h1>
           )}
-         <div className="flex items-center space-x-4 text-gray-400 text-sm mt-2">
+
+          {/* Details */}
+          <div className="flex items-center space-x-4 text-gray-400 text-sm mt-2">
             {isLoading ? (
               <>
                 <Skeleton className="h-4 w-20" />
@@ -79,15 +87,19 @@ const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading }) => {
                 <span>{movieData?.release_date}</span>
                 <span>• {movieData?.adult ? "R" : "PG"}</span>
                 <span>• {movieData?.runtime}m</span>
-                <div className="flex items-center text-yellow-500 font-semibold">
-                  ⭐ <span className="ml-1">{movieData?.vote_average.toFixed(1)}/10</span>
-                  <span className="text-gray-400 ml-2 text-xs">
-                    {movieData?.vote_count} votes
-                  </span>
-                </div>
+                {movieData?.vote_average !== undefined && (
+                  <div className="flex items-center text-yellow-500 font-semibold">
+                    ⭐ <span className="ml-1">{movieData.vote_average.toFixed(1)}/10</span>
+                    <span className="text-gray-400 ml-2 text-xs">
+                      {movieData.vote_count} votes
+                    </span>
+                  </div>
+                )}
               </>
             )}
           </div>
+
+          {/* Genres */}
           <div className="flex gap-2 mt-3">
             {isLoading ? (
               <>
@@ -106,7 +118,8 @@ const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading }) => {
               ))
             )}
           </div>
-          {/* Scrollable Overview */}
+
+          {/* Overview */}
           <div className="mt-4 p-3 bg-transparent rounded-lg max-h-[100px] overflow-y-auto text-gray-300 text-sm md:text-base leading-relaxed">
             {isLoading ? (
               <>
@@ -118,7 +131,7 @@ const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading }) => {
             )}
           </div>
 
-
+          {/* Buttons */}
           <div className="flex gap-4 mt-5">
             <Button
               onClick={() => router.push(`/watch/movie/${movieData?.id}`)}
@@ -128,6 +141,17 @@ const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading }) => {
               <Play className="mr-2" />
               Play
             </Button>
+
+            
+            {trailerKey && (
+              <Button
+                onClick={() => router.push(`/trailer/${trailerKey}`)}
+                variant="outline"
+                className="text-base font-bold text-white flex items-center bg-red-500 px-5 py-2 rounded-lg hover:bg-red-700 transition"
+              >
+                🎬 Watch Trailer
+              </Button>
+            )}
           </div>
         </div>
       </div>
