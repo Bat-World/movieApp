@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
       "picsum.photos",
       "image.tmdb.org",
       "loodibee.com",
-      "citypng.com", // No
+      "citypng.com", // For the logo
     ],
   },
 };
