@@ -51,7 +51,6 @@ export default function ImageShiftPart() {
               headers: { Authorization: `Bearer ${TMDB_API_TOKEN}` },
             }
           );
-          console.log(logoResponse.data);
 
           const logo = logoResponse.data.logos.find(
             (logo: { iso_639_1: string; file_path: string }) => logo.iso_639_1 === "en"
