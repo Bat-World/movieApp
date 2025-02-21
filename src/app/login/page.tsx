@@ -1,15 +1,16 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation"; 
+import { useRouter } from "next/navigation";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const router = useRouter(); 
-  const handleLogin = async (e) => {
+  const router = useRouter();
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -21,14 +22,11 @@ const LoginPage = () => {
       });
 
       if (response.status === 200) {
-        // If login is successful, store the JWT token
         const { token } = response.data;
 
-        // Store the token in localStorage (or cookies for better security)
         localStorage.setItem("auth_token", token);
 
-        // Redirect to a protected route (e.g., dashboard)
-        router.push("/dashboard"); // Change this to your desired route
+        router.push("/start");
       }
     } catch (error) {
       console.error("Login error:", error);
@@ -47,7 +45,10 @@ const LoginPage = () => {
 
         <form className="space-y-4" onSubmit={handleLogin}>
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-600"
+            >
               Username
             </label>
             <input
@@ -57,11 +58,15 @@ const LoginPage = () => {
               onChange={(e) => setEmail(e.target.value)}
               className="w-full p-2 mt-1 border border-gray-300 rounded-md"
               required
+              autoComplete="off"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-600"
+            >
               Password
             </label>
             <input
@@ -71,6 +76,7 @@ const LoginPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-2 mt-1 border border-gray-300 rounded-md"
               required
+              autoComplete="off"
             />
           </div>
 
@@ -87,7 +93,7 @@ const LoginPage = () => {
 
         <div className="text-center mt-4">
           <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <a href="/signup" className="text-blue-600">
               Sign Up
             </a>

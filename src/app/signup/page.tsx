@@ -9,7 +9,7 @@ const SignUpPage = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSignUp = async (e) => {
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError("");
@@ -26,17 +26,20 @@ const SignUpPage = () => {
         password,
       });
 
-      // On success, redirect to the login page
       if (response.status === 201) {
         console.log("Sign Up successful!");
         window.location.href = "/login";
       } else {
-        // Set error if message exists
         setError(response.data.message || "Something went wrong.");
       }
     } catch (err) {
-      // Handle case when error occurs and display a meaningful message
-      setError(err.response?.data?.message || "An error occurred during sign-up.");
+      if (axios.isAxiosError(err)) {
+        setError(
+          err.response?.data?.message || "An error occurred during sign-up."
+        );
+      } else {
+        setError("An error occurred during sign-up.");
+      }
       console.error("Sign-up error:", err);
     } finally {
       setLoading(false);
@@ -52,7 +55,10 @@ const SignUpPage = () => {
 
         <form onSubmit={handleSignUp} className="space-y-4">
           <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="username"
+              className="block text-sm font-medium text-gray-600"
+            >
               Username
             </label>
             <input
@@ -62,11 +68,15 @@ const SignUpPage = () => {
               onChange={(e) => setUsername(e.target.value)}
               className="w-full p-2 mt-1 border border-gray-300 rounded-md"
               required
+              autoComplete="off"
             />
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-600"
+            >
               Password
             </label>
             <input
@@ -76,11 +86,15 @@ const SignUpPage = () => {
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-2 mt-1 border border-gray-300 rounded-md"
               required
+              autoComplete="off"
             />
           </div>
 
           <div>
-            <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-600">
+            <label
+              htmlFor="confirmPassword"
+              className="block text-sm font-medium text-gray-600"
+            >
               Confirm Password
             </label>
             <input
@@ -90,6 +104,7 @@ const SignUpPage = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full p-2 mt-1 border border-gray-300 rounded-md"
               required
+              autoComplete="off"
             />
           </div>
 
