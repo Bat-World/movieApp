@@ -1,4 +1,4 @@
-"use client"; 
+"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -15,17 +15,21 @@ interface MovieMediaProps {
     backdrop_path: string;
     overview: string;
     release_date: string;
-    vote_average?: number; 
-    vote_count?: number; 
+    vote_average?: number;
+    vote_count?: number;
     runtime: number;
     adult: boolean;
     genres: { id: number; name: string }[];
   } | null;
   isLoading: boolean;
-  trailerKey?: string; 
+  trailerKey?: string;
 }
 
-const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading, trailerKey }) => {
+const MovieMedia: React.FC<MovieMediaProps> = ({
+  movieData,
+  isLoading,
+  trailerKey,
+}) => {
   const router = useRouter();
 
   return (
@@ -38,14 +42,13 @@ const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading, trailerKe
             <Image
               src={`https://image.tmdb.org/t/p/original${movieData.backdrop_path}`}
               alt={movieData.title || "Backdrop Image"}
-              fill 
+              fill
               className="opacity-40 object-cover"
             />
           )
         )}
       </div>
 
-      {/* Content */}
       <div className="z-10 flex flex-col md:flex-row gap-6 max-w-5xl w-full">
         {/* Movie Poster */}
         {isLoading ? (
@@ -89,7 +92,10 @@ const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading, trailerKe
                 <span>• {movieData?.runtime}m</span>
                 {movieData?.vote_average !== undefined && (
                   <div className="flex items-center text-yellow-500 font-semibold">
-                    ⭐ <span className="ml-1">{movieData.vote_average.toFixed(1)}/10</span>
+                    ⭐{" "}
+                    <span className="ml-1">
+                      {movieData.vote_average.toFixed(1)}/10
+                    </span>
                     <span className="text-gray-400 ml-2 text-xs">
                       {movieData.vote_count} votes
                     </span>
@@ -141,17 +147,6 @@ const MovieMedia: React.FC<MovieMediaProps> = ({ movieData, isLoading, trailerKe
               <Play className="mr-2" />
               Play
             </Button>
-
-            
-            {trailerKey && (
-              <Button
-                onClick={() => router.push(`/trailer/${trailerKey}`)}
-                variant="outline"
-                className="text-base font-bold text-white flex items-center bg-red-500 px-5 py-2 rounded-lg hover:bg-red-700 transition"
-              >
-                🎬 Watch Trailer
-              </Button>
-            )}
           </div>
         </div>
       </div>
