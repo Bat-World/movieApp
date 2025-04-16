@@ -28,7 +28,6 @@ interface MovieMediaProps {
 const MovieMedia: React.FC<MovieMediaProps> = ({
   movieData,
   isLoading,
-  trailerKey,
 }) => {
   const router = useRouter();
 

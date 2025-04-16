@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import Image from "next/image";
-import { Star } from "lucide-react";
+
 import {
   Carousel,
   CarouselItem,
