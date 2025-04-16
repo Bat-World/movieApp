@@ -4,7 +4,7 @@ import { House } from "lucide-react";
 import { Popcorn } from "lucide-react";
 import { SearchIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { User } from "lucide-react";
+// import { User } from "lucide-react";
 
 export const Header = () => {
   const { push } = useRouter();
@@ -25,10 +25,10 @@ export const Header = () => {
           <Popcorn className="w-[50px] h-[50px] text-[#4338CA] font-bold" />
         </div>
         <div className="flex flex-row items-center h-[20px] gap-[8px]">
-        <User
+        {/* <User
           className="cursor-pointer hover:text-[#4338CA]"
           onClick={() => push(`/login`)}
-        />
+        /> */}
         <SearchIcon
           className="cursor-pointer hover:text-[#4338CA]"
           onClick={() => push(`/genres`)}

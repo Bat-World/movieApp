@@ -6,9 +6,7 @@ import { Star } from "lucide-react";
 import {
   Carousel,
   CarouselItem,
-  CarouselNext,
   CarouselContent,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import { Skeleton } from "./ui/skeleton";
 import { useEffect, useState } from "react";
@@ -53,7 +51,8 @@ export default function ImageShiftPart() {
           );
 
           const logo = logoResponse.data.logos.find(
-            (logo: { iso_639_1: string; file_path: string }) => logo.iso_639_1 === "en"
+            (logo: { iso_639_1: string; file_path: string }) =>
+              logo.iso_639_1 === "en"
           );
 
           return {
@@ -139,49 +138,13 @@ export default function ImageShiftPart() {
                                 </h3>
                               )}
                             </div>
-                            <div className="flex items-center gap-x-2 mt-2">
-                              <Star
-                                className="w-5 h-5 text-[#FDE047]"
-                                fill="currentColor"
-                              />
-                              <span className="text-md font-semibold dark:text-white">
-                                {movie.vote_average.toFixed(1)}
-                              </span>
-                              <span className="text-sm dark:text-white">
-                                /10
-                              </span>
-                            </div>
                           </div>
-                          <p className="w-[302px] text-[16px] leading-[24px] line-clamp-5 mt-4 text-white normal">
-                            {movie.overview}
-                          </p>
                         </div>
                       </div>
                     </div>
                   </CarouselItem>
                 ))}
               </CarouselContent>
-
-              <div className="hidden md:block">
-                <CarouselPrevious
-                  onClick={() =>
-                    setActiveIndex((prevIndex) =>
-                      prevIndex === 0
-                        ? popularMoviesData.length - 1
-                        : prevIndex - 1
-                    )
-                  }
-                  className="absolute left-5 top-[50%] transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full z-10"
-                />
-                <CarouselNext
-                  onClick={() =>
-                    setActiveIndex(
-                      (prevIndex) => (prevIndex + 1) % popularMoviesData.length
-                    )
-                  }
-                  className="absolute right-5 top-[50%] transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-3 rounded-full z-10"
-                />
-              </div>
             </Carousel>
             {/* Gradient */}
             <div
